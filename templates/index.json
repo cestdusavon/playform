@@ -33,7 +33,8 @@
             "title": "Props",
             "text": "Oversized event pieces, party displays, themed props & rentals.",
             "emoji": "⭐",
-            "button_label": "Explore props"
+            "button_label": "Explore props",
+            "link": "/pages/rentals"
           }
         },
         "nursery": {
@@ -47,8 +48,15 @@
           }
         }
       },
-      "block_order": ["toys", "props", "nursery"],
-      "settings": { "background": "#F8F4EA", "stud_count": 4 }
+      "block_order": [
+        "toys",
+        "props",
+        "nursery"
+      ],
+      "settings": {
+        "background": "#F8F4EA",
+        "stud_count": 4
+      }
     },
     "featured": {
       "type": "featured-products",
@@ -101,8 +109,16 @@
           }
         }
       },
-      "block_order": ["designed", "printed", "finished", "yours"],
-      "settings": { "background": "#F8F4EA", "heading": "Made Different." }
+      "block_order": [
+        "designed",
+        "printed",
+        "finished",
+        "yours"
+      ],
+      "settings": {
+        "background": "#F8F4EA",
+        "heading": "Made Different."
+      }
     },
     "custom": {
       "type": "custom-project-cta",
@@ -119,14 +135,33 @@
     "instagram": {
       "type": "instagram-strip",
       "blocks": {
-        "p1": { "type": "photo" },
-        "p2": { "type": "photo" },
-        "p3": { "type": "photo" },
-        "p4": { "type": "photo" },
-        "p5": { "type": "photo" },
-        "p6": { "type": "photo" }
+        "p1": {
+          "type": "photo"
+        },
+        "p2": {
+          "type": "photo"
+        },
+        "p3": {
+          "type": "photo"
+        },
+        "p4": {
+          "type": "photo"
+        },
+        "p5": {
+          "type": "photo"
+        },
+        "p6": {
+          "type": "photo"
+        }
       },
-      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6"],
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6"
+      ],
       "settings": {
         "background": "#F8F4EA",
         "handle": "@playform.toys",
@@ -134,5 +169,12 @@
       }
     }
   },
-  "order": ["hero", "categories", "featured", "process", "custom", "instagram"]
+  "order": [
+    "hero",
+    "categories",
+    "featured",
+    "process",
+    "custom",
+    "instagram"
+  ]
 }

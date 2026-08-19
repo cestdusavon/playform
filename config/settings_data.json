@@ -12,6 +12,14 @@
     "logo_width": 200,
     "social_instagram": "https://instagram.com/playform.toys",
     "social_tiktok": "https://tiktok.com/@playform.toys",
-    "social_etsy": "https://www.etsy.com/shop/playformtoys"
+    "social_etsy": "https://www.etsy.com/shop/playformtoys",
+    "rental_weekend_percent": 250,
+    "rental_week_percent": 400,
+    "rental_month_percent": 1200,
+    "rental_deposit_percent": 30,
+    "rental_deposit_note": "Refunded within 5 business days of return, less any damage.",
+    "rental_min_days": 1,
+    "rental_lead_days": 14,
+    "rental_rate_visibility": "everyone"
   }
 }

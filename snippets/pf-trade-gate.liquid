@@ -1,0 +1,14 @@
+{%- comment -%}
+  Shown in place of rates when they are restricted to logged-in or B2B
+  customers. See the "Who sees trade rates" theme setting.
+{%- endcomment -%}
+<div class="pf-gate">
+  <p class="pf-gate__title">Trade rates are for account holders.</p>
+  <p class="pf-gate__text">
+    Log in to see hire rates and deposits, or apply for a trade account and we'll set you up.
+  </p>
+  <div class="pf-gate__actions">
+    <a class="pf-btn pf-btn--blue" href="{{ routes.account_login_url }}">Log in</a>
+    <a class="pf-btn pf-btn--outline" href="{{ routes.root_url }}pages/trade-application">Apply for trade</a>
+  </div>
+</div>

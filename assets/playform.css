@@ -1153,3 +1153,674 @@ a {
     gap: 24px;
   }
 }
+
+/* ==========================================================================
+   B2B prop rentals — trade hero, rate card, deposit, quote request
+   ========================================================================== */
+
+.pf-section-head--stack {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   Trade hero
+   -------------------------------------------------------------------------- */
+
+.pf-trade {
+  padding-block: 56px 52px;
+}
+
+.pf-trade__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 44px;
+  align-items: center;
+}
+
+.pf-trade__eyebrow {
+  margin: 0 0 12px;
+  opacity: 0.85;
+}
+
+.pf-trade__title {
+  font-size: clamp(2.1rem, 4.4vw, 3.25rem);
+}
+
+.pf-trade__text {
+  margin: 20px 0 28px;
+  max-width: 52ch;
+  font-size: 1.0625rem;
+  opacity: 0.94;
+}
+
+.pf-trade__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.pf-btn--outline-light {
+  --pf-btn-fg: currentColor;
+  border-color: currentColor;
+}
+.pf-btn--outline-light:hover {
+  background: #fff;
+  color: var(--pf-ink);
+  border-color: #fff;
+}
+
+.pf-trade__stats {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.pf-trade__stat {
+  padding: 16px 22px;
+  border-radius: var(--pf-radius);
+  background: rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.pf-trade__stat-value {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.pf-trade__stat-label {
+  margin: 0;
+  font-size: 0.9375rem;
+  opacity: 0.9;
+}
+
+/* --------------------------------------------------------------------------
+   Rate card
+   -------------------------------------------------------------------------- */
+
+.pf-rates {
+  padding-block: 46px;
+}
+
+.pf-rates__intro {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--pf-muted);
+}
+
+.pf-rates__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.pf-rate-card {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  color: #fff;
+}
+
+.pf-rate-card--yellow { --pf-brick-color: var(--pf-yellow); color: var(--pf-ink); }
+.pf-rate-card--red { --pf-brick-color: var(--pf-red); }
+.pf-rate-card--blue { --pf-brick-color: var(--pf-blue); }
+.pf-rate-card--green { --pf-brick-color: var(--pf-green); }
+.pf-rate-card--purple { --pf-brick-color: var(--pf-purple); }
+
+.pf-rate-card .pf-studs {
+  position: relative;
+  z-index: 0;
+}
+
+.pf-rate-card__body {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  margin-top: -10px;
+  padding: 26px 24px 28px;
+  border-radius: 14px;
+  background: var(--pf-brick-color);
+  box-shadow: var(--pf-shadow);
+}
+
+.pf-rate-card--featured .pf-rate-card__body {
+  box-shadow: 0 0 0 4px var(--pf-ink), var(--pf-shadow);
+}
+
+.pf-rate-card__flag {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: var(--pf-ink);
+  color: #fff;
+  font-family: var(--pf-font-display);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.pf-rate-card__period {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 1.375rem;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.pf-rate-card__price {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.05;
+  margin: 4px 0 2px;
+}
+
+.pf-rate-card__prefix {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.pf-rate-card__note {
+  margin: 0 0 14px;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.pf-rate-card__list {
+  margin: 0;
+  padding: 14px 0 0;
+  list-style: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.28);
+  display: grid;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.pf-rate-card--yellow .pf-rate-card__list {
+  border-top-color: rgba(18, 16, 14, 0.2);
+}
+
+.pf-rate-card__list li {
+  padding-left: 20px;
+  position: relative;
+}
+
+.pf-rate-card__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 10px;
+  height: 8px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   Volume tiers
+   -------------------------------------------------------------------------- */
+
+.pf-tiers {
+  margin-top: 36px;
+  background: #fff;
+  border-radius: var(--pf-radius);
+  padding: 26px 28px;
+  box-shadow: var(--pf-shadow);
+  overflow-x: auto;
+}
+
+.pf-tiers__heading {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin: 0 0 14px;
+}
+
+.pf-tiers__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 420px;
+}
+
+.pf-tiers__table th,
+.pf-tiers__table td {
+  text-align: left;
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--pf-line);
+  font-size: 0.9375rem;
+}
+
+.pf-tiers__table thead th {
+  font-family: var(--pf-font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pf-muted);
+}
+
+.pf-tiers__table tbody tr:last-child th,
+.pf-tiers__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.pf-rates__footnote {
+  margin: 18px 0 0;
+  font-size: 0.875rem;
+  color: var(--pf-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Deposit & terms
+   -------------------------------------------------------------------------- */
+
+.pf-deposit {
+  padding-block: 26px 50px;
+}
+
+.pf-deposit__panel {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 36px;
+  align-items: center;
+  padding: 30px 34px;
+  border-radius: var(--pf-radius);
+  background: var(--pf-panel-color, var(--pf-green));
+  color: #fff;
+}
+
+.pf-deposit--green { --pf-panel-color: var(--pf-green); }
+.pf-deposit--red { --pf-panel-color: var(--pf-red); }
+.pf-deposit--blue { --pf-panel-color: var(--pf-blue); }
+.pf-deposit--purple { --pf-panel-color: var(--pf-purple); }
+.pf-deposit--yellow { --pf-panel-color: var(--pf-yellow); color: var(--pf-ink); }
+
+.pf-deposit__figure {
+  --pf-brick-color: #fff;
+  padding-top: 10px;
+}
+
+.pf-deposit__figure-body {
+  position: relative;
+  z-index: 1;
+  margin-top: -10px;
+  padding: 22px 20px 24px;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--pf-ink);
+  text-align: center;
+}
+
+.pf-deposit__amount {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 3.5rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.pf-deposit__caption {
+  margin: 6px 0 0;
+  font-family: var(--pf-font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.pf-deposit__title {
+  font-size: clamp(1.5rem, 3vw, 2.125rem);
+}
+
+.pf-deposit__text {
+  margin: 12px 0 0;
+  max-width: 62ch;
+  opacity: 0.95;
+}
+
+.pf-deposit__note {
+  margin: 12px 0 0;
+  font-size: 0.875rem;
+  opacity: 0.85;
+}
+
+.pf-terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px 32px;
+  margin-top: 32px;
+}
+
+.pf-term__title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  margin: 0 0 4px;
+}
+
+.pf-term__dot {
+  width: 16px;
+  height: 12px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+  background: var(--pf-dot-color, var(--pf-red));
+  position: relative;
+}
+
+.pf-term__dot::before {
+  content: "";
+  position: absolute;
+  inset: -4px 3px auto 3px;
+  height: 5px;
+  border-radius: 3px 3px 0 0;
+  background: inherit;
+  filter: brightness(0.9);
+}
+
+.pf-term__dot--red { --pf-dot-color: var(--pf-red); }
+.pf-term__dot--yellow { --pf-dot-color: var(--pf-yellow); }
+.pf-term__dot--blue { --pf-dot-color: var(--pf-blue); }
+.pf-term__dot--green { --pf-dot-color: var(--pf-green); }
+.pf-term__dot--purple { --pf-dot-color: var(--pf-purple); }
+
+.pf-term__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--pf-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Per-product rates
+   -------------------------------------------------------------------------- */
+
+.pf-rate-inline {
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.pf-rate-inline__rate {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.pf-rate-inline__rate span {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--pf-muted);
+}
+
+.pf-rate-inline__deposit {
+  font-size: 0.8125rem;
+  color: var(--pf-muted);
+}
+
+.pf-card--rental .pf-card__title a,
+.pf-card--rental .pf-card__media {
+  text-decoration: none;
+  display: block;
+}
+
+.pf-rate-table {
+  background: #fff;
+  border-radius: var(--pf-radius);
+  padding: 22px 24px;
+  box-shadow: var(--pf-shadow);
+  margin: 22px 0;
+}
+
+.pf-rate-table__heading {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin: 0 0 12px;
+}
+
+.pf-rate-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pf-rate-table th,
+.pf-rate-table td {
+  text-align: left;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--pf-line);
+  font-size: 0.9375rem;
+}
+
+.pf-rate-table td {
+  text-align: right;
+  font-family: var(--pf-font-display);
+  font-weight: 600;
+}
+
+.pf-rate-table thead th {
+  font-family: var(--pf-font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pf-muted);
+}
+
+.pf-rate-table__deposit th,
+.pf-rate-table__deposit td {
+  border-bottom: 0;
+  border-top: 3px solid var(--pf-ink);
+  font-weight: 700;
+}
+
+.pf-rate-table__notes {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  font-size: 0.8125rem;
+  color: var(--pf-muted);
+  display: grid;
+  gap: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Trade gate
+   -------------------------------------------------------------------------- */
+
+.pf-gate {
+  border: 3px dashed rgba(18, 16, 14, 0.25);
+  border-radius: var(--pf-radius);
+  padding: 26px 28px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.pf-gate__title {
+  font-family: var(--pf-font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0 0 6px;
+}
+
+.pf-gate__text {
+  margin: 0 auto 18px;
+  max-width: 46ch;
+  color: var(--pf-muted);
+}
+
+.pf-gate__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   Quote request
+   -------------------------------------------------------------------------- */
+
+.pf-quote {
+  padding-block: 26px 56px;
+}
+
+.pf-quote__panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 40px;
+  padding: 34px 36px 38px;
+  border-radius: var(--pf-radius);
+  background: var(--pf-panel-color, var(--pf-blue));
+  color: #fff;
+}
+
+.pf-quote--blue { --pf-panel-color: var(--pf-blue); }
+.pf-quote--red { --pf-panel-color: var(--pf-red); }
+.pf-quote--green { --pf-panel-color: var(--pf-green); }
+.pf-quote--purple { --pf-panel-color: var(--pf-purple); }
+.pf-quote--yellow { --pf-panel-color: var(--pf-yellow); color: var(--pf-ink); }
+
+.pf-quote__title {
+  font-size: clamp(1.5rem, 3vw, 2.125rem);
+}
+
+.pf-quote__text {
+  margin-top: 14px;
+  opacity: 0.94;
+}
+
+.pf-quote__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.pf-quote__form .pf-field {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+.pf-quote__form label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
+.pf-field--wide {
+  grid-column: 1 / -1;
+}
+
+.pf-field--check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pf-field--check input {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.pf-field--check label {
+  font-weight: 600;
+}
+
+.pf-quote__form textarea {
+  padding: 12px 14px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font: inherit;
+  background: #fff;
+  color: var(--pf-ink);
+  resize: vertical;
+}
+
+.pf-quote__success {
+  align-self: center;
+  font-family: var(--pf-font-display);
+  font-size: 1.25rem;
+}
+
+.pf-quote__errors {
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.pf-quote__disclaimer {
+  margin: 14px 0 0;
+  font-size: 0.8125rem;
+  opacity: 0.82;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 989px) {
+  .pf-trade__inner,
+  .pf-quote__panel {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .pf-deposit__panel {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: center;
+  }
+  .pf-deposit__figure {
+    max-width: 240px;
+    margin-inline: auto;
+  }
+  .pf-deposit__text {
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 749px) {
+  .pf-quote__grid {
+    grid-template-columns: 1fr;
+  }
+  .pf-tiers {
+    padding: 22px 18px;
+  }
+  .pf-quote__panel {
+    padding: 26px 20px 30px;
+  }
+  .pf-trade__stat {
+    padding: 14px 18px;
+  }
+}
+
+.pf-product__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.pf-product__actions form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.pf-product__actions .pf-field {
+  margin-bottom: 0;
+}

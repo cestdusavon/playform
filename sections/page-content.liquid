@@ -1,0 +1,18 @@
+{%- if page.content != blank -%}
+  <div class="pf-page pf-wrap">
+    <div class="pf-rte">{{ page.content }}</div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Page content",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Renders the page's own body content. Nothing shows if the page body is empty."
+    }
+  ]
+}
+{% endschema %}

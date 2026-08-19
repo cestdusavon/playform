@@ -14,13 +14,48 @@
         "type": "paragraph",
         "content": "The Playform palette. These drive every brick, badge and button across the theme."
       },
-      { "type": "color", "id": "color_red", "label": "Red", "default": "#E63329" },
-      { "type": "color", "id": "color_yellow", "label": "Yellow", "default": "#F9C218" },
-      { "type": "color", "id": "color_blue", "label": "Blue", "default": "#1156C4" },
-      { "type": "color", "id": "color_green", "label": "Green", "default": "#1E8A45" },
-      { "type": "color", "id": "color_purple", "label": "Purple", "default": "#7B3FB5" },
-      { "type": "color", "id": "color_cream", "label": "Cream background", "default": "#F8F4EA" },
-      { "type": "color", "id": "color_ink", "label": "Text", "default": "#12100E" }
+      {
+        "type": "color",
+        "id": "color_red",
+        "label": "Red",
+        "default": "#E63329"
+      },
+      {
+        "type": "color",
+        "id": "color_yellow",
+        "label": "Yellow",
+        "default": "#F9C218"
+      },
+      {
+        "type": "color",
+        "id": "color_blue",
+        "label": "Blue",
+        "default": "#1156C4"
+      },
+      {
+        "type": "color",
+        "id": "color_green",
+        "label": "Green",
+        "default": "#1E8A45"
+      },
+      {
+        "type": "color",
+        "id": "color_purple",
+        "label": "Purple",
+        "default": "#7B3FB5"
+      },
+      {
+        "type": "color",
+        "id": "color_cream",
+        "label": "Cream background",
+        "default": "#F8F4EA"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Text",
+        "default": "#12100E"
+      }
     ]
   },
   {
@@ -46,9 +81,133 @@
     ]
   },
   {
+    "name": "Rentals",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Defaults for prop rentals. Any product can override these with metafields in the `rental` namespace — see the README."
+      },
+      {
+        "type": "header",
+        "content": "Rates"
+      },
+      {
+        "type": "paragraph",
+        "content": "Rates are derived from the product price, which is treated as the one-day rate unless the product sets rental.day_rate."
+      },
+      {
+        "type": "range",
+        "id": "rental_weekend_percent",
+        "label": "Weekend rate",
+        "min": 100,
+        "max": 400,
+        "step": 10,
+        "unit": "%",
+        "default": 250,
+        "info": "Percent of the day rate. 250% = 2.5 days."
+      },
+      {
+        "type": "range",
+        "id": "rental_week_percent",
+        "label": "Weekly rate",
+        "min": 100,
+        "max": 900,
+        "step": 25,
+        "unit": "%",
+        "default": 400,
+        "info": "Percent of the day rate."
+      },
+      {
+        "type": "range",
+        "id": "rental_month_percent",
+        "label": "Monthly rate",
+        "min": 200,
+        "max": 2000,
+        "step": 50,
+        "unit": "%",
+        "default": 1200,
+        "info": "Percent of the day rate."
+      },
+      {
+        "type": "header",
+        "content": "Deposit"
+      },
+      {
+        "type": "range",
+        "id": "rental_deposit_percent",
+        "label": "Refundable deposit",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 30,
+        "info": "Percent of the item value, held against damage and late return."
+      },
+      {
+        "type": "text",
+        "id": "rental_deposit_note",
+        "label": "Deposit note",
+        "default": "Refunded within 5 business days of return, less any damage."
+      },
+      {
+        "type": "header",
+        "content": "Booking"
+      },
+      {
+        "type": "range",
+        "id": "rental_min_days",
+        "label": "Minimum hire",
+        "min": 1,
+        "max": 14,
+        "step": 1,
+        "unit": "d",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "rental_lead_days",
+        "label": "Lead time",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "d",
+        "default": 14
+      },
+      {
+        "type": "header",
+        "content": "Who sees trade rates"
+      },
+      {
+        "type": "select",
+        "id": "rental_rate_visibility",
+        "label": "Show rates to",
+        "options": [
+          {
+            "value": "everyone",
+            "label": "Everyone"
+          },
+          {
+            "value": "customers",
+            "label": "Logged-in customers"
+          },
+          {
+            "value": "b2b",
+            "label": "B2B company accounts only"
+          }
+        ],
+        "default": "everyone",
+        "info": "Hidden rates are replaced with a prompt to log in or apply for a trade account."
+      }
+    ]
+  },
+  {
     "name": "Brand assets",
     "settings": [
-      { "type": "image_picker", "id": "logo", "label": "Logo" },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
       {
         "type": "range",
         "id": "logo_width",
@@ -59,15 +218,31 @@
         "unit": "px",
         "default": 200
       },
-      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
     ]
   },
   {
     "name": "Social",
     "settings": [
-      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
-      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
-      { "type": "text", "id": "social_etsy", "label": "Etsy shop URL" }
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_etsy",
+        "label": "Etsy shop URL"
+      }
     ]
   }
 ]

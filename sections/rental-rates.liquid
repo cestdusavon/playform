@@ -1,0 +1,264 @@
+{%- liquid
+  assign can_see_rates = true
+  case settings.rental_rate_visibility
+    when 'customers'
+      unless customer
+        assign can_see_rates = false
+      endunless
+    when 'b2b'
+      unless customer.b2b?
+        assign can_see_rates = false
+      endunless
+  endcase
+
+  assign periods = section.blocks | where: 'type', 'period'
+  assign tiers = section.blocks | where: 'type', 'tier'
+-%}
+
+<div class="pf-rates" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap">
+    <div class="pf-section-head pf-section-head--stack">
+      <h2 class="pf-display pf-section-head__title">
+        {%- if section.settings.heading != blank -%}
+          <span class="pf-line">{{ section.settings.heading | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading_rainbow != blank -%}
+          <span class="pf-line">
+            {%- render 'pf-rainbow', text: section.settings.heading_rainbow, start: section.settings.rainbow_start -%}
+          </span>
+        {%- endif -%}
+      </h2>
+
+      {%- if section.settings.text != blank -%}
+        <p class="pf-rates__intro">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if can_see_rates -%}
+      {%- if periods.size > 0 -%}
+        <div class="pf-rates__grid">
+          {%- for block in periods -%}
+            <div
+              class="pf-rate-card pf-rate-card--{{ block.settings.color }}{% if block.settings.featured %} pf-rate-card--featured{% endif %}"
+              {{ block.shopify_attributes }}>
+              {% render 'pf-studs', count: 3 %}
+
+              <div class="pf-rate-card__body">
+                {%- if block.settings.featured and block.settings.flag != blank -%}
+                  <span class="pf-rate-card__flag">{{ block.settings.flag | escape }}</span>
+                {%- endif -%}
+
+                <h3 class="pf-rate-card__period">{{ block.settings.period | escape }}</h3>
+
+                <p class="pf-rate-card__price">
+                  {%- if block.settings.prefix != blank -%}
+                    <span class="pf-rate-card__prefix">{{ block.settings.prefix | escape }}</span>
+                  {%- endif -%}
+                  {{ block.settings.price | escape }}
+                </p>
+
+                {%- if block.settings.note != blank -%}
+                  <p class="pf-rate-card__note">{{ block.settings.note | escape }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.includes != blank -%}
+                  <ul class="pf-rate-card__list">
+                    {%- assign lines = block.settings.includes | newline_to_br | split: '<br />' -%}
+                    {%- for line in lines -%}
+                      {%- assign line_text = line | strip -%}
+                      {%- if line_text != blank -%}
+                        <li>{{ line_text | escape }}</li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if tiers.size > 0 -%}
+        <div class="pf-tiers">
+          {%- if section.settings.tiers_heading != blank -%}
+            <h3 class="pf-tiers__heading">{{ section.settings.tiers_heading | escape }}</h3>
+          {%- endif -%}
+
+          <table class="pf-tiers__table">
+            <thead>
+              <tr>
+                <th scope="col">{{ section.settings.tiers_col_1 | escape }}</th>
+                <th scope="col">{{ section.settings.tiers_col_2 | escape }}</th>
+                <th scope="col">{{ section.settings.tiers_col_3 | escape }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for block in tiers -%}
+                <tr {{ block.shopify_attributes }}>
+                  <th scope="row">{{ block.settings.tier | escape }}</th>
+                  <td><strong>{{ block.settings.discount | escape }}</strong></td>
+                  <td>{{ block.settings.note | escape }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.footnote != blank -%}
+        <p class="pf-rates__footnote">{{ section.settings.footnote | escape }}</p>
+      {%- endif -%}
+    {%- else -%}
+      {% render 'pf-trade-gate' %}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Rental rate card",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Hire It By The" },
+    {
+      "type": "text",
+      "id": "heading_rainbow",
+      "label": "Rainbow line",
+      "default": "Day. Weekend. Week."
+    },
+    {
+      "type": "range",
+      "id": "rainbow_start",
+      "label": "Start the rainbow on colour",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Intro",
+      "default": "Standard hire rates. Custom builds and multi-week runs are quoted individually."
+    },
+    { "type": "header", "content": "Volume table" },
+    { "type": "text", "id": "tiers_heading", "label": "Heading", "default": "Trade & volume discounts" },
+    { "type": "text", "id": "tiers_col_1", "label": "Column 1", "default": "Order" },
+    { "type": "text", "id": "tiers_col_2", "label": "Column 2", "default": "Discount" },
+    { "type": "text", "id": "tiers_col_3", "label": "Column 3", "default": "Applies to" },
+    {
+      "type": "text",
+      "id": "footnote",
+      "label": "Footnote",
+      "default": "Rates exclude delivery, install and strike. Deposit is refundable — see below."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "period",
+      "name": "Rate",
+      "settings": [
+        {
+          "type": "select",
+          "id": "color",
+          "label": "Colour",
+          "options": [
+            { "value": "yellow", "label": "Yellow" },
+            { "value": "red", "label": "Red" },
+            { "value": "blue", "label": "Blue" },
+            { "value": "green", "label": "Green" },
+            { "value": "purple", "label": "Purple" }
+          ],
+          "default": "yellow"
+        },
+        { "type": "text", "id": "period", "label": "Hire period", "default": "1 day" },
+        { "type": "text", "id": "prefix", "label": "Price prefix", "default": "from" },
+        { "type": "text", "id": "price", "label": "Price", "default": "$95" },
+        { "type": "text", "id": "note", "label": "Note", "default": "Same-day collection" },
+        {
+          "type": "textarea",
+          "id": "includes",
+          "label": "What's included",
+          "info": "One item per line."
+        },
+        { "type": "checkbox", "id": "featured", "label": "Highlight this rate", "default": false },
+        { "type": "text", "id": "flag", "label": "Highlight label", "default": "Most booked" }
+      ]
+    },
+    {
+      "type": "tier",
+      "name": "Volume tier",
+      "settings": [
+        { "type": "text", "id": "tier", "label": "Order size", "default": "5+ pieces" },
+        { "type": "text", "id": "discount", "label": "Discount", "default": "10% off" },
+        { "type": "text", "id": "note", "label": "Applies to", "default": "Hire rate, one booking" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rental rate card",
+      "blocks": [
+        {
+          "type": "period",
+          "settings": {
+            "color": "yellow",
+            "period": "1 day",
+            "prefix": "from",
+            "price": "$95",
+            "note": "Collection from our studio",
+            "includes": "Cleaned and checked before pickup\nSpare fixings included\nCollection 9am, return 5pm"
+          }
+        },
+        {
+          "type": "period",
+          "settings": {
+            "color": "red",
+            "period": "Weekend",
+            "prefix": "from",
+            "price": "$238",
+            "note": "Friday to Monday",
+            "includes": "Three days for the price of 2.5\nCovers Saturday events\nMonday morning return",
+            "featured": true,
+            "flag": "Most booked"
+          }
+        },
+        {
+          "type": "period",
+          "settings": {
+            "color": "blue",
+            "period": "1 week",
+            "prefix": "from",
+            "price": "$380",
+            "note": "Seven days",
+            "includes": "Best rate for multi-day runs\nOn-site swap if a piece fails\nFree re-clean between days"
+          }
+        },
+        {
+          "type": "period",
+          "settings": {
+            "color": "purple",
+            "period": "1 month",
+            "prefix": "from",
+            "price": "$1,140",
+            "note": "Long-run installs",
+            "includes": "Retail and showroom installs\nMonthly condition check\nRenewal at the same rate"
+          }
+        },
+        { "type": "tier", "settings": { "tier": "5+ pieces", "discount": "10% off", "note": "Hire rate, one booking" } },
+        { "type": "tier", "settings": { "tier": "10+ pieces", "discount": "15% off", "note": "Hire rate, one booking" } },
+        {
+          "type": "tier",
+          "settings": { "tier": "Booked 4+ times a year", "discount": "20% off", "note": "All hires, trade account" }
+        },
+        {
+          "type": "tier",
+          "settings": { "tier": "Trade account", "discount": "Net 30", "note": "Invoiced, deposit waived" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,179 @@
+{%- comment -%}
+  Trade / wholesale account application. Posts through Shopify's built-in
+  contact form so submissions arrive by email — no app required. Approving
+  an applicant means giving them a B2B company account (or a customer
+  account, per the "Who sees trade rates" theme setting) in the admin.
+{%- endcomment -%}
+
+<div class="pf-quote" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap">
+    <div class="pf-quote__panel pf-quote--{{ section.settings.color }}">
+      <div class="pf-quote__intro">
+        <h2 class="pf-display pf-quote__title">
+          {%- if section.settings.heading != blank -%}
+            <span class="pf-line">{{ section.settings.heading | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.heading_accent != blank -%}
+            <span class="pf-line" style="color: {{ section.settings.accent_color }};">
+              {{- section.settings.heading_accent | escape -}}
+            </span>
+          {%- endif -%}
+        </h2>
+
+        {%- if section.settings.text != blank -%}
+          <div class="pf-quote__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- form 'contact', id: 'TradeApplication', class: 'pf-quote__form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="pf-quote__success">{{ section.settings.success_text | escape }}</p>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div class="pf-quote__errors">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[enquiry_type]" value="Trade application">
+
+          <div class="pf-quote__grid">
+            <div class="pf-field">
+              <label for="ApplyCompany">Company / organisation</label>
+              <input id="ApplyCompany" type="text" name="contact[company]" autocomplete="organization" required>
+            </div>
+
+            <div class="pf-field">
+              <label for="ApplyType">Business type</label>
+              <select id="ApplyType" name="contact[business_type]">
+                <option value="Event planner">Event planner</option>
+                <option value="Venue">Venue</option>
+                <option value="Photographer / videographer">Photographer / videographer</option>
+                <option value="Retailer / wholesaler">Retailer / wholesaler</option>
+                <option value="Brand / agency">Brand / agency</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="pf-field">
+              <label for="ApplyName">Contact name</label>
+              <input
+                id="ApplyName"
+                type="text"
+                name="contact[name]"
+                value="{{ form.name | default: customer.name }}"
+                autocomplete="name"
+                required>
+            </div>
+
+            <div class="pf-field">
+              <label for="ApplyEmail">Email</label>
+              <input
+                id="ApplyEmail"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email | default: customer.email }}"
+                autocomplete="email"
+                required>
+            </div>
+
+            <div class="pf-field">
+              <label for="ApplyPhone">Phone</label>
+              <input id="ApplyPhone" type="tel" name="contact[phone]" autocomplete="tel">
+            </div>
+
+            <div class="pf-field">
+              <label for="ApplyWebsite">Website or Instagram</label>
+              <input id="ApplyWebsite" type="text" name="contact[website]" autocomplete="url">
+            </div>
+
+            <div class="pf-field">
+              <label for="ApplyVolume">Expected hires per year</label>
+              <select id="ApplyVolume" name="contact[expected_volume]">
+                <option value="1–3">1–3</option>
+                <option value="4–10">4–10</option>
+                <option value="10+">10+</option>
+                <option value="Not sure yet">Not sure yet</option>
+              </select>
+            </div>
+
+            <div class="pf-field">
+              <label for="ApplyResale">Resale / tax ID</label>
+              <input id="ApplyResale" type="text" name="contact[resale_id]">
+            </div>
+
+            <div class="pf-field pf-field--wide">
+              <label for="ApplyBody">Tell us about your business</label>
+              <textarea id="ApplyBody" name="contact[body]" rows="4" required>{{ form.body }}</textarea>
+            </div>
+          </div>
+
+          <button class="pf-btn pf-btn--{{ section.settings.button_color }}" type="submit">
+            {{ section.settings.button_label }}
+          </button>
+
+          {%- if section.settings.disclaimer != blank -%}
+            <p class="pf-quote__disclaimer">{{ section.settings.disclaimer | escape }}</p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trade application form",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "Panel colour",
+      "options": [
+        { "value": "purple", "label": "Purple" },
+        { "value": "blue", "label": "Blue" },
+        { "value": "red", "label": "Red" },
+        { "value": "green", "label": "Green" },
+        { "value": "yellow", "label": "Yellow" }
+      ],
+      "default": "purple"
+    },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#F9C218" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Apply for a Trade Account." },
+    { "type": "text", "id": "heading_accent", "label": "Accent line", "default": "We Review Every Application by Hand." },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Trade accounts get standing rate cards, volume discounts and Net 30 invoicing once you've completed a few hires. Tell us about your business and we'll set you up.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Submit application" },
+    {
+      "type": "select",
+      "id": "button_color",
+      "label": "Button colour",
+      "options": [
+        { "value": "yellow", "label": "Yellow" },
+        { "value": "red", "label": "Red" },
+        { "value": "blue", "label": "Blue" },
+        { "value": "green", "label": "Green" },
+        { "value": "white", "label": "White" }
+      ],
+      "default": "yellow"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Success message",
+      "default": "Thanks — we review applications within 2 business days and will email you directly."
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "Approval isn't automatic. We may ask a follow-up question before your account is upgraded."
+    }
+  ],
+  "presets": [{ "name": "Trade application form" }]
+}
+{% endschema %}

@@ -1,13 +1,35 @@
 {
   "sections": {
     "hero": {
-      "type": "rental-hero",
+      "type": "split-hero",
       "blocks": {
-        "s1": { "type": "stat", "settings": { "value": "500+", "label": "Events supplied" } },
-        "s2": { "type": "stat", "settings": { "value": "48h", "label": "Quote turnaround" } },
-        "s3": { "type": "stat", "settings": { "value": "30%", "label": "Refundable deposit" } }
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "500+",
+            "label": "Events supplied"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "value": "48h",
+            "label": "Quote turnaround"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "value": "30%",
+            "label": "Refundable deposit"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
       "settings": {
         "background": "#1156C4",
         "text_color": "#FFFFFF",
@@ -70,18 +92,49 @@
             "includes": "Retail and showroom installs\nMonthly condition check\nRenewal at the same rate"
           }
         },
-        "t1": { "type": "tier", "settings": { "tier": "5+ pieces", "discount": "10% off", "note": "Hire rate, one booking" } },
-        "t2": { "type": "tier", "settings": { "tier": "10+ pieces", "discount": "15% off", "note": "Hire rate, one booking" } },
+        "t1": {
+          "type": "tier",
+          "settings": {
+            "tier": "5+ pieces",
+            "discount": "10% off",
+            "note": "Hire rate, one booking"
+          }
+        },
+        "t2": {
+          "type": "tier",
+          "settings": {
+            "tier": "10+ pieces",
+            "discount": "15% off",
+            "note": "Hire rate, one booking"
+          }
+        },
         "t3": {
           "type": "tier",
-          "settings": { "tier": "Booked 4+ times a year", "discount": "20% off", "note": "All hires, trade account" }
+          "settings": {
+            "tier": "Booked 4+ times a year",
+            "discount": "20% off",
+            "note": "All hires, trade account"
+          }
         },
         "t4": {
           "type": "tier",
-          "settings": { "tier": "Trade account", "discount": "Net 30", "note": "Invoiced, deposit waived" }
+          "settings": {
+            "tier": "Trade account",
+            "discount": "Net 30",
+            "note": "Invoiced, deposit waived"
+          }
         }
       },
-      "block_order": ["day", "weekend", "week", "month", "t1", "t2", "t3", "t4"],
+      "block_order": [
+        "day",
+        "weekend",
+        "week",
+        "month",
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
       "settings": {
         "background": "#F8F4EA",
         "heading": "Hire It By The",
@@ -147,7 +200,14 @@
           }
         }
       },
-      "block_order": ["d1", "d2", "d3", "d4", "d5", "d6"],
+      "block_order": [
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "d6"
+      ],
       "settings": {
         "background": "#F8F4EA",
         "color": "green",
@@ -181,7 +241,17 @@
         "disclaimer": "Quotes hold for 14 days. Dates are only held once the deposit clears."
       }
     },
-    "content": { "type": "page-content", "settings": {} }
+    "content": {
+      "type": "page-content",
+      "settings": {}
+    }
   },
-  "order": ["hero", "rates", "deposit", "catalog", "content", "quote"]
+  "order": [
+    "hero",
+    "rates",
+    "deposit",
+    "catalog",
+    "content",
+    "quote"
+  ]
 }

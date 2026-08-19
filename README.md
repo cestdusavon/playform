@@ -134,8 +134,7 @@ blue **Rent me** badge anywhere the standard product card is used.
   B2B company account (`customer.b2b?`).
 
 When rates are withheld, `snippets/pf-trade-gate.liquid` renders in their place
-with links to log in and to a trade application page. The gate expects a page
-at `/pages/trade-application` — create one, or edit the snippet's link.
+with links to log in and to the trade application page (see below).
 
 ### The quote form
 
@@ -147,6 +146,52 @@ event date, hire period, venue, and whether delivery is needed.
 Note that this is a lead-capture flow, not a booking engine — it does not
 reserve dates or hold inventory. Availability is confirmed by whoever answers
 the quote.
+
+## Other pages
+
+Four more page templates round out the pages the header, footer and rentals
+page actually link to. Create a page in the admin for each, set the matching
+handle so the built-in links resolve, and assign the listed template.
+
+| Page | Handle | Template | Links to it from |
+| --- | --- | --- | --- |
+| Trade application | `trade-application` | `page.trade-application` | The trade gate (`pf-trade-gate.liquid`) and the rentals page |
+| Custom orders | `custom-orders` | `page.custom-orders` | Header nav, the home page's "Start a custom project" banner |
+| About | `about` | `page.about` | Header nav |
+| Rental FAQ | `rental-faq` | `page.rental-faq` | Footer "Help" menu |
+
+**Trade application** (`templates/page.trade-application.json`) runs a hero,
+a benefits grid, and `sections/account-application-form.liquid` — another
+`contact`-form submission, tagged `Trade application`, asking for company,
+business type, expected volume and a resale/tax ID. Approving someone means
+giving them a customer account or a Shopify B2B company account in the admin,
+matching whatever **Who sees trade rates** is set to.
+
+**Custom orders** (`templates/page.custom-orders.json`) reuses the "How it's
+made" steps section, then `sections/custom-order-form.liquid` — a `contact`
+submission tagged `Custom order`. It asks for a link to reference images
+(Pinterest board, Instagram post, Drive folder) rather than a file upload,
+since Shopify's built-in contact form can't accept attachments.
+
+**About** (`templates/page.about.json`) is the only template built from
+sections with no other home yet: `sections/story-split.liquid` (image + rich
+text, `image_position: left` or `right`) and `sections/feature-grid.liquid`
+(a heading over a row of colour-dot points — also used for the trade
+application's benefits list). Both are generic and safe to drop into any
+other page.
+
+**Rental FAQ** (`templates/page.rental-faq.json`) is
+`sections/faq-accordion.liquid`, a `<details>/<summary>` accordion with no
+JavaScript — question and richtext-answer blocks, plus an optional
+closing CTA.
+
+### Shipping and returns
+
+These don't need a page or a template. `templates/policy.liquid` styles
+Shopify's automatic policy pages — Shipping, Refund, Privacy, Terms of
+Service — which are generated from whatever you write under **Settings →
+Policies**. `sections/footer.liquid`'s **Link store policies** setting adds
+whichever ones you've filled in to the footer automatically.
 
 ## Supporting templates
 

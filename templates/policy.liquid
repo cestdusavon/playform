@@ -1,0 +1,10 @@
+{%- comment -%}
+  Shopify's automatic policy pages (Shipping, Refund, Privacy, Terms of
+  Service — Settings → Policies) render through this template if present.
+  For a policy page specifically, content_for_layout holds the policy body
+  itself rather than a section stack, matching Shopify's own reference theme.
+{%- endcomment -%}
+<div class="pf-page pf-wrap">
+  <h1 class="pf-display pf-page__title">{{ page_title | escape }}</h1>
+  <div class="pf-rte">{{ content_for_layout }}</div>
+</div>

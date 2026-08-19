@@ -1824,3 +1824,185 @@ a {
 .pf-product__actions .pf-field {
   margin-bottom: 0;
 }
+
+/* ==========================================================================
+   Feature grid, story split, FAQ accordion — Trade / Custom Orders / About
+   ========================================================================== */
+
+.pf-features {
+  padding-block: 46px;
+}
+
+.pf-terms--standalone {
+  margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Story split
+   -------------------------------------------------------------------------- */
+
+.pf-story {
+  padding-block: 46px;
+}
+
+.pf-story__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 44px;
+  align-items: center;
+}
+
+.pf-story__inner--reverse {
+  direction: rtl;
+}
+
+.pf-story__inner--reverse > * {
+  direction: ltr;
+}
+
+.pf-story__media {
+  border-radius: var(--pf-radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.pf-story__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pf-story__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  fill: rgba(18, 16, 14, 0.1);
+  background: rgba(18, 16, 14, 0.04);
+}
+
+.pf-story__eyebrow {
+  margin: 0 0 10px;
+  color: var(--pf-red);
+}
+
+.pf-story__title {
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  margin-bottom: 16px;
+}
+
+.pf-story__copy .pf-rte {
+  color: var(--pf-muted);
+  margin-bottom: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   FAQ accordion
+   -------------------------------------------------------------------------- */
+
+.pf-faq {
+  padding-block: 46px;
+}
+
+.pf-faq__list {
+  display: grid;
+  gap: 12px;
+  max-width: 78ch;
+}
+
+.pf-faq__item {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--pf-shadow);
+  padding: 4px 22px;
+}
+
+.pf-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  font-family: var(--pf-font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.pf-faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.pf-faq__icon {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--pf-cream);
+  position: relative;
+}
+
+.pf-faq__icon::before,
+.pf-faq__icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--pf-ink);
+  transform: translate(-50%, -50%);
+}
+
+.pf-faq__icon::before {
+  width: 12px;
+  height: 2px;
+}
+
+.pf-faq__icon::after {
+  width: 2px;
+  height: 12px;
+  transition: opacity 0.15s ease;
+}
+
+.pf-faq__item[open] .pf-faq__icon::after {
+  opacity: 0;
+}
+
+.pf-faq__answer {
+  padding: 0 0 20px;
+  color: var(--pf-muted);
+  max-width: 68ch;
+}
+
+.pf-faq__answer p {
+  margin: 0 0 10px;
+}
+
+.pf-faq__answer p:last-child {
+  margin-bottom: 0;
+}
+
+.pf-faq__cta {
+  margin: 28px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 989px) {
+  .pf-story__inner,
+  .pf-story__inner--reverse {
+    grid-template-columns: 1fr;
+    direction: ltr;
+  }
+}
+
+@media (max-width: 749px) {
+  .pf-faq__item {
+    padding: 2px 16px;
+  }
+}

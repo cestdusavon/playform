@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "hero": {
+      "type": "split-hero",
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "value": "48h", "label": "Review turnaround" } },
+        "s2": { "type": "stat", "settings": { "value": "Net 30", "label": "Invoicing once approved" } },
+        "s3": { "type": "stat", "settings": { "value": "20%", "label": "Top-tier volume discount" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {
+        "background": "#7B3FB5",
+        "text_color": "#FFFFFF",
+        "accent_color": "#F9C218",
+        "eyebrow": "Trade & B2B",
+        "heading": "Get a Trade",
+        "heading_accent": "Account.",
+        "text": "<p>Event planners, venues, photographers and retailers can apply for a trade account: standing rate cards, volume discounts, and Net 30 invoicing once you've completed a few hires.</p>",
+        "button_label": "Apply below",
+        "button_link": "#TradeApplication",
+        "button_color": "yellow"
+      }
+    },
+    "benefits": {
+      "type": "feature-grid",
+      "blocks": {
+        "b1": {
+          "type": "feature",
+          "settings": {
+            "color": "yellow",
+            "title": "Volume discounts",
+            "text": "10% off at 5+ pieces, 15% at 10+, and 20% off everything once you've booked with us four times in a year."
+          }
+        },
+        "b2": {
+          "type": "feature",
+          "settings": {
+            "color": "blue",
+            "title": "Net 30 invoicing",
+            "text": "Approved accounts are invoiced after the event instead of paying up front, with the deposit waived after three completed hires."
+          }
+        },
+        "b3": {
+          "type": "feature",
+          "settings": {
+            "color": "green",
+            "title": "A standing rate card",
+            "text": "No re-quoting for repeat bookings. Your rates are set once and hold for every order on the account."
+          }
+        },
+        "b4": {
+          "type": "feature",
+          "settings": {
+            "color": "red",
+            "title": "Priority on tight timelines",
+            "text": "Trade accounts get first call on availability when a booking comes in under our usual lead time."
+          }
+        }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"],
+      "settings": {
+        "background": "#F8F4EA",
+        "heading": "What a trade account gets you",
+        "text": ""
+      }
+    },
+    "form": {
+      "type": "account-application-form",
+      "settings": {
+        "background": "#F8F4EA",
+        "color": "purple",
+        "accent_color": "#F9C218",
+        "heading": "Apply for a Trade Account.",
+        "heading_accent": "We Review Every Application by Hand.",
+        "text": "<p>Trade accounts get standing rate cards, volume discounts and Net 30 invoicing once you've completed a few hires. Tell us about your business and we'll set you up.</p>",
+        "button_label": "Submit application",
+        "button_color": "yellow",
+        "success_text": "Thanks — we review applications within 2 business days and will email you directly.",
+        "disclaimer": "Approval isn't automatic. We may ask a follow-up question before your account is upgraded."
+      }
+    },
+    "content": { "type": "page-content", "settings": {} }
+  },
+  "order": ["hero", "benefits", "form", "content"]
+}

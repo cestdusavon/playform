@@ -1,0 +1,77 @@
+{
+  "sections": {
+    "hero": {
+      "type": "split-hero",
+      "settings": {
+        "background": "#1156C4",
+        "text_color": "#FFFFFF",
+        "accent_color": "#F9C218",
+        "eyebrow": "Rentals",
+        "heading": "Rental",
+        "heading_accent": "Frequently Asked Questions.",
+        "text": "<p>Everything about booking, deposits, delivery and cancellations. Can't find it here? Send us a message.</p>",
+        "button_label": "See the rate card",
+        "button_link": "/pages/rentals"
+      }
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "How far ahead do I need to book?",
+            "answer": "<p>We ask for at least the lead time shown on the rate card — usually 14 days. Shorter notice is sometimes possible, ask us.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "What does the deposit cover?",
+            "answer": "<p>Damage beyond normal wear, missing fixings, and late returns. It's refunded within 5 business days of the piece coming back in good shape.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Do you deliver?",
+            "answer": "<p>Yes — delivery, install and strike are quoted separately by distance and piece size. Ask for it in your quote request.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Can I cancel a booking?",
+            "answer": "<p>Free up to 14 days before the hire date. Inside 14 days the deposit is retained against the booked slot.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "What if something breaks on-site?",
+            "answer": "<p>Call us — for multi-day and weekly hires we can usually swap a failed piece. It's covered by the same terms as the deposit.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer trade rates?",
+            "answer": "<p>Yes. <a href=\"/pages/trade-application\">Apply for a trade account</a> for volume discounts and Net 30 invoicing once you've completed a few hires.</p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"],
+      "settings": {
+        "background": "#F8F4EA",
+        "heading": "Questions,",
+        "heading_rainbow": "Answered.",
+        "rainbow_start": 2,
+        "cta_text": "Didn't find it here?",
+        "cta_label": "Request a quote",
+        "cta_link": "/pages/rentals#RentalQuote"
+      }
+    },
+    "content": { "type": "page-content", "settings": {} }
+  },
+  "order": ["hero", "faq", "content"]
+}

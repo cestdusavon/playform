@@ -1,0 +1,94 @@
+{%- comment -%}
+  Zero-JS accordion built on <details>/<summary>, used for the Rental FAQ
+  page and reusable anywhere else a Q&A list is needed.
+{%- endcomment -%}
+
+<div class="pf-faq" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap">
+    <div class="pf-section-head pf-section-head--stack">
+      <h2 class="pf-display pf-section-head__title">
+        {%- if section.settings.heading != blank -%}
+          <span class="pf-line">{{ section.settings.heading | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading_rainbow != blank -%}
+          <span class="pf-line">
+            {%- render 'pf-rainbow', text: section.settings.heading_rainbow, start: section.settings.rainbow_start -%}
+          </span>
+        {%- endif -%}
+      </h2>
+
+      {%- if section.settings.text != blank -%}
+        <p class="pf-rates__intro">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="pf-faq__list">
+      {%- for block in section.blocks -%}
+        <details class="pf-faq__item" {{ block.shopify_attributes }}>
+          <summary class="pf-faq__question">
+            {{ block.settings.question | escape }}
+            <span class="pf-faq__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="pf-faq__answer">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <p class="pf-faq__cta">
+        {{ section.settings.cta_text | escape }}
+        <a class="pf-btn pf-btn--outline" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+      </p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ accordion",
+  "tag": "section",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions, Answered." },
+    { "type": "text", "id": "heading_rainbow", "label": "Rainbow line" },
+    {
+      "type": "range",
+      "id": "rainbow_start",
+      "label": "Start the rainbow on colour",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    { "type": "text", "id": "text", "label": "Intro" },
+    { "type": "header", "content": "Still have questions?" },
+    { "type": "text", "id": "cta_text", "label": "Text", "default": "Didn't find it here?" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Get in touch" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Question?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ accordion",
+      "blocks": [
+        { "type": "question", "settings": { "question": "How far ahead do I need to book?", "answer": "<p>We ask for at least the lead time shown on the rate card — usually 14 days. Shorter notice is sometimes possible, ask us.</p>" } },
+        { "type": "question", "settings": { "question": "What does the deposit cover?", "answer": "<p>Damage beyond normal wear, missing fixings, and late returns. It's refunded within 5 business days of the piece coming back in good shape.</p>" } },
+        { "type": "question", "settings": { "question": "Do you deliver?", "answer": "<p>Yes — delivery, install and strike are quoted separately by distance and piece size. Ask for it in your quote request.</p>" } },
+        { "type": "question", "settings": { "question": "Can I cancel a booking?", "answer": "<p>Free up to 14 days before the hire date. Inside 14 days the deposit is retained against the booked slot.</p>" } },
+        { "type": "question", "settings": { "question": "What if something breaks on-site?", "answer": "<p>Call us — for multi-day and weekly hires we can usually swap a failed piece. It's covered by the same terms as the deposit.</p>" } },
+        { "type": "question", "settings": { "question": "Do you offer trade rates?", "answer": "<p>Yes. Apply for a trade account for volume discounts and Net 30 invoicing once you've completed a few hires.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

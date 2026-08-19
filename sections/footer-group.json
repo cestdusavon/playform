@@ -20,7 +20,7 @@
         }
       },
       "block_order": ["mark", "shop", "help", "playform", "etsy"],
-      "settings": { "legal_text": "All rights reserved.", "show_policies": false }
+      "settings": { "legal_text": "All rights reserved.", "show_policies": true }
     }
   },
   "order": ["footer"]

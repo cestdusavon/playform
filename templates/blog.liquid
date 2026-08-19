@@ -1,0 +1,33 @@
+<div class="pf-page pf-wrap">
+  <h1 class="pf-display pf-page__title">{{ blog.title | escape }}</h1>
+
+  {%- paginate blog.articles by 12 -%}
+    <div class="pf-products__grid">
+      {%- for article in blog.articles -%}
+        {%- assign article_alt = article.image.alt | default: article.title | escape -%}
+        <a class="pf-card" href="{{ article.url }}">
+          <div class="pf-card__media">
+            {%- if article.image != blank -%}
+              {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '220, 440, 800', sizes: '(min-width: 750px) 25vw, 45vw', alt: article_alt }}
+            {%- else -%}
+              {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <h2 class="pf-card__title">{{ article.title | escape }}</h2>
+          <p class="pf-card__price">{{ article.published_at | date: format: 'date' }}</p>
+        </a>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <ul class="pf-pagination">
+        {%- if paginate.previous -%}
+          <li><a class="pf-btn pf-btn--outline" href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a></li>
+        {%- endif -%}
+        {%- if paginate.next -%}
+          <li><a class="pf-btn pf-btn--outline" href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a></li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>

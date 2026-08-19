@@ -1,0 +1,27 @@
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "mark": { "type": "mark", "settings": { "color": "red" } },
+        "shop": { "type": "menu", "settings": { "color": "yellow", "title": "Shop", "menu": "footer" } },
+        "help": { "type": "menu", "settings": { "color": "green", "title": "Help", "menu": "footer" } },
+        "playform": { "type": "menu", "settings": { "color": "blue", "title": "Playform", "menu": "footer" } },
+        "etsy": {
+          "type": "promo",
+          "settings": {
+            "color": "purple",
+            "title": "Shop our Etsy",
+            "text": "Find even more custom pieces on our Etsy shop!",
+            "button_label": "Visit Etsy shop"
+          }
+        }
+      },
+      "block_order": ["mark", "shop", "help", "playform", "etsy"],
+      "settings": { "legal_text": "All rights reserved.", "show_policies": false }
+    }
+  },
+  "order": ["footer"]
+}

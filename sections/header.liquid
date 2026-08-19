@@ -1,0 +1,114 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign logo = section.settings.logo | default: settings.logo
+  assign logo_width = section.settings.logo_width | default: settings.logo_width
+  assign logo_sizes = logo_width | append: 'px'
+  assign logo_style = 'width: ' | append: logo_width | append: 'px;'
+-%}
+
+<header class="pf-header" data-pf-header data-open="false" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap pf-header__inner">
+    <button
+      class="pf-icon-btn pf-header__toggle"
+      type="button"
+      data-pf-nav-toggle
+      aria-expanded="false"
+      aria-controls="PfMobileNav">
+      {% render 'pf-icon', icon: 'menu' %}
+      <span class="pf-visually-hidden">{{ 'accessibility.menu' | t }}</span>
+    </button>
+
+    <a class="pf-header__logo" href="{{ routes.root_url }}">
+      {%- if logo != blank -%}
+        {%- assign logo_alt = logo.alt | default: shop.name | escape -%}
+        {{
+          logo
+          | image_url: width: 600
+          | image_tag:
+            widths: '160, 200, 300, 400, 600',
+            sizes: logo_sizes,
+            alt: logo_alt,
+            style: logo_style
+        }}
+      {%- else -%}
+        {{ shop.name }}
+      {%- endif -%}
+    </a>
+
+    {%- if menu != blank and linklists[menu].links.size > 0 -%}
+      <nav aria-label="{{ 'accessibility.primary_nav' | t }}">
+        <ul class="pf-header__nav">
+          {%- for link in linklists[menu].links -%}
+            <li>
+              <a class="pf-header__link" href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+                {{ link.title }}
+                {%- if link.links.size > 0 -%}
+                  {% render 'pf-icon', icon: 'chevron' %}
+                {%- endif -%}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    <div class="pf-header__actions">
+      {%- if section.settings.show_search -%}
+        <a class="pf-icon-btn" href="{{ routes.search_url }}">
+          {% render 'pf-icon', icon: 'search' %}
+          <span class="pf-visually-hidden">{{ 'general.search.title' | t }}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if shop.customer_accounts_enabled and section.settings.show_account -%}
+        <a class="pf-icon-btn" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+          {% render 'pf-icon', icon: 'account' %}
+          <span class="pf-visually-hidden">{{ 'customer.account.title' | t }}</span>
+        </a>
+      {%- endif -%}
+
+      <a class="pf-icon-btn" href="{{ routes.cart_url }}">
+        {% render 'pf-icon', icon: 'cart' %}
+        <span class="pf-visually-hidden">{{ 'general.cart.title' | t }}</span>
+        {%- if cart.item_count > 0 -%}
+          <span class="pf-cart-count">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+
+  {%- if menu != blank and linklists[menu].links.size > 0 -%}
+    <nav id="PfMobileNav" aria-label="{{ 'accessibility.primary_nav' | t }}">
+      <ul class="pf-header__mobile pf-wrap">
+        {%- for link in linklists[menu].links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Falls back to the logo in theme settings." },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show account", "default": true }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

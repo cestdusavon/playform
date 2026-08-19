@@ -1,0 +1,8 @@
+{%- comment -%}
+  Renders the row of studs that sits on top of a brick.
+  Usage: {% render 'pf-studs', count: 4 %}
+{%- endcomment -%}
+{%- assign stud_count = count | default: 4 -%}
+<div class="pf-studs" aria-hidden="true">
+  {%- for i in (1..stud_count) -%}<span></span>{%- endfor -%}
+</div>

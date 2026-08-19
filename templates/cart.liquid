@@ -1,0 +1,51 @@
+<div class="pf-page pf-wrap">
+  <h1 class="pf-display pf-page__title">{{ 'cart.general.title' | t }}</h1>
+
+  {%- if cart.item_count == 0 -%}
+    <p class="pf-page__intro">{{ 'cart.general.empty' | t }}</p>
+    <a class="pf-btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+  {%- else -%}
+    {%- form 'cart', cart -%}
+      <table class="pf-cart__table">
+        <thead>
+          <tr>
+            <th scope="col" colspan="2">{{ 'cart.general.product' | t }}</th>
+            <th scope="col">{{ 'cart.general.quantity' | t }}</th>
+            <th scope="col">{{ 'cart.general.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for item in cart.items -%}
+            <tr>
+              <td>
+                {%- if item.image != blank -%}
+                  {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '72, 144, 200', sizes: '72px', alt: item.title }}
+                {%- endif -%}
+              </td>
+              <td>
+                <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                {%- unless item.variant.title contains 'Default' -%}
+                  <br><small>{{ item.variant.title }}</small>
+                {%- endunless -%}
+              </td>
+              <td>
+                <label class="pf-visually-hidden" for="Qty-{{ forloop.index }}">{{ 'cart.general.quantity' | t }}</label>
+                <input id="Qty-{{ forloop.index }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+              </td>
+              <td>{{ item.final_line_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+
+      <div class="pf-cart__foot">
+        <p>
+          <strong>{{ 'cart.general.subtotal' | t }}:</strong> {{ cart.total_price | money }}<br>
+          <small>{{ 'cart.general.taxes_note' | t }}</small>
+        </p>
+        <button class="pf-btn pf-btn--outline" type="submit" name="update">{{ 'cart.general.quantity' | t }}</button>
+        <button class="pf-btn" type="submit" name="checkout">{{ 'cart.general.checkout' | t }}</button>
+      </div>
+    {%- endform -%}
+  {%- endif -%}
+</div>

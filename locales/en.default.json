@@ -1,0 +1,80 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search for toys, props and signs",
+      "results_with_count": {
+        "one": "{{ count }} result",
+        "other": "{{ count }} results"
+      },
+      "no_results": "No results for “{{ terms }}”. Try another spelling or browse everything."
+    },
+    "cart": {
+      "title": "Cart"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "404": {
+      "title": "This page went missing a brick.",
+      "subtext": "The page you were after is not here. Let's get you back to the good stuff.",
+      "link": "Back to the shop"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "menu": "Menu",
+    "primary_nav": "Primary"
+  },
+  "onboarding": {
+    "product_title": "Example product"
+  },
+  "products": {
+    "card": {
+      "from_price": "from {{ price }}",
+      "rental_from": "Rental from {{ price }}",
+      "sold_out": "Sold out"
+    },
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "quantity": "Quantity",
+      "description": "Details"
+    }
+  },
+  "collections": {
+    "general": {
+      "empty": "Nothing here yet — check back soon."
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your cart",
+      "empty": "Your cart is empty.",
+      "continue_shopping": "Keep shopping",
+      "subtotal": "Subtotal",
+      "checkout": "Check out",
+      "remove": "Remove",
+      "product": "Product",
+      "quantity": "Quantity",
+      "total": "Total",
+      "taxes_note": "Taxes and shipping calculated at checkout."
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Account"
+    }
+  },
+  "blogs": {
+    "article": {
+      "back_to_blog": "Back to {{ title }}",
+      "read_more": "Read more"
+    }
+  }
+}

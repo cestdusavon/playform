@@ -1,0 +1,146 @@
+<div class="pf-bricks" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap">
+    <div class="pf-bricks__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign brick_link = block.settings.link
+          if brick_link == blank and block.settings.collection != blank
+            assign brick_link = block.settings.collection.url
+          endif
+          if brick_link == blank
+            assign brick_link = routes.all_products_collection_url
+          endif
+
+          assign brick_title = block.settings.title
+          if brick_title == blank and block.settings.collection != blank
+            assign brick_title = block.settings.collection.title
+          endif
+        -%}
+
+        <div class="pf-brick pf-brick--{{ block.settings.color }}" {{ block.shopify_attributes }}>
+          <div class="pf-brick__studs">
+            {% render 'pf-studs', count: section.settings.stud_count %}
+          </div>
+
+          <div class="pf-brick__body">
+            {%- if block.settings.image != blank -%}
+              <div class="pf-brick__media">
+                {{
+                  block.settings.image
+                  | image_url: width: 300
+                  | image_tag: loading: 'lazy', widths: '92, 184, 276', sizes: '92px', alt: block.settings.image.alt
+                }}
+              </div>
+            {%- elsif block.settings.emoji != blank -%}
+              <div class="pf-brick__media pf-brick__glyph" aria-hidden="true">{{ block.settings.emoji }}</div>
+            {%- endif -%}
+
+            <div class="pf-brick__copy">
+              {%- if brick_title != blank -%}
+                <h2 class="pf-brick__title">{{ brick_title | escape }}</h2>
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <p class="pf-brick__text">{{ block.settings.text | escape }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.button_label != blank -%}
+                <a class="pf-btn pf-btn--white" href="{{ brick_link }}">{{ block.settings.button_label }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Category bricks",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    {
+      "type": "range",
+      "id": "stud_count",
+      "label": "Studs per brick",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brick",
+      "name": "Brick",
+      "settings": [
+        {
+          "type": "select",
+          "id": "color",
+          "label": "Colour",
+          "options": [
+            { "value": "yellow", "label": "Yellow" },
+            { "value": "red", "label": "Red" },
+            { "value": "blue", "label": "Blue" },
+            { "value": "green", "label": "Green" },
+            { "value": "purple", "label": "Purple" }
+          ],
+          "default": "yellow"
+        },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "title", "label": "Title", "info": "Defaults to the collection title." },
+        { "type": "textarea", "id": "text", "label": "Description" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji",
+          "info": "Shown when no image is set."
+        },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+        { "type": "url", "id": "link", "label": "Button link", "info": "Defaults to the collection." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category bricks",
+      "blocks": [
+        {
+          "type": "brick",
+          "settings": {
+            "color": "yellow",
+            "title": "Toys",
+            "text": "3D-printed collectibles, characters, puzzles, desk pieces & more.",
+            "emoji": "🤖",
+            "button_label": "Shop toys"
+          }
+        },
+        {
+          "type": "brick",
+          "settings": {
+            "color": "red",
+            "title": "Props",
+            "text": "Oversized event pieces, party displays, themed props & rentals.",
+            "emoji": "⭐",
+            "button_label": "Explore props"
+          }
+        },
+        {
+          "type": "brick",
+          "settings": {
+            "color": "purple",
+            "title": "Nursery signs",
+            "text": "Custom names, wall lettering, room signs & decorative pieces.",
+            "emoji": "🪧",
+            "button_label": "Shop nursery"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,17 @@
+{
+  "current": {
+    "color_red": "#E63329",
+    "color_yellow": "#F9C218",
+    "color_blue": "#1156C4",
+    "color_green": "#1E8A45",
+    "color_purple": "#7B3FB5",
+    "color_cream": "#F8F4EA",
+    "color_ink": "#12100E",
+    "use_google_fonts": true,
+    "corner_radius": 20,
+    "logo_width": 200,
+    "social_instagram": "https://instagram.com/playform.toys",
+    "social_tiktok": "https://tiktok.com/@playform.toys",
+    "social_etsy": "https://www.etsy.com/shop/playformtoys"
+  }
+}

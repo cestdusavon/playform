@@ -1,0 +1,106 @@
+{%- comment -%}
+  Product card.
+
+  Accepts:
+  - product: {Object} product to render. When blank a placeholder card is drawn.
+  - placeholder_index: {Number} rotates the placeholder artwork.
+  - badge_label / badge_color: {String} optional override for the corner badge.
+
+  Badges otherwise come from product tags, either `badge:Rent Me:yellow`
+  or one of the shorthand tags (custom, new, made-to-order, rental).
+{%- endcomment -%}
+
+{%- liquid
+  assign card_badge = badge_label | default: ''
+  assign card_badge_color = badge_color | default: ''
+
+  if card_badge == blank
+    for tag in product.tags
+      if tag contains 'badge:'
+        assign parts = tag | remove_first: 'badge:' | split: ':'
+        assign card_badge = parts[0]
+        if parts.size > 1
+          assign card_badge_color = parts[1]
+        endif
+        break
+      endif
+    endfor
+  endif
+
+  if card_badge == blank
+    if product.tags contains 'custom'
+      assign card_badge = 'Custom'
+      assign card_badge_color = 'purple'
+    elsif product.tags contains 'made-to-order'
+      assign card_badge = 'Made to order'
+      assign card_badge_color = 'blue'
+    elsif product.tags contains 'rental'
+      assign card_badge = 'Rent me'
+      assign card_badge_color = 'blue'
+    elsif product.tags contains 'new'
+      assign card_badge = 'New'
+      assign card_badge_color = 'green'
+    endif
+  endif
+
+  if product != blank and product.available == false
+    assign card_badge = 'Sold out'
+    assign card_badge_color = 'red'
+  endif
+
+  if card_badge_color == blank
+    assign card_badge_color = 'purple'
+  endif
+
+  assign card_alt = product.featured_media.alt | default: product.title | escape
+  assign card_price = product.price | money
+  assign card_compare_price = product.compare_at_price | money
+-%}
+
+<a
+  class="pf-card"
+  {% if product != blank %}href="{{ product.url }}"{% else %}href="{{ routes.all_products_collection_url }}"{% endif %}>
+  <div class="pf-card__media">
+    {%- if card_badge != blank -%}
+      <span class="pf-badge pf-badge--{{ card_badge_color }}">{{ card_badge }}</span>
+    {%- endif -%}
+
+    {%- if product.featured_media != blank -%}
+      {{
+        product.featured_media
+        | image_url: width: 800
+        | image_tag:
+          loading: 'lazy',
+          widths: '220, 330, 440, 660, 800',
+          sizes: '(min-width: 990px) 280px, (min-width: 750px) 33vw, 45vw',
+          alt: card_alt
+      }}
+    {%- else -%}
+      {%- assign placeholder_slot = placeholder_index | default: 1 | modulo: 4 | plus: 1 -%}
+      {{ 'product-' | append: placeholder_slot | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+
+  <h3 class="pf-card__title">
+    {%- if product != blank -%}
+      {{- product.title | escape -}}
+    {%- else -%}
+      {{- 'onboarding.product_title' | t -}}
+    {%- endif -%}
+  </h3>
+
+  <p class="pf-card__price">
+    {%- if product == blank -%}
+      {{ 1999 | money }}
+    {%- elsif product.tags contains 'rental' -%}
+      {{ 'products.card.rental_from' | t: price: card_price }}
+    {%- elsif product.price_varies -%}
+      {{ 'products.card.from_price' | t: price: card_price }}
+    {%- else -%}
+      {%- if product.compare_at_price > product.price -%}
+        <s>{{ card_compare_price }}</s>
+      {%- endif -%}
+      {{ card_price }}
+    {%- endif -%}
+  </p>
+</a>

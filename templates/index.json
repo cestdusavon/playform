@@ -1,0 +1,138 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-play",
+      "settings": {
+        "background": "#F8F4EA",
+        "show_logo": true,
+        "heading": "Toys, Props &\nCustom Signs",
+        "heading_rainbow": "Made to Play With.",
+        "rainbow_start": 0,
+        "text": "<p>Playful pieces made through 3D printing, laser cutting, hand finishing, and a lot of imagination.</p>",
+        "button_label": "Shop Playform",
+        "button_color": "red"
+      }
+    },
+    "categories": {
+      "type": "category-bricks",
+      "blocks": {
+        "toys": {
+          "type": "brick",
+          "settings": {
+            "color": "yellow",
+            "title": "Toys",
+            "text": "3D-printed collectibles, characters, puzzles, desk pieces & more.",
+            "emoji": "🤖",
+            "button_label": "Shop toys"
+          }
+        },
+        "props": {
+          "type": "brick",
+          "settings": {
+            "color": "red",
+            "title": "Props",
+            "text": "Oversized event pieces, party displays, themed props & rentals.",
+            "emoji": "⭐",
+            "button_label": "Explore props"
+          }
+        },
+        "nursery": {
+          "type": "brick",
+          "settings": {
+            "color": "purple",
+            "title": "Nursery signs",
+            "text": "Custom names, wall lettering, room signs & decorative pieces.",
+            "emoji": "🪧",
+            "button_label": "Shop nursery"
+          }
+        }
+      },
+      "block_order": ["toys", "props", "nursery"],
+      "settings": { "background": "#F8F4EA", "stud_count": 4 }
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "background": "#F8F4EA",
+        "heading": "Things We Made For Fun.",
+        "heading_rainbow": "You Can Have Them Too.",
+        "rainbow_start": 0,
+        "products_to_show": 4,
+        "button_label": "View all products"
+      }
+    },
+    "process": {
+      "type": "process-steps",
+      "blocks": {
+        "designed": {
+          "type": "step",
+          "settings": {
+            "color": "blue",
+            "title": "Designed",
+            "text": "Original pieces modeled specifically for Playform.",
+            "emoji": "🖥️"
+          }
+        },
+        "printed": {
+          "type": "step",
+          "settings": {
+            "color": "yellow",
+            "title": "Printed + cut",
+            "text": "3D printing, resin printing and precision laser cutting.",
+            "emoji": "🖨️"
+          }
+        },
+        "finished": {
+          "type": "step",
+          "settings": {
+            "color": "red",
+            "title": "Finished by hand",
+            "text": "Sanded, assembled, painted and detailed individually.",
+            "emoji": "🖌️"
+          }
+        },
+        "yours": {
+          "type": "step",
+          "settings": {
+            "color": "green",
+            "title": "Made for you",
+            "text": "Custom colors, names, sizing and designs.",
+            "emoji": "🎁"
+          }
+        }
+      },
+      "block_order": ["designed", "printed", "finished", "yours"],
+      "settings": { "background": "#F8F4EA", "heading": "Made Different." }
+    },
+    "custom": {
+      "type": "custom-project-cta",
+      "settings": {
+        "color": "blue",
+        "heading": "Have Something Weird in Mind?",
+        "heading_accent": "Good. We Like Weird.",
+        "accent_color": "#F9C218",
+        "text": "Send us your sketch, reference, theme or idea and we'll figure out how to make it.",
+        "button_label": "Start a custom project",
+        "button_color": "yellow"
+      }
+    },
+    "instagram": {
+      "type": "instagram-strip",
+      "blocks": {
+        "p1": { "type": "photo" },
+        "p2": { "type": "photo" },
+        "p3": { "type": "photo" },
+        "p4": { "type": "photo" },
+        "p5": { "type": "photo" },
+        "p6": { "type": "photo" }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6"],
+      "settings": {
+        "background": "#F8F4EA",
+        "handle": "@playform.toys",
+        "follow_label": "Follow the mess →"
+      }
+    }
+  },
+  "order": ["hero", "categories", "featured", "process", "custom", "instagram"]
+}

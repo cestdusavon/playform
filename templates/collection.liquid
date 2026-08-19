@@ -1,0 +1,29 @@
+<div class="pf-page pf-wrap">
+  <h1 class="pf-display pf-page__title">{{ collection.title | escape }}</h1>
+  {%- if collection.description != blank -%}
+    <div class="pf-rte pf-page__intro">{{ collection.description }}</div>
+  {%- endif -%}
+
+  {%- paginate collection.products by 24 -%}
+    {%- if collection.products.size > 0 -%}
+      <div class="pf-products__grid">
+        {%- for product in collection.products -%}
+          {% render 'pf-product-card', product: product, placeholder_index: forloop.index %}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <ul class="pf-pagination">
+          {%- if paginate.previous -%}
+            <li><a class="pf-btn pf-btn--outline" href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a></li>
+          {%- endif -%}
+          {%- if paginate.next -%}
+            <li><a class="pf-btn pf-btn--outline" href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a></li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
+    {%- else -%}
+      <p>{{ 'collections.general.empty' | t }}</p>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>

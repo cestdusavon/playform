@@ -1,0 +1,73 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Playform",
+    "theme_version": "1.0.0",
+    "theme_author": "Playform Toys",
+    "theme_documentation_url": "https://playform.toys",
+    "theme_support_url": "https://playform.toys"
+  },
+  {
+    "name": "Brand colors",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "The Playform palette. These drive every brick, badge and button across the theme."
+      },
+      { "type": "color", "id": "color_red", "label": "Red", "default": "#E63329" },
+      { "type": "color", "id": "color_yellow", "label": "Yellow", "default": "#F9C218" },
+      { "type": "color", "id": "color_blue", "label": "Blue", "default": "#1156C4" },
+      { "type": "color", "id": "color_green", "label": "Green", "default": "#1E8A45" },
+      { "type": "color", "id": "color_purple", "label": "Purple", "default": "#7B3FB5" },
+      { "type": "color", "id": "color_cream", "label": "Cream background", "default": "#F8F4EA" },
+      { "type": "color", "id": "color_ink", "label": "Text", "default": "#12100E" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_google_fonts",
+        "label": "Load rounded display fonts (Fredoka + Nunito)",
+        "info": "Turn off to fall back to the system rounded stack.",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "Brand assets",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo" },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 80,
+        "max": 320,
+        "step": 10,
+        "unit": "px",
+        "default": 200
+      },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
+      { "type": "text", "id": "social_etsy", "label": "Etsy shop URL" }
+    ]
+  }
+]

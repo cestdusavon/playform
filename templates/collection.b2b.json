@@ -7,19 +7,19 @@
         "columns": 3
       }
     },
-    "trade-rates-info": {
+    "trade-note": {
       "type": "rich-text",
       "settings": {
-        "heading": "Trade Rate Information",
+        "heading": "Hire terms",
         "rainbow_start": "blue",
-        "content": "<p>All rates shown are for B2B accounts and include volume discounts. Lead time is 48 hours. Deposits are refundable within 5 business days of return.</p>",
+        "content": "<p>Rates on this page are trade rates and already include your account's volume discount. Lead time is 14 days, the refundable deposit is 30% of replacement value, and we quote every booking within 48 hours.</p>",
         "background_color": "#F8F4EA",
         "text_alignment": "center",
-        "button_label": "Request a Quote",
+        "button_label": "Request a quote",
         "button_url": "/pages/rentals",
-        "button_color": "primary"
+        "button_color": "blue"
       }
     }
   },
-  "order": ["main", "trade-rates-info"]
+  "order": ["main", "trade-note"]
 }

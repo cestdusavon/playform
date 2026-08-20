@@ -58,10 +58,10 @@
 
     <div class="pf-header__actions">
       {%- if section.settings.show_search -%}
-        <button class="pf-icon-btn" type="button" data-pf-search-toggle aria-label="{{ 'general.search.title' | t }}">
+        <a class="pf-icon-btn" href="{{ routes.search_url }}" data-pf-search-toggle>
           {% render 'pf-icon', icon: 'search' %}
           <span class="pf-visually-hidden">{{ 'general.search.title' | t }}</span>
-        </button>
+        </a>
       {%- endif -%}
 
       {%- if shop.customer_accounts_enabled and section.settings.show_account -%}
@@ -71,13 +71,13 @@
         </a>
       {%- endif -%}
 
-      <button class="pf-icon-btn" type="button" data-pf-cart-toggle aria-label="{{ 'general.cart.title' | t }}">
+      <a class="pf-icon-btn" href="{{ routes.cart_url }}" data-pf-cart-toggle>
         {% render 'pf-icon', icon: 'cart' %}
         <span class="pf-visually-hidden">{{ 'general.cart.title' | t }}</span>
         {%- if cart.item_count > 0 -%}
           <span class="pf-cart-count">{{ cart.item_count }}</span>
         {%- endif -%}
-      </button>
+      </a>
     </div>
   </div>
 

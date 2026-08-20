@@ -29,37 +29,39 @@
 
   <div class="pf-collection-grid-section pf-wrap">
     {%- if collection.products.size > 0 -%}
-      <div class="pf-product-grid" style="--pf-grid-cols: {{ columns }};">
-        {%- for product in collection.products -%}
-          <div class="pf-product-grid-item">
-            {% render 'pf-product-card', product: product %}
-          </div>
-        {%- endfor -%}
-      </div>
-
-      {%- if paginate.pages > 1 -%}
-        <div class="pf-pagination">
-          {% if paginate.previous %}
-            <a href="{{ paginate.previous.url }}" class="pf-pagination__link">
-              {{ 'general.pagination.previous' | t }}
-            </a>
-          {% endif %}
-
-          {%- for part in paginate.parts -%}
-            {%- if part.is_link -%}
-              <a href="{{ part.url }}" class="pf-pagination__link">{{ part.title }}</a>
-            {%- else -%}
-              <span class="pf-pagination__current">{{ part.title }}</span>
-            {%- endif -%}
+      {%- paginate collection.products by products_per_page -%}
+        <div class="pf-product-grid" style="--pf-grid-cols: {{ columns }};">
+          {%- for product in collection.products -%}
+            <div class="pf-product-grid-item">
+              {% render 'pf-product-card', product: product, placeholder_index: forloop.index %}
+            </div>
           {%- endfor -%}
-
-          {% if paginate.next %}
-            <a href="{{ paginate.next.url }}" class="pf-pagination__link">
-              {{ 'general.pagination.next' | t }}
-            </a>
-          {% endif %}
         </div>
-      {%- endif -%}
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="pf-pagination" aria-label="{{ 'general.pagination.label' | t }}">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="pf-pagination__link">
+                {{ 'general.pagination.previous' | t }}
+              </a>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="pf-pagination__link">{{ part.title }}</a>
+              {%- else -%}
+                <span class="pf-pagination__current">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="pf-pagination__link">
+                {{ 'general.pagination.next' | t }}
+              </a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endpaginate -%}
     {%- else -%}
       <p class="pf-text-center">{{ 'collections.general.empty' | t }}</p>
     {%- endif -%}
@@ -164,6 +166,26 @@
 {% schema %}
 {
   "name": "Main collection product grid",
-  "tag": "section"
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    }
+  ]
 }
 {% endschema %}

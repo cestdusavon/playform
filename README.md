@@ -76,7 +76,7 @@ and assign it the **rentals** template.
 
 | Order | Section | File |
 | --- | --- | --- |
-| 1 | Trade hero with stat blocks | `sections/rental-hero.liquid` |
+| 1 | Trade hero with stat blocks | `sections/split-hero.liquid` |
 | 2 | Rate card + volume/trade discount table | `sections/rental-rates.liquid` |
 | 3 | Deposit figure + terms | `sections/rental-deposit.liquid` |
 | 4 | Rental catalogue with per-item rates | `sections/rental-catalog.liquid` |
@@ -210,27 +210,35 @@ building custom pages:
 | `sections/collection-list.liquid` | Grid of collection cards (configurable count and columns) |
 | `sections/featured-collection.liquid` | Single collection showcase with product grid and CTA |
 | `sections/main-page.liquid` | Container for generic page content |
-| `sections/main-product.liquid` | Product details page with variants, options, and quantity selector |
-| `sections/main-collection-product-grid.liquid` | Full collection page with pagination |
+| `sections/main-product.liquid` | Product page — media gallery, variant select, quantity |
+| `sections/main-collection-product-grid.liquid` | Collection page with pagination |
 
-Use these sections in custom page templates to build flexible brand pages, policy
-pages, or category showcases without editing code.
+Use these in JSON templates to build pages without editing Liquid. The three
+`main-*` sections are the section-based equivalents of the existing
+`product.liquid`, `collection.liquid` and `page.liquid` templates — swap a
+template over to JSON when you want that page editable in the theme editor.
 
-## Cart & Search
+## Cart drawer and search modal
 
-The theme includes a slide-out cart drawer and modal search box accessed from the
-header. These are built with zero JavaScript for speed (`snippets/cart-drawer.liquid`
-and `snippets/search-modal.liquid`). Product removal uses AJAX, and search uses
-Shopify's native `/search/suggest.json` endpoint.
+`snippets/cart-drawer.liquid` and `snippets/search-modal.liquid` render once per
+page from `layout/theme.liquid`. Both are progressive enhancements: the header's
+cart and search controls stay ordinary links to `/cart` and `/search`, and
+`assets/playform.js` intercepts the click to open the overlay instead. With
+JavaScript off, both still go to their full pages.
 
-## B2B & Trade
+The drawer's remove buttons post to `/cart/change`; if that request fails the
+button falls back to the cart page. Search suggestions come from Shopify's
+predictive search endpoint (`routes.predictive_search_url`), debounced at 250ms.
 
-**Multi-menu support.** The header can show different nav menus to B2B company
-account customers (`customer.b2b?`). Set a separate B2B menu in the Header section
-settings.
+## B2B menus
 
-**Rental collections.** Create collections tagged with `b2b` and assign them the
-`collection.b2b` template to show B2B-specific rates and trade information.
+The header takes two menus: **Menu (Consumer)** and an optional **Menu (B2B)**.
+When a customer is on a Shopify B2B company account (`customer.b2b?`) and a B2B
+menu is set, they get that menu instead. Everyone else gets the consumer one.
+
+`templates/collection.b2b.json` is a collection template for hire catalogues —
+the standard product grid plus a trade terms note. Assign it to a collection in
+the admin under **Collections → … → Theme template**.
 
 ## Supporting templates
 

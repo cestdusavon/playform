@@ -1,11 +1,24 @@
 {%- comment -%}
   Colours each word of `text` by cycling through the brand palette.
+
   Usage: {% render 'pf-rainbow', text: section.settings.heading, start: 0 %}
+         {% render 'pf-rainbow', text: section.settings.heading, start_color: 'blue' %}
+
+  `start` is a palette index; `start_color` is a palette name and wins when set.
 {%- endcomment -%}
 {%- liquid
   assign palette = 'red,yellow,blue,green,purple' | split: ','
   assign words = text | strip | split: ' '
   assign offset = start | default: 0
+
+  if start_color != blank
+    for colour in palette
+      if colour == start_color
+        assign offset = forloop.index0
+        break
+      endif
+    endfor
+  endif
 -%}
 {%- for word in words -%}
   {%- assign slot = forloop.index0 | plus: offset | modulo: palette.size -%}

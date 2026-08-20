@@ -1,309 +1,214 @@
 {%- liquid
-  assign product_forms_exist = false
-  if product.has_only_default_variant
-    assign product_forms_exist = true
-  endif
-  for variant in product.variants
-    unless variant.available
-      continue
-    endunless
-    assign product_forms_exist = true
-    break
-  endfor
+  assign media_position = section.settings.media_position
+  assign product_alt = product.featured_media.alt | default: product.title | escape
 -%}
 
-<div class="pf-page">
-  <div class="pf-product-main pf-wrap">
-    <div class="pf-product-media">
-      {%- if product.featured_media -%}
-        {%- liquid
-          assign featured_media_alt = product.featured_media.alt | escape
-          assign featured_media_id = product.featured_media.id
-        -%}
-        <div class="pf-product-media__featured">
-          {{
-            product.featured_media
-            | image_url: width: 800
-            | image_tag:
-              alt: featured_media_alt,
-              class: 'pf-product-media__img',
-              loading: 'eager'
-          }}
-        </div>
-        {%- if product.media.size > 1 -%}
-          <div class="pf-product-media__thumbs">
-            {%- for media in product.media -%}
-              <button
-                class="pf-product-media__thumb"
-                type="button"
-                data-pf-media-swap="{{ media | image_url: width: 800 }}"
-                aria-label="{{ media.alt | default: product.title | escape }}">
-                {{ media | image_url: width: 160 | image_tag: alt: media.alt, loading: 'lazy' }}
-              </button>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
+<div class="pf-page pf-wrap">
+  <div class="pf-product{% if media_position == 'right' %} pf-product--media-right{% endif %}">
+    <div class="pf-product__media">
+      {%- if product.featured_media != blank -%}
+        {{
+          product.featured_media
+          | image_url: width: 1200
+          | image_tag:
+            widths: '400, 600, 900, 1200',
+            sizes: '(min-width: 750px) 45vw, 90vw',
+            alt: product_alt,
+            class: 'pf-product__image'
+        }}
       {%- else -%}
-        <div class="pf-product-media__placeholder">
-          {%- liquid
-            echo '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#E8E4DC"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="24" fill="#999">No image</text></svg>'
-          -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+
+      {%- if section.settings.show_thumbs and product.media.size > 1 -%}
+        <div class="pf-product__thumbs">
+          {%- for media in product.media -%}
+            <button
+              class="pf-product__thumb"
+              type="button"
+              data-pf-media-swap="{{ media | image_url: width: 1200 }}"
+              aria-label="{{ media.alt | default: product.title | escape }}">
+              {{ media | image_url: width: 160 | image_tag: alt: media.alt, loading: 'lazy' }}
+            </button>
+          {%- endfor -%}
         </div>
       {%- endif -%}
     </div>
 
-    <div class="pf-product-content">
-      <div class="pf-product-header">
-        <h1 class="pf-product-title">{{ product.title }}</h1>
-        <div class="pf-product-meta">
-          {%- if product.vendor != blank -%}
-            <p class="pf-product-vendor">{{ product.vendor }}</p>
-          {%- endif -%}
-          <p class="pf-product-price">
-            {%- if product.compare_at_price > product.price -%}
-              <s>{{ product.compare_at_price | money }}</s>
-            {%- endif -%}
-            {{ product.price | money }}
-          </p>
-        </div>
-      </div>
+    <div class="pf-product__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'title' -%}
+            <h1 class="pf-display pf-page__title" {{ block.shopify_attributes }}>
+              {{- product.title | escape -}}
+            </h1>
 
-      {%- if product_forms_exist -%}
-        <div class="pf-product-form">
-          {%- form 'product', product -%}
-            {%- comment -%}
-              One select over variants keeps the form working without JavaScript:
-              the submitted `id` is always a real variant.
-            {%- endcomment -%}
-            {%- if product.variants.size > 1 -%}
-              <div class="pf-product-option">
-                <label for="PfVariant">{{ product.options_with_values | map: 'name' | join: ' / ' }}</label>
-                <select id="PfVariant" name="id">
-                  {%- for variant in product.variants -%}
-                    <option
-                      value="{{ variant.id }}"
-                      {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
-                      {% unless variant.available %}disabled{% endunless %}>
-                      {{ variant.title }} &mdash; {{ variant.price | money }}
-                    </option>
-                  {%- endfor -%}
-                </select>
-              </div>
-            {%- else -%}
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {%- when 'price' -%}
+            <p class="pf-product__price" {{ block.shopify_attributes }}>
+              {%- if product.compare_at_price > product.price -%}
+                <s>{{ product.compare_at_price | money }}</s>
+              {%- endif -%}
+              {{ product.price | money }}
+              {%- if product.price_varies -%}
+                <span class="pf-product__price-note">{{ 'products.card.from_price' | t: price: '' | strip }}</span>
+              {%- endif -%}
+            </p>
+
+          {%- when 'vendor' -%}
+            {%- if product.vendor != blank -%}
+              <p class="pf-product__vendor" {{ block.shopify_attributes }}>{{ product.vendor }}</p>
             {%- endif -%}
 
-            <div class="pf-product-quantity">
-              <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
-              <input type="number" id="Quantity" name="quantity" min="1" value="1">
+          {%- when 'text' -%}
+            <div class="pf-rte pf-product__text" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
             </div>
 
-            <button
-              type="submit"
-              name="add"
-              class="pf-btn pf-btn--full"
-              {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-              {%- if product.selected_or_first_available_variant.available -%}
-                {{ 'products.product.add_to_cart' | t }}
-              {%- else -%}
-                {{ 'products.product.sold_out' | t }}
-              {%- endif -%}
-            </button>
-          {%- endform -%}
-        </div>
-      {%- endif -%}
+          {%- when 'rental_rates' -%}
+            <div {{ block.shopify_attributes }}>
+              {% render 'pf-rental-rates', product: product, layout: block.settings.layout %}
+            </div>
 
-      {%- if product.description != blank -%}
-        <div class="pf-product-description pf-rte">
-          {{ product.description }}
-        </div>
-      {%- endif -%}
+          {%- when 'buy_buttons' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- form 'product', product -%}
+                {%- if product.variants.size > 1 -%}
+                  <div class="pf-field">
+                    <label for="ProductVariant">
+                      {{- product.options_with_values | map: 'name' | join: ' / ' -}}
+                    </label>
+                    <select id="ProductVariant" name="id">
+                      {%- for variant in product.variants -%}
+                        <option
+                          value="{{ variant.id }}"
+                          {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                          {% unless variant.available %}disabled{% endunless %}>
+                          {{ variant.title }} &mdash; {{ variant.price | money }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                  </div>
+                {%- else -%}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                {%- endif -%}
+
+                {%- if block.settings.show_quantity -%}
+                  <div class="pf-field">
+                    <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+                    <input id="Quantity" type="number" name="quantity" value="1" min="1">
+                  </div>
+                {%- endif -%}
+
+                <button
+                  class="pf-btn pf-btn--{{ block.settings.button_color }}"
+                  type="submit"
+                  {% unless product.available %}disabled{% endunless %}>
+                  {%- if product.available -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
+                </button>
+              {%- endform -%}
+            </div>
+
+          {%- when 'description' -%}
+            {%- if product.description != blank -%}
+              <div class="pf-rte" {{ block.shopify_attributes }}>{{ product.description }}</div>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
   </div>
 </div>
 
-<style>
-  .pf-product-main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    padding: 48px 0;
-    align-items: start;
-  }
+{%- if section.settings.show_thumbs -%}
+  <script>
+    document.addEventListener('click', function (event) {
+      var thumb = event.target.closest('[data-pf-media-swap]');
+      if (!thumb) return;
 
-  @media (max-width: 988px) {
-    .pf-product-main {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-  }
+      var featured = document.querySelector('.pf-product__image');
+      if (!featured) return;
 
-  .pf-product-media__featured {
-    background: white;
-    border-radius: var(--pf-radius, 20px);
-    overflow: hidden;
-    aspect-ratio: 1;
-  }
-
-  .pf-product-media__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .pf-product-media__placeholder {
-    background: white;
-    border-radius: var(--pf-radius, 20px);
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .pf-product-media__placeholder svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .pf-product-media__thumbs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 12px;
-    margin-top: 16px;
-  }
-
-  .pf-product-media__thumb {
-    background: none;
-    border: 2px solid transparent;
-    border-radius: var(--pf-radius, 20px);
-    cursor: pointer;
-    overflow: hidden;
-    aspect-ratio: 1;
-  }
-
-  .pf-product-media__thumb:hover {
-    border-color: var(--pf-ink, #12100E);
-  }
-
-  .pf-product-media__thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .pf-product-title {
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
-    margin: 0 0 24px;
-    font-family: var(--pf-font-display);
-    font-weight: 700;
-  }
-
-  .pf-product-meta {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 32px;
-  }
-
-  .pf-product-vendor {
-    margin: 0;
-    font-size: 0.875rem;
-    color: var(--pf-muted);
-  }
-
-  .pf-product-price {
-    margin: 0;
-    font-family: var(--pf-font-display);
-    font-size: 1.35rem;
-  }
-
-  .pf-product-price s {
-    margin-right: 8px;
-    color: var(--pf-muted);
-    font-weight: 400;
-  }
-
-  .pf-product-form {
-    margin-bottom: 32px;
-  }
-
-  .pf-product-option {
-    margin-bottom: 24px;
-  }
-
-  .pf-product-option label {
-    display: block;
-    margin-bottom: 12px;
-    font-weight: 600;
-  }
-
-  .pf-product-option select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--pf-ink, #12100E);
-    border-radius: var(--pf-radius, 20px);
-    font-size: 1rem;
-    font-family: inherit;
-    background: white;
-    cursor: pointer;
-  }
-
-  .pf-product-values {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .pf-product-value {
-    cursor: pointer;
-  }
-
-  .pf-product-value input {
-    margin-right: 8px;
-  }
-
-  .pf-product-quantity {
-    margin-bottom: 24px;
-  }
-
-  .pf-product-quantity label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-
-  .pf-product-quantity input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--pf-ink, #12100E);
-    border-radius: var(--pf-radius, 20px);
-    font-size: 1rem;
-    font-family: inherit;
-  }
-
-  .pf-product-description {
-    margin-top: 32px;
-    padding-top: 32px;
-    border-top: 1px solid var(--pf-ink, #12100E);
-  }
-</style>
-
-<script>
-  document.addEventListener('click', function (event) {
-    var thumb = event.target.closest('[data-pf-media-swap]');
-    if (!thumb) return;
-
-    var featured = document.querySelector('.pf-product-media__img');
-    if (!featured) return;
-
-    featured.removeAttribute('srcset');
-    featured.src = thumb.dataset.pfMediaSwap;
-  });
-</script>
+      featured.removeAttribute('srcset');
+      featured.removeAttribute('sizes');
+      featured.src = thumb.dataset.pfMediaSwap;
+    });
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
-  "name": "Main product",
-  "tag": "section"
+  "name": "Product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumbs",
+      "label": "Show thumbnails",
+      "info": "Only appears when the product has more than one image.",
+      "default": true
+    }
+  ],
+  "blocks": [
+    { "type": "title", "name": "Title", "limit": 1 },
+    { "type": "price", "name": "Price", "limit": 1 },
+    { "type": "vendor", "name": "Vendor", "limit": 1 },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_quantity", "label": "Show quantity", "default": true },
+        {
+          "type": "select",
+          "id": "button_color",
+          "label": "Button colour",
+          "options": [
+            { "value": "red", "label": "Red" },
+            { "value": "yellow", "label": "Yellow" },
+            { "value": "blue", "label": "Blue" },
+            { "value": "green", "label": "Green" },
+            { "value": "purple", "label": "Purple" }
+          ],
+          "default": "red"
+        }
+      ]
+    },
+    { "type": "description", "name": "Description", "limit": 1 },
+    {
+      "type": "rental_rates",
+      "name": "Rental rates",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "options": [
+            { "value": "table", "label": "Rate table" },
+            { "value": "inline", "label": "Inline" }
+          ],
+          "default": "table"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [{ "type": "richtext", "id": "text", "label": "Text" }]
+    }
+  ]
 }
 {% endschema %}

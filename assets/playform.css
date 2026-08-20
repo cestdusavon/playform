@@ -1085,10 +1085,64 @@ a {
   background: #fff;
 }
 
+.pf-product--media-right .pf-product__media {
+  order: 2;
+}
+
+.pf-product__thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pf-product__thumb {
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  cursor: pointer;
+  aspect-ratio: 1;
+}
+
+.pf-product__thumb:hover,
+.pf-product__thumb:focus-visible {
+  border-color: var(--pf-ink);
+}
+
+.pf-product__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.pf-product__vendor {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--pf-muted);
+}
+
 .pf-product__price {
   font-family: var(--pf-font-display);
   font-size: 1.5rem;
   margin: 6px 0 22px;
+}
+
+.pf-product__price s {
+  margin-right: 8px;
+  color: var(--pf-muted);
+}
+
+.pf-product__price-note {
+  font-family: var(--pf-font-body);
+  font-size: 0.9rem;
+  color: var(--pf-muted);
+}
+
+.pf-product__text {
+  margin-bottom: 18px;
 }
 
 .pf-field {

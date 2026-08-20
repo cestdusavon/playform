@@ -210,13 +210,46 @@ building custom pages:
 | `sections/collection-list.liquid` | Grid of collection cards (configurable count and columns) |
 | `sections/featured-collection.liquid` | Single collection showcase with product grid and CTA |
 | `sections/main-page.liquid` | Container for generic page content |
-| `sections/main-product.liquid` | Product page — media gallery, variant select, quantity |
 | `sections/main-collection-product-grid.liquid` | Collection page with pagination |
 
-Use these in JSON templates to build pages without editing Liquid. The three
-`main-*` sections are the section-based equivalents of the existing
-`product.liquid`, `collection.liquid` and `page.liquid` templates — swap a
-template over to JSON when you want that page editable in the theme editor.
+Use these in JSON templates to build pages without editing Liquid. `main-page`
+and `main-collection-product-grid` are section-based equivalents of the plain
+`page.liquid` and `collection.liquid` templates — swap a template over to JSON
+when you want that page editable in the theme editor.
+
+## The product page
+
+`templates/product.json` is the default product template, built from
+`sections/main-product.liquid`. Because it is JSON, the page is editable under
+**Online Store → Customize → Products** rather than only in code.
+
+The section owns the image column (with an optional thumbnail strip) and the
+section settings; everything in the right-hand column is a **block**, so the
+order is drag-and-drop:
+
+| Block | What it renders |
+| --- | --- |
+| Title | The product title |
+| Price | Price, with the compare-at price struck through when there is one |
+| Vendor | The product's vendor, if set |
+| Buy buttons | Variant select, quantity, add to cart — button colour is a setting |
+| Description | The product description |
+| Rental rates | The full rate table from `pf-rental-rates` (table or inline) |
+| Text | A free richtext block, e.g. a shipping or lead-time note |
+
+Section settings cover image position (left or right) and whether thumbnails
+show. The default template ships Title / Price / Buy buttons / Description,
+which is what the old `product.liquid` rendered.
+
+**Changing it three ways:**
+
+1. *In the admin, no code* — Customize → Products, reorder or add blocks.
+2. *Change the default for every product* — edit `templates/product.json`, or
+   add a block type to `sections/main-product.liquid`.
+3. *A different layout for some products* — add `templates/product.<name>.json`
+   and assign it per product under **Product → Theme template**. This is how
+   `templates/product.rental.liquid` already works for hire pieces; it stays a
+   plain Liquid template and is unaffected by the JSON conversion.
 
 ## Cart drawer and search modal
 
@@ -242,8 +275,8 @@ the admin under **Collections → … → Theme template**.
 
 ## Supporting templates
 
-`product`, `collection`, `list-collections`, `cart`, `search`, `blog`,
-`article`, `page`, `404`, `gift_card` and `password` are minimal working
-templates so the theme uploads and every link on the home page resolves. They
+`collection`, `list-collections`, `cart`, `search`, `blog`, `article`, `page`,
+`404`, `gift_card` and `password` are minimal working templates so the theme
+uploads and every link on the home page resolves. They
 share the home page's palette and type but carry no bespoke layout. Customer
 account templates are not included — Shopify's defaults handle those pages.

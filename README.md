@@ -25,12 +25,17 @@ colour-blocked footer lives in `sections/footer-group.json`.
 
 1. Zip the theme folders (`assets`, `config`, `layout`, `locales`, `sections`,
    `snippets`, `templates`) and upload it under **Online Store → Themes**.
-2. Create the `main-menu` and `footer` navigation menus.
+2. Create navigation menus:
+   - `main-menu` for consumer shoppers
+   - `footer` for footer links
+   - (Optional) `b2b-menu` for B2B/trade customers (set in Header section settings)
 3. In **Theme settings**, upload the logo and favicon and set the Instagram,
    TikTok and Etsy URLs.
 4. Point the three category bricks at their collections and the Featured
    products section at a collection.
 5. Drop artwork into the hero side slots, the banner, and the Instagram tiles.
+6. (Optional) Set the **Header** section's B2B menu to show a different nav to
+   trade customers (requires `customer.b2b?` in Shopify admin).
 
 Every section works before any of that is done — text falls back to the
 Playform copy and products fall back to placeholder cards.
@@ -192,6 +197,40 @@ Shopify's automatic policy pages — Shipping, Refund, Privacy, Terms of
 Service — which are generated from whatever you write under **Settings →
 Policies**. `sections/footer.liquid`'s **Link store policies** setting adds
 whichever ones you've filled in to the footer automatically.
+
+## Flexible page layouts
+
+Beyond the home page and trade pages, the theme includes reusable sections for
+building custom pages:
+
+| Section | Purpose |
+| --- | --- |
+| `sections/rich-text.liquid` | Configurable text block with optional rainbow headline and CTA button |
+| `sections/image-with-text.liquid` | Split layout (image left/right) with headline, text, and CTA |
+| `sections/collection-list.liquid` | Grid of collection cards (configurable count and columns) |
+| `sections/featured-collection.liquid` | Single collection showcase with product grid and CTA |
+| `sections/main-page.liquid` | Container for generic page content |
+| `sections/main-product.liquid` | Product details page with variants, options, and quantity selector |
+| `sections/main-collection-product-grid.liquid` | Full collection page with pagination |
+
+Use these sections in custom page templates to build flexible brand pages, policy
+pages, or category showcases without editing code.
+
+## Cart & Search
+
+The theme includes a slide-out cart drawer and modal search box accessed from the
+header. These are built with zero JavaScript for speed (`snippets/cart-drawer.liquid`
+and `snippets/search-modal.liquid`). Product removal uses AJAX, and search uses
+Shopify's native `/search/suggest.json` endpoint.
+
+## B2B & Trade
+
+**Multi-menu support.** The header can show different nav menus to B2B company
+account customers (`customer.b2b?`). Set a separate B2B menu in the Header section
+settings.
+
+**Rental collections.** Create collections tagged with `b2b` and assign them the
+`collection.b2b` template to show B2B-specific rates and trade information.
 
 ## Supporting templates
 

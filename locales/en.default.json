@@ -28,8 +28,17 @@
   },
   "accessibility": {
     "skip_to_content": "Skip to content",
+    "close": "Close",
     "menu": "Menu",
     "primary_nav": "Primary"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Search for toys, props and signs",
+      "empty": "No results found.",
+      "submit": "Search",
+      "product": "Product"
+    }
   },
   "onboarding": {
     "product_title": "Example product"
@@ -59,11 +68,15 @@
       "continue_shopping": "Keep shopping",
       "subtotal": "Subtotal",
       "checkout": "Check out",
+      "view_cart": "View cart",
       "remove": "Remove",
+      "remove_notice": "Remove from cart",
       "product": "Product",
+      "qty": "Qty",
       "quantity": "Quantity",
       "total": "Total",
-      "taxes_note": "Taxes and shipping calculated at checkout."
+      "taxes_note": "Taxes and shipping calculated at checkout.",
+      "taxes_included": "Taxes included in price."
     }
   },
   "customer": {

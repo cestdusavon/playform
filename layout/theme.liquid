@@ -60,5 +60,35 @@
     </main>
 
     {% sections 'footer-group' %}
+
+    {% render 'search-modal' %}
+    {% render 'cart-drawer' %}
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const searchToggle = document.querySelector('[data-pf-search-toggle]');
+        const cartToggle = document.querySelector('[data-pf-cart-toggle]');
+        const searchModal = document.querySelector('[data-pf-search-modal]');
+        const cartDrawer = document.querySelector('[data-pf-cart-drawer]');
+
+        if (searchToggle && searchModal) {
+          searchToggle.addEventListener('click', () => {
+            searchModal.setAttribute('data-pf-search-modal', 'open');
+            searchModal.querySelector('[data-pf-search-input]').focus();
+          });
+        }
+
+        if (cartToggle && cartDrawer) {
+          cartToggle.addEventListener('click', () => {
+            const isOpen = cartDrawer.getAttribute('data-pf-cart-drawer') === 'open';
+            if (isOpen) {
+              cartDrawer.removeAttribute('data-pf-cart-drawer');
+            } else {
+              cartDrawer.setAttribute('data-pf-cart-drawer', 'open');
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

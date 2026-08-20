@@ -1,6 +1,22 @@
 {%- liquid
   assign media_position = section.settings.media_position
   assign product_alt = product.featured_media.alt | default: product.title | escape
+
+  comment
+    The variant picker owns the `id` field when it is on the page, so the buy
+    buttons block must not render one too.
+  endcomment
+  assign has_picker = false
+  for block in section.blocks
+    if block.type == 'variant_picker'
+      assign has_picker = true
+      break
+    endif
+  endfor
+  assign multi_variant = false
+  if product.variants.size > 1
+    assign multi_variant = true
+  endif
 -%}
 
 <div class="pf-page pf-wrap">
@@ -44,14 +60,12 @@
             </h1>
 
           {%- when 'price' -%}
-            <p class="pf-product__price" {{ block.shopify_attributes }}>
-              {%- if product.compare_at_price > product.price -%}
-                <s>{{ product.compare_at_price | money }}</s>
-              {%- endif -%}
-              {{ product.price | money }}
-              {%- if product.price_varies -%}
-                <span class="pf-product__price-note">{{ 'products.card.from_price' | t: price: '' | strip }}</span>
-              {%- endif -%}
+            {%- assign current = product.selected_or_first_available_variant -%}
+            <p class="pf-product__price" data-pf-price {{ block.shopify_attributes }}>
+              <s data-pf-price-compare {% unless current.compare_at_price > current.price %}hidden{% endunless %}>
+                {{- current.compare_at_price | money -}}
+              </s>
+              <span data-pf-price-current>{{ current.price | money }}</span>
             </p>
 
           {%- when 'vendor' -%}
@@ -64,6 +78,65 @@
               {{ block.settings.text }}
             </div>
 
+          {%- when 'variant_picker' -%}
+            {%- if multi_variant -%}
+              <div class="pf-variant-picker" data-pf-variant-picker {{ block.shopify_attributes }}>
+                {%- comment -%}
+                  Rendered as one select over every variant, which submits on its
+                  own with no JavaScript. The script below replaces it with one
+                  control per option and keeps using it to carry the value.
+                {%- endcomment -%}
+                <div class="pf-field" data-pf-variant-fallback>
+                  <label for="ProductVariant">
+                    {{- product.options_with_values | map: 'name' | join: ' / ' -}}
+                  </label>
+                  <select id="ProductVariant" name="id" form="PfProductForm" data-pf-variant-select>
+                    {%- for variant in product.variants -%}
+                      <option
+                        value="{{ variant.id }}"
+                        {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                        {% unless variant.available %}disabled{% endunless %}>
+                        {{ variant.title }} &mdash; {{ variant.price | money }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+
+                <script type="application/json" data-pf-variant-data>
+                  {
+                    "style": {{ block.settings.picker_style | json }},
+                    "soldOutLabel": {{ 'products.product.sold_out' | t | json }},
+                    "unavailableLabel": {{ 'products.product.unavailable' | t | json }},
+                    "addLabel": {{ 'products.product.add_to_cart' | t | json }},
+                    "options": [
+                      {%- for option in product.options_with_values -%}
+                        {
+                          "name": {{ option.name | json }},
+                          "selected": {{ option.selected_value | json }},
+                          "values": {{ option.values | json }}
+                        }{% unless forloop.last %},{% endunless %}
+                      {%- endfor -%}
+                    ],
+                    "variants": [
+                      {%- for variant in product.variants -%}
+                        {
+                          "id": {{ variant.id }},
+                          "options": {{ variant.options | json }},
+                          "available": {{ variant.available }},
+                          "price": {{ variant.price | money | json }},
+                          "compareAtPrice": {{ variant.compare_at_price | money | json }},
+                          "showCompare": {% if variant.compare_at_price > variant.price %}true{% else %}false{% endif %},
+                          "image": {%- if variant.featured_media -%}
+                            {{ variant.featured_media | image_url: width: 1200 | json }}
+                          {%- else -%}null{%- endif -%}
+                        }{% unless forloop.last %},{% endunless %}
+                      {%- endfor -%}
+                    ]
+                  }
+                </script>
+              </div>
+            {%- endif -%}
+
           {%- when 'rental_rates' -%}
             <div {{ block.shopify_attributes }}>
               {% render 'pf-rental-rates', product: product, layout: block.settings.layout %}
@@ -71,26 +144,32 @@
 
           {%- when 'buy_buttons' -%}
             <div {{ block.shopify_attributes }}>
-              {%- form 'product', product -%}
-                {%- if product.variants.size > 1 -%}
-                  <div class="pf-field">
-                    <label for="ProductVariant">
-                      {{- product.options_with_values | map: 'name' | join: ' / ' -}}
-                    </label>
-                    <select id="ProductVariant" name="id">
-                      {%- for variant in product.variants -%}
-                        <option
-                          value="{{ variant.id }}"
-                          {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
-                          {% unless variant.available %}disabled{% endunless %}>
-                          {{ variant.title }} &mdash; {{ variant.price | money }}
-                        </option>
-                      {%- endfor -%}
-                    </select>
-                  </div>
-                {%- else -%}
-                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                {%- endif -%}
+              {%- form 'product', product, id: 'PfProductForm' -%}
+                {%- comment -%}
+                  With a variant picker block on the page the select lives there
+                  and is tied back to this form by its `form` attribute.
+                {%- endcomment -%}
+                {%- unless has_picker and multi_variant -%}
+                  {%- if multi_variant -%}
+                    <div class="pf-field">
+                      <label for="ProductVariant">
+                        {{- product.options_with_values | map: 'name' | join: ' / ' -}}
+                      </label>
+                      <select id="ProductVariant" name="id">
+                        {%- for variant in product.variants -%}
+                          <option
+                            value="{{ variant.id }}"
+                            {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                            {% unless variant.available %}disabled{% endunless %}>
+                            {{ variant.title }} &mdash; {{ variant.price | money }}
+                          </option>
+                        {%- endfor -%}
+                      </select>
+                    </div>
+                  {%- else -%}
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  {%- endif -%}
+                {%- endunless -%}
 
                 {%- if block.settings.show_quantity -%}
                   <div class="pf-field">
@@ -102,8 +181,9 @@
                 <button
                   class="pf-btn pf-btn--{{ block.settings.button_color }}"
                   type="submit"
-                  {% unless product.available %}disabled{% endunless %}>
-                  {%- if product.available -%}
+                  data-pf-add-button
+                  {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                  {%- if product.selected_or_first_available_variant.available -%}
                     {{ 'products.product.add_to_cart' | t }}
                   {%- else -%}
                     {{ 'products.product.sold_out' | t }}
@@ -121,6 +201,163 @@
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-pf-variant-picker]');
+    if (!root) return;
+
+    var carrier = root.querySelector('[data-pf-variant-select]');
+    var fallback = root.querySelector('[data-pf-variant-fallback]');
+    var data;
+
+    try {
+      data = JSON.parse(root.querySelector('[data-pf-variant-data]').textContent);
+    } catch (error) {
+      return; /* leave the plain variant select in place */
+    }
+
+    var priceCurrent = document.querySelector('[data-pf-price-current]');
+    var priceCompare = document.querySelector('[data-pf-price-compare]');
+    var addButton = document.querySelector('[data-pf-add-button]');
+    var featured = document.querySelector('.pf-product__image');
+    var controls = [];
+
+    function selected() {
+      return controls.map(function (control) {
+        return control.value;
+      });
+    }
+
+    function match(values) {
+      return data.variants.filter(function (variant) {
+        return variant.options.every(function (value, index) {
+          return value === values[index];
+        });
+      })[0];
+    }
+
+    /* A value is offered only if some variant pairs it with the other choices. */
+    function reachable(optionIndex, value) {
+      var values = selected();
+      values[optionIndex] = value;
+      return data.variants.some(function (variant) {
+        return variant.options.every(function (option, index) {
+          return index === optionIndex ? option === value : option === values[index];
+        });
+      });
+    }
+
+    function update() {
+      var variant = match(selected());
+
+      controls.forEach(function (control, index) {
+        Array.prototype.forEach.call(control.options || control.querySelectorAll('input'), function (node) {
+          var value = node.value;
+          var ok = reachable(index, value);
+          if (node.tagName === 'OPTION') {
+            node.disabled = !ok;
+          } else {
+            node.disabled = !ok;
+            node.parentNode.classList.toggle('is-unavailable', !ok);
+          }
+        });
+      });
+
+      if (!variant) {
+        carrier.value = '';
+        if (addButton) {
+          addButton.disabled = true;
+          addButton.textContent = data.unavailableLabel;
+        }
+        return;
+      }
+
+      carrier.value = variant.id;
+
+      if (addButton) {
+        addButton.disabled = !variant.available;
+        addButton.textContent = variant.available ? data.addLabel : data.soldOutLabel;
+      }
+
+      if (priceCurrent) priceCurrent.textContent = variant.price;
+      if (priceCompare) {
+        priceCompare.textContent = variant.compareAtPrice || '';
+        priceCompare.hidden = !variant.showCompare;
+      }
+
+      if (variant.image && featured) {
+        featured.removeAttribute('srcset');
+        featured.removeAttribute('sizes');
+        featured.src = variant.image;
+      }
+
+      if (window.history && history.replaceState) {
+        var url = new URL(window.location.href);
+        url.searchParams.set('variant', variant.id);
+        history.replaceState({}, '', url.toString());
+      }
+    }
+
+    data.options.forEach(function (option, index) {
+      var field = document.createElement('div');
+      field.className = 'pf-field';
+
+      var id = 'PfOption' + index;
+      var label = document.createElement('label');
+      label.setAttribute('for', id);
+      label.textContent = option.name;
+      field.appendChild(label);
+
+      var control;
+      if (data.style === 'buttons') {
+        control = document.createElement('div');
+        control.className = 'pf-variant-options';
+        control.id = id;
+
+        option.values.forEach(function (value) {
+          var wrap = document.createElement('label');
+          wrap.className = 'pf-variant-option';
+
+          var input = document.createElement('input');
+          input.type = 'radio';
+          input.name = 'pf-option-' + index;
+          input.value = value;
+          input.checked = value === option.selected;
+
+          wrap.appendChild(input);
+          wrap.appendChild(document.createTextNode(value));
+          control.appendChild(wrap);
+        });
+
+        Object.defineProperty(control, 'value', {
+          get: function () {
+            var checked = control.querySelector('input:checked');
+            return checked ? checked.value : null;
+          }
+        });
+      } else {
+        control = document.createElement('select');
+        control.id = id;
+        option.values.forEach(function (value) {
+          var node = document.createElement('option');
+          node.value = value;
+          node.textContent = value;
+          node.selected = value === option.selected;
+          control.appendChild(node);
+        });
+      }
+
+      control.addEventListener('change', update);
+      field.appendChild(control);
+      root.insertBefore(field, fallback);
+      controls.push(control);
+    });
+
+    fallback.hidden = true;
+    update();
+  })();
+</script>
 
 {%- if section.settings.show_thumbs -%}
   <script>
@@ -165,6 +402,27 @@
     { "type": "title", "name": "Title", "limit": 1 },
     { "type": "price", "name": "Price", "limit": 1 },
     { "type": "vendor", "name": "Vendor", "limit": 1 },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "One control per option (Size, Colour…). Products with a single variant show nothing."
+        },
+        {
+          "type": "select",
+          "id": "picker_style",
+          "label": "Style",
+          "options": [
+            { "value": "dropdown", "label": "Dropdowns" },
+            { "value": "buttons", "label": "Buttons" }
+          ],
+          "default": "dropdown"
+        }
+      ]
+    },
     {
       "type": "buy_buttons",
       "name": "Buy buttons",

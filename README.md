@@ -232,14 +232,39 @@ order is drag-and-drop:
 | Title | The product title |
 | Price | Price, with the compare-at price struck through when there is one |
 | Vendor | The product's vendor, if set |
-| Buy buttons | Variant select, quantity, add to cart — button colour is a setting |
+| Variant picker | One control per option — see below |
+| Buy buttons | Quantity and add to cart — button colour is a setting |
 | Description | The product description |
 | Rental rates | The full rate table from `pf-rental-rates` (table or inline) |
 | Text | A free richtext block, e.g. a shipping or lead-time note |
 
 Section settings cover image position (left or right) and whether thumbnails
-show. The default template ships Title / Price / Buy buttons / Description,
-which is what the old `product.liquid` rendered.
+show.
+
+### The variant picker
+
+The **Variant picker** block gives a product with more than one option a
+separate control per option — Size, then Colour — instead of one long list of
+every combination. Its **Style** setting switches between dropdowns and
+buttons. Products with a single variant render nothing.
+
+It is a progressive enhancement, not a rewrite. The block renders the plain
+select over every variant that the theme has always used, so with JavaScript
+off the page works exactly as before. The script then builds one control per
+option, hides that select, and keeps writing the chosen variant into it — so
+the `id` the form submits is always a real variant. The select carries a
+`form="PfProductForm"` attribute, which is what lets it sit outside the form
+in its own block and still be submitted with it.
+
+On each change the script re-prices the page, swaps the featured image when the
+variant has its own, greys out option values no remaining variant offers, and
+puts `?variant=` in the address bar so a chosen combination can be linked.
+Sold-out variants disable the button and relabel it; a combination that does
+not exist at all reads "Unavailable".
+
+If the Buy buttons block is used without a Variant picker it falls back to
+rendering the full variant select itself, so removing the picker in the theme
+editor cannot leave a product unbuyable.
 
 **Changing it three ways:**
 

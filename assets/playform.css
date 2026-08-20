@@ -32,6 +32,11 @@
   box-sizing: border-box;
 }
 
+/* A class that sets `display` otherwise beats the UA rule for [hidden]. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
 }
@@ -162,6 +167,15 @@ a {
 .pf-btn:active {
   transform: translateY(6px);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+}
+
+.pf-btn:disabled,
+.pf-btn[disabled] {
+  --pf-btn-bg: var(--pf-muted);
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  filter: none;
 }
 
 .pf-btn--yellow { --pf-btn-bg: var(--pf-yellow); --pf-btn-fg: var(--pf-ink); }
@@ -1116,6 +1130,46 @@ a {
   height: 100%;
   object-fit: cover;
   border-radius: 0;
+}
+
+.pf-variant-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pf-variant-option {
+  position: relative;
+  padding: 9px 16px;
+  border: 2px solid var(--pf-line);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.pf-variant-option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.pf-variant-option:has(input:checked) {
+  border-color: var(--pf-ink);
+  background: var(--pf-ink);
+  color: #fff;
+}
+
+.pf-variant-option:has(input:focus-visible) {
+  outline: 2px solid var(--pf-blue);
+  outline-offset: 2px;
+}
+
+.pf-variant-option.is-unavailable {
+  opacity: 0.45;
+  text-decoration: line-through;
 }
 
 .pf-product__vendor {

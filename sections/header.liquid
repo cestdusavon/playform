@@ -1,5 +1,9 @@
 {%- liquid
   assign menu = section.settings.menu
+  assign b2b_menu = section.settings.b2b_menu
+  if customer.b2b? and b2b_menu != blank
+    assign menu = b2b_menu
+  endif
   assign logo = section.settings.logo | default: settings.logo
   assign logo_width = section.settings.logo_width | default: settings.logo_width
   assign logo_sizes = logo_width | append: 'px'
@@ -105,7 +109,8 @@
       "unit": "px",
       "default": 200
     },
-    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "link_list", "id": "menu", "label": "Menu (Consumer)", "default": "main-menu" },
+    { "type": "link_list", "id": "b2b_menu", "label": "Menu (B2B)", "info": "Shown to B2B company account customers. Leave blank to use the consumer menu." },
     { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
     { "type": "checkbox", "id": "show_account", "label": "Show account", "default": true }
   ],

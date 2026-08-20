@@ -1,0 +1,169 @@
+{%- liquid
+  assign products_per_page = section.settings.products_per_page | default: 12
+  assign columns = section.settings.columns | default: 3
+-%}
+
+<div class="pf-page">
+  <div class="pf-collection-header pf-wrap">
+    {%- if collection.image -%}
+      <div class="pf-collection-hero">
+        {{
+          collection.image
+          | image_url: width: 1200
+          | image_tag:
+            alt: collection.title,
+            loading: 'eager'
+        }}
+      </div>
+    {%- endif -%}
+
+    <div class="pf-collection-intro">
+      <h1>{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="pf-rte">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="pf-collection-grid-section pf-wrap">
+    {%- if collection.products.size > 0 -%}
+      <div class="pf-product-grid" style="--pf-grid-cols: {{ columns }};">
+        {%- for product in collection.products -%}
+          <div class="pf-product-grid-item">
+            {% render 'pf-product-card', product: product %}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <div class="pf-pagination">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="pf-pagination__link">
+              {{ 'general.pagination.previous' | t }}
+            </a>
+          {% endif %}
+
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="pf-pagination__link">{{ part.title }}</a>
+            {%- else -%}
+              <span class="pf-pagination__current">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="pf-pagination__link">
+              {{ 'general.pagination.next' | t }}
+            </a>
+          {% endif %}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="pf-text-center">{{ 'collections.general.empty' | t }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .pf-collection-header {
+    padding-top: 32px;
+  }
+
+  .pf-collection-hero {
+    border-radius: var(--pf-radius, 20px);
+    overflow: hidden;
+    margin-bottom: 32px;
+    max-height: 400px;
+  }
+
+  .pf-collection-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pf-collection-intro h1 {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    margin-bottom: 16px;
+    font-family: var(--pf-font-display);
+    font-weight: 700;
+  }
+
+  .pf-collection-intro .pf-rte {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  .pf-collection-grid-section {
+    padding: 48px 0;
+  }
+
+  .pf-product-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--pf-grid-cols, 3), 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .pf-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pf-pagination__link {
+    padding: 8px 12px;
+    border: 1px solid var(--pf-ink, #12100E);
+    border-radius: var(--pf-radius, 20px);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+  }
+
+  .pf-pagination__link:hover {
+    background: var(--pf-ink, #12100E);
+    color: white;
+  }
+
+  .pf-pagination__current {
+    padding: 8px 12px;
+    font-weight: 600;
+  }
+
+  .pf-text-center {
+    text-align: center;
+  }
+
+  @media (max-width: 988px) {
+    .pf-product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 748px) {
+    .pf-collection-grid-section {
+      padding: 32px 0;
+    }
+
+    .pf-product-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .pf-collection-header {
+      padding-top: 16px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Main collection product grid",
+  "tag": "section"
+}
+{% endschema %}

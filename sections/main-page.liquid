@@ -1,0 +1,47 @@
+<div class="pf-page">
+  <div class="pf-page-content pf-wrap">
+    {%- if page.title != blank -%}
+      <h1>{{ page.title }}</h1>
+    {%- endif -%}
+
+    {%- if page.content != blank -%}
+      <div class="pf-rte">
+        {{ page.content }}
+      </div>
+    {%- else -%}
+      <p>{{ 'onboarding.page_content' | t }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .pf-page-content {
+    max-width: 800px;
+    padding: 48px 0;
+    margin: 0 auto;
+  }
+
+  .pf-page-content h1 {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    margin-bottom: 32px;
+    font-family: var(--pf-font-display);
+    font-weight: 700;
+  }
+
+  .pf-page-content .pf-rte {
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 748px) {
+    .pf-page-content {
+      padding: 32px 0;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Main page"
+}
+{% endschema %}

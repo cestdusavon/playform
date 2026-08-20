@@ -1,0 +1,301 @@
+{%- liquid
+  assign product_forms_exist = false
+  if product.has_only_default_variant
+    assign product_forms_exist = true
+  endif
+  for variant in product.variants
+    unless variant.available
+      continue
+    endunless
+    assign product_forms_exist = true
+    break
+  endfor
+-%}
+
+<div class="pf-page">
+  <div class="pf-product-main pf-wrap">
+    <div class="pf-product-media">
+      {%- if product.featured_media -%}
+        {%- liquid
+          assign featured_media_alt = product.featured_media.alt | escape
+          assign featured_media_id = product.featured_media.id
+        -%}
+        <div class="pf-product-media__featured">
+          {{
+            product.featured_media
+            | image_url: width: 800
+            | image_tag:
+              alt: featured_media_alt,
+              class: 'pf-product-media__img',
+              loading: 'eager'
+          }}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="pf-product-media__thumbs">
+            {%- for media in product.media -%}
+              <button
+                class="pf-product-media__thumb"
+                type="button"
+                data-product-media-id="{{ media.id }}"
+                aria-label="{{ media.alt }}"
+              >
+                {{
+                  media
+                  | image_url: width: 100
+                  | image_tag:
+                    alt: media.alt,
+                    loading: 'lazy'
+                }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <div class="pf-product-media__placeholder">
+          {%- liquid
+            echo '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="200" fill="#E8E4DC"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="24" fill="#999">No image</text></svg>'
+          -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pf-product-content">
+      <div class="pf-product-header">
+        <h1 class="pf-product-title">{{ product.title }}</h1>
+        <div class="pf-product-meta">
+          {%- if product.vendor -%}
+            <p class="pf-product-vendor">{{ product.vendor }}</p>
+          {%- endif -%}
+          {%- render 'pf-product-card', product: product, show_badge: true, variant: 'large' -%}
+        </div>
+      </div>
+
+      {%- if product_forms_exist -%}
+        <div class="pf-product-form">
+          {% form 'product', product %}
+            {%- unless product.has_only_default_variant -%}
+              {%- for option in product.options_with_values -%}
+                <div class="pf-product-option">
+                  <label for="Option{{ option.position }}">{{ option.name }}</label>
+                  {%- if option.values.size > 3 -%}
+                    <select id="Option{{ option.position }}" name="options[{{ option.name }}]">
+                      {%- for value in option.values -%}
+                        <option value="{{ value }}">{{ value }}</option>
+                      {%- endfor -%}
+                    </select>
+                  {%- else -%}
+                    <div class="pf-product-values">
+                      {%- for value in option.values -%}
+                        <label class="pf-product-value">
+                          <input
+                            type="radio"
+                            name="options[{{ option.name }}]"
+                            value="{{ value }}"
+                            {% if option.selected_value == value %}checked{% endif %}
+                          >
+                          {{ value }}
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            {%- endunless -%}
+
+            <div class="pf-product-quantity">
+              <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+              <input
+                type="number"
+                id="Quantity"
+                name="quantity"
+                min="1"
+                max="{% if product.selected_or_first_available_variant.quantityAvailable > 0 %}{{ product.selected_or_first_available_variant.quantityAvailable }}{% else %}999{% endif %}"
+                value="1"
+              >
+            </div>
+
+            <button
+              type="submit"
+              name="add"
+              class="pf-btn pf-btn--primary pf-btn--full"
+              {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+            >
+              {%- if product.selected_or_first_available_variant.available -%}
+                {{ 'products.product.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </button>
+          {% endform %}
+        </div>
+      {%- endif -%}
+
+      {%- if product.description != blank -%}
+        <div class="pf-product-description pf-rte">
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .pf-product-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    padding: 48px 0;
+    align-items: start;
+  }
+
+  @media (max-width: 988px) {
+    .pf-product-main {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  .pf-product-media__featured {
+    background: white;
+    border-radius: var(--pf-radius, 20px);
+    overflow: hidden;
+    aspect-ratio: 1;
+  }
+
+  .pf-product-media__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pf-product-media__placeholder {
+    background: white;
+    border-radius: var(--pf-radius, 20px);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pf-product-media__placeholder svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .pf-product-media__thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .pf-product-media__thumb {
+    background: none;
+    border: 2px solid transparent;
+    border-radius: var(--pf-radius, 20px);
+    cursor: pointer;
+    overflow: hidden;
+    aspect-ratio: 1;
+  }
+
+  .pf-product-media__thumb:hover {
+    border-color: var(--pf-ink, #12100E);
+  }
+
+  .pf-product-media__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pf-product-title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    margin: 0 0 24px;
+    font-family: var(--pf-font-display);
+    font-weight: 700;
+  }
+
+  .pf-product-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .pf-product-vendor {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  .pf-product-form {
+    margin-bottom: 32px;
+  }
+
+  .pf-product-option {
+    margin-bottom: 24px;
+  }
+
+  .pf-product-option label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .pf-product-option select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--pf-ink, #12100E);
+    border-radius: var(--pf-radius, 20px);
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+  }
+
+  .pf-product-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pf-product-value {
+    cursor: pointer;
+  }
+
+  .pf-product-value input {
+    margin-right: 8px;
+  }
+
+  .pf-product-quantity {
+    margin-bottom: 24px;
+  }
+
+  .pf-product-quantity label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .pf-product-quantity input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--pf-ink, #12100E);
+    border-radius: var(--pf-radius, 20px);
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .pf-product-description {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--pf-ink, #12100E);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Main product",
+  "tag": "section"
+}
+{% endschema %}

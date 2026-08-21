@@ -1315,6 +1315,81 @@ a {
   text-decoration: line-through;
 }
 
+.pf-field--custom {
+  max-width: 420px;
+}
+
+.pf-field__required {
+  margin-left: 2px;
+  color: var(--pf-red);
+}
+
+.pf-field__help {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--pf-muted);
+}
+
+.pf-field--custom textarea {
+  padding: 12px 14px;
+  border: 2px solid var(--pf-line);
+  border-radius: 12px;
+  font: inherit;
+  background: #fff;
+  resize: vertical;
+}
+
+.pf-field__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.pf-field__check input {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  padding: 0;
+  accent-color: var(--pf-red);
+}
+
+.pf-field__count {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--pf-muted);
+}
+
+.pf-field__count.is-low {
+  color: var(--pf-red);
+  font-weight: 700;
+}
+
+.pf-line-properties {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  color: var(--pf-muted);
+}
+
+.pf-line-properties dt {
+  display: inline;
+  font-weight: 700;
+}
+
+.pf-line-properties dd {
+  display: inline;
+  margin: 0 0 0 4px;
+}
+
+.pf-line-properties div + div {
+  margin-top: 2px;
+}
+
 .pf-product__vendor {
   margin: 0;
   font-size: 0.875rem;

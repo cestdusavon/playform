@@ -27,6 +27,7 @@
                 {%- unless item.variant.title contains 'Default' -%}
                   <br><small>{{ item.variant.title }}</small>
                 {%- endunless -%}
+                {% render 'pf-line-properties', item: item %}
               </td>
               <td>
                 <label class="pf-visually-hidden" for="Qty-{{ forloop.index }}">{{ 'cart.general.quantity' | t }}</label>

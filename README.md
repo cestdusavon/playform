@@ -233,6 +233,7 @@ order is drag-and-drop:
 | Price | Price, with the compare-at price struck through when there is one |
 | Vendor | The product's vendor, if set |
 | Variant picker | One control per option — see below |
+| Personalisation field | One customer input — see below |
 | Buy buttons | Quantity and add to cart — button colour is a setting |
 | Description | The product description |
 | Rental rates | The full rate table from `pf-rental-rates` (table or inline) |
@@ -265,6 +266,51 @@ not exist at all reads "Unavailable".
 If the Buy buttons block is used without a Variant picker it falls back to
 rendering the full variant select itself, so removing the picker in the theme
 editor cannot leave a product unbuyable.
+
+### Personalised products
+
+Keychains, wall signs and anything else cut to order need the customer to type
+something. `templates/product.custom.json` is a ready-made template for that —
+assign it under **Product → Theme template → custom** and it works with no
+further setup.
+
+It is built from **Personalisation field** blocks. Each block is one input, so
+you add as many as the product needs and drag them into order. Per block:
+
+| Setting | What it does |
+| --- | --- |
+| Label | The field name, and the name that prints on the order |
+| Type | Single line, paragraph, choice list, number, or tick box |
+| Choices | Choice list only — comma separated |
+| Placeholder | Greyed-out example text |
+| Help text | A line under the label |
+| Required | Blocks add-to-cart until filled |
+| Character limit | Single line and paragraph — adds a live "12 characters left" counter |
+| Minimum / Maximum | Number only |
+
+The default `custom` template ships with the fields a name sign needs: text to
+make, an optional second line, lettering style, colour, width in cm, free notes
+and a deadline tick box. Rename or delete them to suit — a keychain is
+generally just the text, a colour and a quantity.
+
+**How it reaches you.** Fields submit as Shopify [line item
+properties](https://shopify.dev/docs/api/liquid/objects/line_item#line_item-properties),
+so what the customer typed rides along with the line through cart, checkout and
+the order, with no app. `snippets/pf-line-properties.liquid` prints them under
+the product name in the cart page and the cart drawer.
+
+Two details worth knowing. Optional fields left blank are removed on submit, so
+they don't clutter the order with empty values. And a label starting with an
+underscore is hidden from the customer by Shopify — useful for anything you
+want recorded but not shown.
+
+Like the variant picker, the fields live in their own blocks outside the form
+and are tied to it with `form="PfProductForm"`. Required fields use native
+browser validation, so add-to-cart is blocked before any JavaScript runs.
+
+Not included: file uploads. Shopify can accept a `file` line item property for
+"send us your artwork", but it needs a multipart form and a size limit, and the
+custom orders page currently asks for a link to reference images instead.
 
 **Changing it three ways:**
 

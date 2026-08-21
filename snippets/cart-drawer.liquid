@@ -34,6 +34,7 @@
               {%- unless item.product.has_only_default_variant -%}
                 <p class="pf-drawer-item__variant">{{ item.variant.title }}</p>
               {%- endunless -%}
+              {% render 'pf-line-properties', item: item %}
               <p class="pf-drawer-item__price">
                 {{ 'cart.general.qty' | t }} {{ item.quantity }} &middot; {{ item.final_line_price | money }}
               </p>

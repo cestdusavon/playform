@@ -54,6 +54,12 @@
       "add_to_cart": "Add to cart",
       "sold_out": "Sold out",
       "unavailable": "Unavailable",
+      "choose": "Choose…",
+      "yes": "Yes",
+      "characters_left": {
+        "one": "{{ count }} character left",
+        "other": "{{ count }} characters left"
+      },
       "quantity": "Quantity",
       "description": "Details"
     }

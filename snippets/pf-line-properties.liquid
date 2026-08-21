@@ -1,0 +1,42 @@
+{%- comment -%}
+  Personalisation a customer typed on the product page, shown against a line
+  item in the cart and drawer.
+
+  Accepts:
+  - item: {Object} the line item.
+
+  Shopify hides properties whose name starts with an underscore, and a blank
+  value means the field was optional and left empty.
+{%- endcomment -%}
+
+{%- liquid
+  assign shown = 0
+  for property in item.properties
+    assign first_character = property.first | slice: 0
+    if first_character == '_' or property.last == blank
+      continue
+    endif
+    assign shown = shown | plus: 1
+  endfor
+-%}
+
+{%- if shown > 0 -%}
+  <dl class="pf-line-properties">
+    {%- for property in item.properties -%}
+      {%- assign first_character = property.first | slice: 0 -%}
+      {%- if first_character == '_' or property.last == blank -%}
+        {%- continue -%}
+      {%- endif -%}
+      <div>
+        <dt>{{ property.first | escape }}:</dt>
+        <dd>
+          {%- if property.last contains '/uploads/' -%}
+            <a href="{{ property.last }}" target="_blank" rel="noopener">{{ property.last | split: '/' | last }}</a>
+          {%- else -%}
+            {{ property.last | escape }}
+          {%- endif -%}
+        </dd>
+      </div>
+    {%- endfor -%}
+  </dl>
+{%- endif -%}

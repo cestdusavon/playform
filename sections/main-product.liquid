@@ -137,6 +137,109 @@
               </div>
             {%- endif -%}
 
+          {%- when 'custom_field' -%}
+            {%- liquid
+              assign field_label = block.settings.label | strip
+              assign field_id = 'PfField-' | append: block.id
+              assign field_type = block.settings.field_type
+            -%}
+            {%- if field_label != blank -%}
+              <div class="pf-field pf-field--custom" {{ block.shopify_attributes }}>
+                <label for="{{ field_id }}">
+                  {{ field_label }}
+                  {%- if block.settings.required -%}
+                    <span class="pf-field__required" aria-hidden="true">*</span>
+                  {%- endif -%}
+                </label>
+
+                {%- if block.settings.help != blank -%}
+                  <p class="pf-field__help" id="{{ field_id }}-help">{{ block.settings.help }}</p>
+                {%- endif -%}
+
+                {%- liquid
+                  assign field_name = 'properties[' | append: field_label | append: ']'
+                  assign described = ''
+                  if block.settings.help != blank
+                    assign described = field_id | append: '-help'
+                  endif
+                -%}
+
+                {%- case field_type -%}
+                  {%- when 'textarea' -%}
+                    <textarea
+                      id="{{ field_id }}"
+                      name="{{ field_name | escape }}"
+                      form="PfProductForm"
+                      rows="3"
+                      {% if block.settings.max_length > 0 %}maxlength="{{ block.settings.max_length }}"{% endif %}
+                      {% if block.settings.placeholder != blank %}placeholder="{{ block.settings.placeholder | escape }}"{% endif %}
+                      {% if described != blank %}aria-describedby="{{ described }}"{% endif %}
+                      {% if block.settings.required %}required{% endif %}></textarea>
+
+                  {%- when 'select' -%}
+                    <select
+                      id="{{ field_id }}"
+                      name="{{ field_name | escape }}"
+                      form="PfProductForm"
+                      {% if described != blank %}aria-describedby="{{ described }}"{% endif %}
+                      {% if block.settings.required %}required{% endif %}>
+                      {%- unless block.settings.required -%}
+                        <option value="">{{ 'products.product.choose' | t }}</option>
+                      {%- endunless -%}
+                      {%- assign choices = block.settings.options | split: ',' -%}
+                      {%- for choice in choices -%}
+                        {%- assign choice_value = choice | strip -%}
+                        {%- if choice_value != blank -%}
+                          <option value="{{ choice_value | escape }}">{{ choice_value }}</option>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </select>
+
+                  {%- when 'number' -%}
+                    <input
+                      id="{{ field_id }}"
+                      type="number"
+                      name="{{ field_name | escape }}"
+                      form="PfProductForm"
+                      {% if block.settings.min_number != blank %}min="{{ block.settings.min_number }}"{% endif %}
+                      {% if block.settings.max_number != blank %}max="{{ block.settings.max_number }}"{% endif %}
+                      {% if block.settings.placeholder != blank %}placeholder="{{ block.settings.placeholder | escape }}"{% endif %}
+                      {% if described != blank %}aria-describedby="{{ described }}"{% endif %}
+                      {% if block.settings.required %}required{% endif %}>
+
+                  {%- when 'checkbox' -%}
+                    <label class="pf-field__check">
+                      <input
+                        id="{{ field_id }}"
+                        type="checkbox"
+                        name="{{ field_name | escape }}"
+                        value="{{ 'products.product.yes' | t }}"
+                        form="PfProductForm"
+                        {% if described != blank %}aria-describedby="{{ described }}"{% endif %}
+                        {% if block.settings.required %}required{% endif %}>
+                      <span>{{ block.settings.placeholder | default: field_label }}</span>
+                    </label>
+
+                  {%- else -%}
+                    <input
+                      id="{{ field_id }}"
+                      type="text"
+                      name="{{ field_name | escape }}"
+                      form="PfProductForm"
+                      {% if block.settings.max_length > 0 %}maxlength="{{ block.settings.max_length }}"{% endif %}
+                      {% if block.settings.placeholder != blank %}placeholder="{{ block.settings.placeholder | escape }}"{% endif %}
+                      {% if described != blank %}aria-describedby="{{ described }}"{% endif %}
+                      {% if block.settings.required %}required{% endif %}>
+                {%- endcase -%}
+
+                {%- if block.settings.max_length > 0 -%}
+                  {%- if field_type == 'text' or field_type == 'textarea' -%}
+                    <p class="pf-field__count" data-pf-count-for="{{ field_id }}" data-pf-count-max="{{ block.settings.max_length }}"></p>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
           {%- when 'rental_rates' -%}
             <div {{ block.shopify_attributes }}>
               {% render 'pf-rental-rates', product: product, layout: block.settings.layout %}
@@ -201,6 +304,43 @@
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    var form = document.getElementById('PfProductForm');
+    if (!form) return;
+
+    /* Live character counters. */
+    var counters = document.querySelectorAll('[data-pf-count-for]');
+    Array.prototype.forEach.call(counters, function (counter) {
+      var field = document.getElementById(counter.dataset.pfCountFor);
+      if (!field) return;
+
+      var max = Number(counter.dataset.pfCountMax);
+      var template = {{ 'products.product.characters_left' | t: count: '[n]' | json }};
+
+      function render() {
+        var left = max - field.value.length;
+        counter.textContent = template.replace('[n]', left);
+        counter.classList.toggle('is-low', left <= 5);
+      }
+
+      field.addEventListener('input', render);
+      render();
+    });
+
+    /* An optional field left blank would otherwise reach the order as an empty
+       line item property. Disabling it keeps it off the order entirely. */
+    form.addEventListener('submit', function () {
+      Array.prototype.forEach.call(form.elements, function (element) {
+        if (!element.name || element.name.indexOf('properties[') !== 0) return;
+        if (element.required) return;
+        if (element.type === 'checkbox') return;
+        if (element.value.trim() === '') element.disabled = true;
+      });
+    });
+  })();
+</script>
 
 <script>
   (function () {
@@ -442,6 +582,52 @@
           ],
           "default": "red"
         }
+      ]
+    },
+    {
+      "type": "custom_field",
+      "name": "Personalisation field",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "One input the customer fills in. Add a block per field. The label is what prints on the order, so keep it short and specific — \"Name on sign\", not \"Text\"."
+        },
+        { "type": "text", "id": "label", "label": "Label", "default": "Name on sign" },
+        {
+          "type": "select",
+          "id": "field_type",
+          "label": "Type",
+          "options": [
+            { "value": "text", "label": "Single line" },
+            { "value": "textarea", "label": "Paragraph" },
+            { "value": "select", "label": "Choice list" },
+            { "value": "number", "label": "Number" },
+            { "value": "checkbox", "label": "Tick box" }
+          ],
+          "default": "text"
+        },
+        {
+          "type": "text",
+          "id": "options",
+          "label": "Choices",
+          "info": "Choice list only. Comma separated, e.g. Small, Medium, Large.",
+          "default": "Small, Medium, Large"
+        },
+        { "type": "text", "id": "placeholder", "label": "Placeholder" },
+        { "type": "text", "id": "help", "label": "Help text", "info": "Shown under the label." },
+        { "type": "checkbox", "id": "required", "label": "Required", "default": false },
+        {
+          "type": "range",
+          "id": "max_length",
+          "label": "Character limit",
+          "info": "Single line and paragraph only. 0 for no limit.",
+          "min": 0,
+          "max": 200,
+          "step": 5,
+          "default": 0
+        },
+        { "type": "text", "id": "min_number", "label": "Minimum", "info": "Number only." },
+        { "type": "text", "id": "max_number", "label": "Maximum", "info": "Number only." }
       ]
     },
     { "type": "description", "name": "Description", "limit": 1 },

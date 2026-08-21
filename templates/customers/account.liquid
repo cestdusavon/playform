@@ -1,0 +1,99 @@
+{%- liquid
+  assign order_count = customer.orders_count | default: 0
+
+  assign spent = 0
+  for order in customer.orders
+    unless order.cancelled
+      assign spent = spent | plus: order.total_price
+    endunless
+  endfor
+-%}
+
+<div class="pf-page pf-wrap">
+  {% render 'pf-account-nav', current: 'account' %}
+
+  <div class="pf-stat-row">
+    <div class="pf-stat pf-stat--red">
+      <span class="pf-stat__value">{{ order_count }}</span>
+      <span class="pf-stat__label">{{ 'customer.account.stat_orders' | t }}</span>
+    </div>
+    <div class="pf-stat pf-stat--green">
+      <span class="pf-stat__value">{{ spent | money_without_trailing_zeros }}</span>
+      <span class="pf-stat__label">{{ 'customer.account.stat_spent' | t }}</span>
+    </div>
+    {%- if customer.orders.size > 0 -%}
+      {%- assign first_order = customer.orders | last -%}
+      <div class="pf-stat pf-stat--blue">
+        <span class="pf-stat__value">{{ first_order.created_at | date: '%b %Y' }}</span>
+        <span class="pf-stat__label">{{ 'customer.account.stat_since' | t }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if customer.b2b? -%}
+    <div class="pf-trade-panel">
+      <div class="pf-trade-panel__grid">
+        {%- if customer.current_company.name != blank -%}
+          <div>
+            <p class="pf-trade-panel__label">{{ 'customer.account.company' | t }}</p>
+            <p class="pf-trade-panel__value">{{ customer.current_company.name }}</p>
+          </div>
+        {%- endif -%}
+        {%- if customer.current_location.name != blank -%}
+          <div>
+            <p class="pf-trade-panel__label">{{ 'customer.account.location' | t }}</p>
+            <p class="pf-trade-panel__value">{{ customer.current_location.name }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+      <p class="pf-trade-panel__note">{{ 'customer.account.trade_note' | t }}</p>
+    </div>
+  {%- endif -%}
+
+  <div class="pf-account-grid">
+    <section class="pf-account-main">
+      <h2 class="pf-display pf-account-heading">{{ 'customer.account.orders' | t }}</h2>
+
+      {%- if customer.orders.size > 0 -%}
+        <ul class="pf-order-list" role="list">
+          {%- for order in customer.orders -%}
+            <li class="pf-order-card">
+              <a class="pf-order-card__link" href="{{ order.customer_url }}">
+                <span class="pf-order-card__number">{{ order.name }}</span>
+                <span class="pf-order-card__date">{{ order.created_at | date: '%-d %b %Y' }}</span>
+              </a>
+              <div class="pf-order-card__status">
+                {% render 'pf-order-status', status: order.financial_status_label, kind: 'financial' %}
+                {% render 'pf-order-status', status: order.fulfillment_status_label, kind: 'fulfillment' %}
+              </div>
+              <span class="pf-order-card__total">{{ order.total_price | money }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <div class="pf-empty">
+          <p>{{ 'customer.account.no_orders' | t }}</p>
+          <a class="pf-btn" href="{{ routes.all_products_collection_url }}">
+            {{ 'customer.account.start_shopping' | t }}
+          </a>
+        </div>
+      {%- endif -%}
+    </section>
+
+    <aside class="pf-account-side">
+      <h2 class="pf-display pf-account-heading">{{ 'customer.account.default_address' | t }}</h2>
+
+      {%- if customer.default_address -%}
+        <address class="pf-address-card">
+          {{ customer.default_address | format_address }}
+        </address>
+      {%- else -%}
+        <p class="pf-muted">{{ 'customer.account.no_default_address' | t }}</p>
+      {%- endif -%}
+
+      <a class="pf-btn pf-btn--outline pf-btn--full" href="{{ routes.account_addresses_url }}">
+        {{ 'customer.account.view_addresses' | t }}
+      </a>
+    </aside>
+  </div>
+</div>

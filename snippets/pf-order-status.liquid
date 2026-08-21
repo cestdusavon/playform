@@ -1,0 +1,42 @@
+{%- comment -%}
+  Colour-coded status pill.
+
+  Accepts:
+  - status: {String} the raw status label.
+  - kind: {String} 'financial' or 'fulfillment' — picks the colour mapping.
+{%- endcomment -%}
+
+{%- liquid
+  assign key = status | downcase
+  assign tone = 'yellow'
+
+  if kind == 'financial'
+    case key
+      when 'paid'
+        assign tone = 'green'
+      when 'refunded', 'voided'
+        assign tone = 'purple'
+      when 'partially_refunded', 'partially_paid'
+        assign tone = 'blue'
+      when 'pending', 'authorized'
+        assign tone = 'yellow'
+      else
+        assign tone = 'red'
+    endcase
+  else
+    case key
+      when 'fulfilled', 'complete'
+        assign tone = 'green'
+      when 'partial', 'in_progress'
+        assign tone = 'blue'
+      when 'unfulfilled'
+        assign tone = 'yellow'
+      when 'restocked'
+        assign tone = 'purple'
+      else
+        assign tone = 'yellow'
+    endcase
+  endif
+-%}
+
+<span class="pf-status pf-status--{{ tone }}">{{ status }}</span>

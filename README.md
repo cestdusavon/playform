@@ -344,10 +344,73 @@ menu is set, they get that menu instead. Everyone else gets the consumer one.
 the standard product grid plus a trade terms note. Assign it to a collection in
 the admin under **Collections → … → Theme template**.
 
+## Cart
+
+`templates/cart.liquid` is the last page the theme controls before Shopify takes
+over. Quantity steppers update the line and the subtotal through the Cart API
+without a page reload, and the whole thing still works as a plain form when
+JavaScript is off — the **Update cart** button is the fallback, not decoration.
+
+Personalisation typed on a product page shows under each line
+(`snippets/pf-line-properties.liquid`), so nobody checks out unsure of what they
+asked for. There is also a collapsible order note, and an empty state that says
+something rather than nothing.
+
+**Free shipping meter.** Off by default. **Theme settings → Cart** turns on a
+brick-striped bar counting up to a threshold you set. The bar is display only —
+set the actual rate under **Settings → Shipping**, and keep the two numbers in
+step yourself.
+
+### A note on the checkout itself
+
+The checkout is not part of the theme and cannot be styled from here. Shopify
+serves it from its own infrastructure, and `checkout.liquid` was Plus-only and
+has since been retired in favour of Checkout Extensibility.
+
+To brand it, use **Settings → Checkout → Customize**, which covers the logo,
+colours, corner radius and typography — enough to carry the palette across.
+Anything beyond that (custom fields, upsells, custom banners) needs checkout UI
+extensions, which are apps rather than theme files.
+
+## Customer accounts
+
+Seven templates under `templates/customers/`, all built from the brick palette:
+
+| Template | Page |
+| --- | --- |
+| `login.liquid` | Sign in, with the password reset form folded into the same page |
+| `register.liquid` | Create an account |
+| `account.liquid` | Dashboard — stats, orders, default address |
+| `order.liquid` | A single order, with line items, totals and addresses |
+| `addresses.liquid` | Add, edit and delete addresses |
+| `reset_password.liquid` | Set a new password from an emailed link |
+| `activate_account.liquid` | Activate an invited account |
+
+The dashboard opens with three coloured stat bricks — order count, lifetime
+spend, customer since — then the order list, where each order carries two
+colour-coded pills for payment and fulfilment status
+(`snippets/pf-order-status.liquid`). Sign-in has a show/hide password toggle and
+swaps to the reset form in place instead of navigating away, and the address
+forms expand inline rather than on their own page.
+
+### B2B accounts
+
+`snippets/pf-account-nav.liquid` checks `customer.b2b?`. A customer on a Shopify
+B2B company account gets a **Trade account** pill next to their name, their
+company name, and an extra nav link into the hire stock. The dashboard adds a
+panel showing the company and location they are ordering for, from
+`customer.current_company` and `customer.current_location`.
+
+**Which login your B2B customers actually see depends on a store setting.**
+These templates are the classic customer accounts. If the store uses **new
+customer accounts** — which is the default for B2B, and is set under **Settings
+→ Customer accounts** — Shopify serves its own hosted login and account pages
+and none of these templates are used. Classic accounts still render everything
+above, B2B panels included. Check that setting before judging the result.
+
 ## Supporting templates
 
-`collection`, `list-collections`, `cart`, `search`, `blog`, `article`, `page`,
-`404`, `gift_card` and `password` are minimal working templates so the theme
-uploads and every link on the home page resolves. They
-share the home page's palette and type but carry no bespoke layout. Customer
-account templates are not included — Shopify's defaults handle those pages.
+`collection`, `list-collections`, `search`, `blog`, `article`, `page`, `404`,
+`gift_card` and `password` are minimal working templates so the theme uploads
+and every link on the home page resolves. They share the home page's palette and
+type but carry no bespoke layout.

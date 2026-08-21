@@ -201,6 +201,25 @@
     ]
   },
   {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "free_shipping_enabled",
+        "label": "Show free shipping progress",
+        "info": "A bar on the cart page counting up to the threshold. Set the actual rate under Settings → Shipping.",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping over",
+        "info": "In your store currency, numbers only. For example 75.",
+        "default": "75"
+      }
+    ]
+  },
+  {
     "name": "Brand assets",
     "settings": [
       {

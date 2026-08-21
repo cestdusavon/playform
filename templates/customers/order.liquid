@@ -1,0 +1,107 @@
+<div class="pf-page pf-wrap">
+  <a class="pf-back-link" href="{{ routes.account_url }}">{{ 'customer.order.back' | t }}</a>
+
+  <div class="pf-order-head">
+    <div>
+      <h1 class="pf-display pf-page__title">{{ 'customer.order.title' | t: name: order.name }}</h1>
+      <p class="pf-muted">
+        {{ 'customer.order.placed' | t: date: order.created_at | date: '%-d %B %Y' }}
+      </p>
+    </div>
+    <div class="pf-order-head__status">
+      {% render 'pf-order-status', status: order.financial_status_label, kind: 'financial' %}
+      {% render 'pf-order-status', status: order.fulfillment_status_label, kind: 'fulfillment' %}
+    </div>
+  </div>
+
+  {%- if order.cancelled -%}
+    <div class="pf-notice pf-notice--error" role="status">
+      <p>{{ 'customer.order.cancelled' | t: date: order.cancelled_at | date: '%-d %B %Y' }}</p>
+      {%- if order.cancel_reason != blank -%}
+        <p>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason_label }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="pf-order-grid">
+    <section class="pf-order-items">
+      <ul class="pf-order-lines" role="list">
+        {%- for line_item in order.line_items -%}
+          <li class="pf-order-line">
+            <div class="pf-order-line__media">
+              {%- if line_item.image != blank -%}
+                {{ line_item.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: line_item.title | escape }}
+              {%- endif -%}
+            </div>
+
+            <div class="pf-order-line__body">
+              <p class="pf-order-line__title">{{ line_item.product.title | default: line_item.title }}</p>
+              {%- unless line_item.variant.title contains 'Default' -%}
+                <p class="pf-muted">{{ line_item.variant.title }}</p>
+              {%- endunless -%}
+              {% render 'pf-line-properties', item: line_item %}
+
+              {%- if line_item.fulfillment -%}
+                {%- if line_item.fulfillment.tracking_url -%}
+                  <a class="pf-order-line__track" href="{{ line_item.fulfillment.tracking_url }}">
+                    {{ 'customer.order.track' | t }}
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+
+            <div class="pf-order-line__figures">
+              <span class="pf-muted">{{ line_item.quantity }} &times; {{ line_item.price | money }}</span>
+              <span class="pf-order-line__total">{{ line_item.final_line_price | money }}</span>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </section>
+
+    <aside class="pf-order-side">
+      <div class="pf-summary">
+        <div class="pf-summary__row">
+          <span>{{ 'customer.order.subtotal' | t }}</span>
+          <span>{{ order.line_items_subtotal_price | money }}</span>
+        </div>
+
+        {%- for discount_application in order.discount_applications -%}
+          <div class="pf-summary__row pf-summary__row--discount">
+            <span>{{ 'customer.order.discount' | t }} &middot; {{ discount_application.title }}</span>
+            <span>&minus;{{ discount_application.total_allocated_amount | money }}</span>
+          </div>
+        {%- endfor -%}
+
+        {%- for shipping_method in order.shipping_methods -%}
+          <div class="pf-summary__row">
+            <span>{{ 'customer.order.shipping' | t }} &middot; {{ shipping_method.title }}</span>
+            <span>{{ shipping_method.price | money }}</span>
+          </div>
+        {%- endfor -%}
+
+        {%- for tax_line in order.tax_lines -%}
+          <div class="pf-summary__row">
+            <span>{{ 'customer.order.tax' | t }} &middot; {{ tax_line.title }}</span>
+            <span>{{ tax_line.price | money }}</span>
+          </div>
+        {%- endfor -%}
+
+        <div class="pf-summary__row pf-summary__row--total">
+          <span>{{ 'customer.order.total' | t }}</span>
+          <span>{{ order.total_price | money }}</span>
+        </div>
+      </div>
+
+      <div class="pf-address-block">
+        <h2 class="pf-display pf-account-heading">{{ 'customer.order.shipping_address' | t }}</h2>
+        <address class="pf-address-card">{{ order.shipping_address | format_address }}</address>
+      </div>
+
+      <div class="pf-address-block">
+        <h2 class="pf-display pf-account-heading">{{ 'customer.order.billing_address' | t }}</h2>
+        <address class="pf-address-card">{{ order.billing_address | format_address }}</address>
+      </div>
+    </aside>
+  </div>
+</div>

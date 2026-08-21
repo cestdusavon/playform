@@ -57,8 +57,50 @@
     });
   }
 
+  /* The dropdowns open on their own in CSS. This only keeps aria-expanded
+     truthful for screen readers and lets Escape close an open menu. */
+  function bindDropdowns(root) {
+    var parents = root.querySelectorAll('.pf-header__item--parent');
+
+    Array.prototype.forEach.call(parents, function (item) {
+      var trigger = item.querySelector('[data-pf-menu-parent]');
+      if (!trigger) return;
+
+      function setExpanded(open) {
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      item.addEventListener('mouseenter', function () {
+        item.removeAttribute('data-closed');
+        setExpanded(true);
+      });
+      item.addEventListener('mouseleave', function () {
+        item.removeAttribute('data-closed');
+        setExpanded(false);
+      });
+      item.addEventListener('focusin', function () {
+        setExpanded(true);
+      });
+      item.addEventListener('focusout', function (event) {
+        if (item.contains(event.relatedTarget)) return;
+        item.removeAttribute('data-closed');
+        setExpanded(false);
+      });
+
+      /* Escape has to force it shut: focus stays on the trigger, which would
+         otherwise keep :focus-within matching. */
+      item.addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape') return;
+        item.setAttribute('data-closed', 'true');
+        setExpanded(false);
+        trigger.focus();
+      });
+    });
+  }
+
   function init(root) {
     bindMobileNav(root || document);
+    bindDropdowns(root || document);
     bindOverlays();
   }
 

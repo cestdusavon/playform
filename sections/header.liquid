@@ -43,13 +43,54 @@
       <nav aria-label="{{ 'accessibility.primary_nav' | t }}">
         <ul class="pf-header__nav">
           {%- for link in linklists[menu].links -%}
-            <li>
-              <a class="pf-header__link" href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+            {%- assign has_children = false -%}
+            {%- if link.links.size > 0 -%}
+              {%- assign has_children = true -%}
+            {%- endif -%}
+
+            <li class="pf-header__item{% if has_children %} pf-header__item--parent{% endif %}">
+              <a
+                class="pf-header__link"
+                href="{{ link.url }}"
+                {% if link.current %}aria-current="page"{% endif %}
+                {% if has_children %}aria-expanded="false" aria-controls="PfMenu-{{ forloop.index }}" data-pf-menu-parent{% endif %}>
                 {{ link.title }}
-                {%- if link.links.size > 0 -%}
+                {%- if has_children -%}
                   {% render 'pf-icon', icon: 'chevron' %}
                 {%- endif -%}
               </a>
+
+              {%- if has_children -%}
+                <div class="pf-menu" id="PfMenu-{{ forloop.index }}">
+                  <ul class="pf-menu__list">
+                    {%- for child in link.links -%}
+                      <li class="pf-menu__group">
+                        <a
+                          class="pf-menu__link{% if child.links.size > 0 %} pf-menu__link--group{% endif %}"
+                          href="{{ child.url }}"
+                          {% if child.current %}aria-current="page"{% endif %}>
+                          {{ child.title }}
+                        </a>
+
+                        {%- if child.links.size > 0 -%}
+                          <ul class="pf-menu__sublist">
+                            {%- for grandchild in child.links -%}
+                              <li>
+                                <a
+                                  class="pf-menu__link pf-menu__link--sub"
+                                  href="{{ grandchild.url }}"
+                                  {% if grandchild.current %}aria-current="page"{% endif %}>
+                                  {{ grandchild.title }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
             </li>
           {%- endfor -%}
         </ul>
@@ -85,7 +126,31 @@
     <nav id="PfMobileNav" aria-label="{{ 'accessibility.primary_nav' | t }}">
       <ul class="pf-header__mobile pf-wrap">
         {%- for link in linklists[menu].links -%}
-          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          <li>
+            <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+
+            {%- if link.links.size > 0 -%}
+              <ul class="pf-header__mobile-sub">
+                {%- for child in link.links -%}
+                  <li>
+                    <a href="{{ child.url }}" {% if child.current %}aria-current="page"{% endif %}>{{ child.title }}</a>
+
+                    {%- if child.links.size > 0 -%}
+                      <ul class="pf-header__mobile-sub">
+                        {%- for grandchild in child.links -%}
+                          <li>
+                            <a href="{{ grandchild.url }}" {% if grandchild.current %}aria-current="page"{% endif %}>
+                              {{ grandchild.title }}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
         {%- endfor -%}
       </ul>
     </nav>

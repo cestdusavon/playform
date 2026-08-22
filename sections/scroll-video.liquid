@@ -93,6 +93,8 @@
     var inView = false;
     var ticking = false;
     var seekBusy = false;
+    var seekStamp = 0;
+    var lastTick = 0;
 
     /* One seek at a time: issuing a new one every animation frame cancels the
        seek already in flight, and the decoder never gets to present a frame —
@@ -110,19 +112,34 @@
       return Math.min(1, Math.max(0, -rect.top / span));
     }
 
-    function frame() {
-      if (!inView || !duration) { ticking = false; return; }
+    function frame(now) {
+      if (!inView || !duration) { ticking = false; lastTick = 0; return; }
+
+      var dt = lastTick ? Math.min((now - lastTick) / 1000, 0.1) : 1 / 60;
+      lastTick = now;
 
       target = progress() * duration;
-      /* Ease toward the target so wheel steps read as motion, not jump cuts. */
-      current += (target - current) * 0.22;
-      if (Math.abs(target - current) < 0.003) current = target;
+
+      /* Time-based easing, so 120Hz screens converge no faster than 60Hz
+         ones. The rate grows with the gap: a slow scroll glides, a hard
+         flick catches up instead of dragging a long tail behind it. */
+      var gap = target - current;
+      var rate = 8 + Math.min(24, Math.abs(gap) * 10);
+      current += gap * (1 - Math.exp(-rate * dt));
+      if (Math.abs(target - current) < 0.01) current = target;
+
+      /* A seek can die quietly (source switch, decoder hiccup); do not let a
+         lost `seeked` event freeze the scrub for good. */
+      if (seekBusy && now - seekStamp > 250 && !video.seeking) seekBusy = false;
 
       /* Never seek to the very end: currentTime == duration fires `ended`,
-         and some browsers then snap the frame back to the start. */
-      var next = Math.min(current, duration - 0.05);
-      if (!seekBusy && Math.abs(next - video.currentTime) > 0.01) {
+         and some browsers then snap the frame back to the start. Skip seeks
+         smaller than half a source frame — they cost a decode and change
+         nothing on screen. */
+      var next = Math.min(Math.max(current, 0), duration - 0.05);
+      if (!seekBusy && Math.abs(next - video.currentTime) > 0.02) {
         seekBusy = true;
+        seekStamp = now;
         video.currentTime = next;
       }
 
@@ -210,8 +227,8 @@
       "max": 500,
       "step": 25,
       "unit": "vh",
-      "default": 300,
-      "info": "How much scrolling plays the whole film. Bigger = slower."
+      "default": 200,
+      "info": "How much scrolling plays the whole film. 200vh reads the 10-second film in about five seconds of natural scrolling; bigger = slower."
     },
     { "type": "header", "content": "Overlay" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow" },

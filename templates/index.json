@@ -171,7 +171,7 @@
     "scroll-film": {
       "type": "scroll-video",
       "settings": {
-        "scroll_length": 300,
+        "scroll_length": 200,
         "eyebrow": "Watch it come together",
         "heading": "Built Brick by Brick",
         "heading_rainbow": true,

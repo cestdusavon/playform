@@ -1,130 +1,92 @@
-<footer class="pf-footer">
-  <div class="pf-footer__grid" style="--pf-footer-cols: {{ section.blocks.size }};">
+<footer class="pf-footer" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap pf-footer__inner">
     {%- for block in section.blocks -%}
-      <div class="pf-footer__panel pf-footer__panel--{{ block.settings.color }}" {{ block.shopify_attributes }}>
-        {%- case block.type -%}
-          {%- when 'mark' -%}
-            <div class="pf-footer__mark">
-              {%- assign mark = block.settings.image | default: settings.logo -%}
-              {%- if mark != blank -%}
-                {%- assign mark_alt = mark.alt | default: shop.name | escape -%}
-                {{ mark | image_url: width: 400 | image_tag: loading: 'lazy', widths: '130, 260, 400', sizes: '130px', alt: mark_alt }}
-              {%- else -%}
-                {% render 'pf-brick-mark' %}
-              {%- endif -%}
-            </div>
-
-          {%- when 'menu' -%}
-            {%- if block.settings.title != blank -%}
-              <h2 class="pf-footer__title">{{ block.settings.title | escape }}</h2>
+      {%- case block.type -%}
+        {%- when 'mark' -%}
+          <a class="pf-footer__mark" href="{{ routes.root_url }}" {{ block.shopify_attributes }}>
+            {%- assign mark = block.settings.image | default: settings.logo -%}
+            {%- if mark != blank -%}
+              {%- assign mark_alt = mark.alt | default: shop.name | escape -%}
+              {{
+                mark
+                | image_url: width: 480
+                | image_tag: loading: 'lazy', widths: '160, 320, 480', sizes: '160px', alt: mark_alt
+              }}
+            {%- else -%}
+              {% render 'pf-brick-mark' %}
+              <span class="pf-visually-hidden">{{ shop.name }}</span>
             {%- endif -%}
-            {%- if block.settings.menu != blank -%}
+          </a>
+
+        {%- when 'menu' -%}
+          {%- if block.settings.menu != blank -%}
+            <nav class="pf-footer__nav" aria-label="{{ block.settings.title | default: shop.name | escape }}" {{ block.shopify_attributes }}>
               <ul class="pf-footer__list">
                 {%- for link in linklists[block.settings.menu].links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  <li>
+                    <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+                  </li>
                 {%- endfor -%}
               </ul>
-            {%- endif -%}
-
-          {%- when 'promo' -%}
-            {%- if block.settings.title != blank -%}
-              <h2 class="pf-footer__title">{{ block.settings.title | escape }}</h2>
-            {%- endif -%}
-            {%- if block.settings.text != blank -%}
-              <p class="pf-footer__text">{{ block.settings.text | escape }}</p>
-            {%- endif -%}
-            {%- if block.settings.button_label != blank -%}
-              {%- assign promo_link = block.settings.button_link | default: settings.social_etsy -%}
-              <a class="pf-btn pf-btn--white" href="{{ promo_link }}">{{ block.settings.button_label }}</a>
-            {%- endif -%}
-        {%- endcase -%}
-      </div>
+            </nav>
+          {%- endif -%}
+      {%- endcase -%}
     {%- endfor -%}
   </div>
 
-  <div class="pf-footer__legal">
-    &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}.
-    {{ section.settings.legal_text }}
-    {%- if section.settings.show_policies -%}
-      {%- for policy in shop.policies -%}
-        {%- if policy != blank %} <a href="{{ policy.url }}">{{ policy.title }}</a>{% endif -%}
-      {%- endfor -%}
-    {%- endif -%}
-  </div>
+  {%- if section.settings.legal_text != blank or section.settings.show_policies -%}
+    <div class="pf-wrap pf-footer__legal">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.legal_text }}</span>
+
+      {%- if section.settings.show_policies -%}
+        <span class="pf-footer__policies">
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank -%}
+              <a href="{{ policy.url }}">{{ policy.title }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </footer>
 
 {% schema %}
 {
   "name": "Footer",
   "tag": "div",
-  "max_blocks": 6,
+  "max_blocks": 3,
   "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
     { "type": "text", "id": "legal_text", "label": "Legal text", "default": "All rights reserved." },
-    { "type": "checkbox", "id": "show_policies", "label": "Link store policies", "default": true }
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Link store policies",
+      "info": "Adds whichever policies you have written under Settings → Policies.",
+      "default": true
+    }
   ],
   "blocks": [
     {
       "type": "mark",
-      "name": "Logo panel",
+      "name": "Logo",
+      "limit": 1,
       "settings": [
         {
-          "type": "select",
-          "id": "color",
-          "label": "Colour",
-          "options": [
-            { "value": "red", "label": "Red" },
-            { "value": "yellow", "label": "Yellow" },
-            { "value": "blue", "label": "Blue" },
-            { "value": "green", "label": "Green" },
-            { "value": "purple", "label": "Purple" }
-          ],
-          "default": "red"
-        },
-        { "type": "image_picker", "id": "image", "label": "Logo", "info": "Falls back to the theme logo, then to a brick mark." }
+          "type": "image_picker",
+          "id": "image",
+          "label": "Logo",
+          "info": "Falls back to the theme logo, then to a brick mark."
+        }
       ]
     },
     {
       "type": "menu",
-      "name": "Menu panel",
+      "name": "Menu",
       "settings": [
-        {
-          "type": "select",
-          "id": "color",
-          "label": "Colour",
-          "options": [
-            { "value": "red", "label": "Red" },
-            { "value": "yellow", "label": "Yellow" },
-            { "value": "blue", "label": "Blue" },
-            { "value": "green", "label": "Green" },
-            { "value": "purple", "label": "Purple" }
-          ],
-          "default": "yellow"
-        },
-        { "type": "text", "id": "title", "label": "Title", "default": "Shop" },
+        { "type": "text", "id": "title", "label": "Accessible label", "info": "Not shown. Names the menu for screen readers.", "default": "Footer" },
         { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
-      ]
-    },
-    {
-      "type": "promo",
-      "name": "Promo panel",
-      "settings": [
-        {
-          "type": "select",
-          "id": "color",
-          "label": "Colour",
-          "options": [
-            { "value": "red", "label": "Red" },
-            { "value": "yellow", "label": "Yellow" },
-            { "value": "blue", "label": "Blue" },
-            { "value": "green", "label": "Green" },
-            { "value": "purple", "label": "Purple" }
-          ],
-          "default": "purple"
-        },
-        { "type": "text", "id": "title", "label": "Title", "default": "Shop our Etsy" },
-        { "type": "textarea", "id": "text", "label": "Text", "default": "Find even more custom pieces on our Etsy shop!" },
-        { "type": "text", "id": "button_label", "label": "Button label", "default": "Visit Etsy shop" },
-        { "type": "url", "id": "button_link", "label": "Button link", "info": "Falls back to the Etsy URL in theme settings." }
       ]
     }
   ],

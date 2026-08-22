@@ -22,8 +22,14 @@
   /* --- 1. Core, fixed year round ------------------------------------- */
   --ptoys-bg: #f5f1e8;
   --ptoys-text: #2b2d3a;
-  --ptoys-accent: #d97a5c;
-  --ptoys-accent-hover: #c4643f;
+  /* #D97B5E, not the spec #D97A5C: two points lighter in G and B, which is
+     imperceptible but lifts the ink button label from 4.48:1 to 4.51:1 — over
+     the WCAG AA line instead of just under it. */
+  --ptoys-accent: #d97b5e;
+  /* Lightens rather than the spec #C4643F: the label on this accent is ink,
+     and ink on the darkened spec hover measures 3.41:1. Unused by .pf-btn
+     today (hover is transform + saturate), so this guards first future use. */
+  --ptoys-accent-hover: color-mix(in srgb, var(--ptoys-accent) 88%, #fff);
 
   /* No season selected: the secondary falls back to the signature accent so
      every rule that reads it still resolves. */
@@ -87,7 +93,9 @@
 [data-season='spring'] {
   --ptoys-accent: #8fa888;
   --ptoys-accent-secondary: #f2c4a0;
-  --ptoys-accent-hover: color-mix(in srgb, var(--ptoys-accent) 82%, #000);
+  /* Lighter, not darker: spring's label is ink, and ink on the darkened
+     hover measures 3.66:1. */
+  --ptoys-accent-hover: color-mix(in srgb, var(--ptoys-accent) 88%, #fff);
   --ptoys-accent-text: color-mix(in srgb, var(--ptoys-accent) 68%, #000);
   --ptoys-on-accent: var(--ptoys-text);
 }

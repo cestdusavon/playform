@@ -25,6 +25,8 @@
       autoplay
       loop
       preload="auto"
+      disablepictureinpicture
+      disableremoteplayback
       {% if section.settings.poster != blank %}
         poster="{{ section.settings.poster | image_url: width: 1600 }}"
       {% endif %}
@@ -156,6 +158,19 @@
     }
 
     function arm() {
+      /* iOS draws a start-playback button over any video that has never
+         played, and pausing before autoplay gets going leaves it stuck there
+         for good. Let playback actually begin, then take the film over. */
+      var started = video.play();
+
+      if (started && typeof started.then === 'function') {
+        started.then(takeOver, takeOver);
+      } else {
+        takeOver();
+      }
+    }
+
+    function takeOver() {
       /* Scrubbing takes over from the no-JS autoplay loop. */
       video.pause();
       video.removeAttribute('autoplay');

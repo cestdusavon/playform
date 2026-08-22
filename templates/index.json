@@ -22,7 +22,7 @@
             "color": "yellow",
             "title": "Toys",
             "text": "3D-printed collectibles, characters, puzzles, desk pieces & more.",
-            "emoji": "🤖",
+            "emoji": "\ud83e\udd16",
             "button_label": "Shop toys"
           }
         },
@@ -32,7 +32,7 @@
             "color": "red",
             "title": "Props",
             "text": "Oversized event pieces, party displays, themed props & rentals.",
-            "emoji": "⭐",
+            "emoji": "\u2b50",
             "button_label": "Explore props",
             "link": "/pages/rentals"
           }
@@ -43,7 +43,7 @@
             "color": "purple",
             "title": "Nursery signs",
             "text": "Custom names, wall lettering, room signs & decorative pieces.",
-            "emoji": "🪧",
+            "emoji": "\ud83e\udea7",
             "button_label": "Shop nursery"
           }
         }
@@ -78,7 +78,7 @@
             "color": "blue",
             "title": "Designed",
             "text": "Original pieces modeled specifically for Playform.",
-            "emoji": "🖥️"
+            "emoji": "\ud83d\udda5\ufe0f"
           }
         },
         "printed": {
@@ -87,7 +87,7 @@
             "color": "yellow",
             "title": "Printed + cut",
             "text": "3D printing, resin printing and precision laser cutting.",
-            "emoji": "🖨️"
+            "emoji": "\ud83d\udda8\ufe0f"
           }
         },
         "finished": {
@@ -96,7 +96,7 @@
             "color": "red",
             "title": "Finished by hand",
             "text": "Sanded, assembled, painted and detailed individually.",
-            "emoji": "🖌️"
+            "emoji": "\ud83d\udd8c\ufe0f"
           }
         },
         "yours": {
@@ -105,7 +105,7 @@
             "color": "green",
             "title": "Made for you",
             "text": "Custom colors, names, sizing and designs.",
-            "emoji": "🎁"
+            "emoji": "\ud83c\udf81"
           }
         }
       },
@@ -165,12 +165,30 @@
       "settings": {
         "background": "#F8F4EA",
         "handle": "@playform.toys",
-        "follow_label": "Follow the mess →"
+        "follow_label": "Follow the mess \u2192"
+      }
+    },
+    "scroll-film": {
+      "type": "scroll-video",
+      "settings": {
+        "scroll_length": 300,
+        "eyebrow": "Watch it come together",
+        "heading": "Built Brick by Brick",
+        "heading_rainbow": true,
+        "rainbow_start": "red",
+        "text": "Every piece starts flat and gets stacked, glued and finished by hand.",
+        "button_label": "See how we make it",
+        "button_link": "/pages/about",
+        "button_color": "yellow",
+        "overlay_position": "bottom-left",
+        "show_hint": true,
+        "hint_text": "Scroll to play"
       }
     }
   },
   "order": [
     "hero",
+    "scroll-film",
     "categories",
     "featured",
     "process",

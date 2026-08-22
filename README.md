@@ -19,7 +19,27 @@ plain so the storefront works end to end without competing with it.
 | 6 | Instagram strip | `sections/instagram-strip.liquid` |
 
 The announcement ticker and header live in `sections/header-group.json`; the
-colour-blocked footer lives in `sections/footer-group.json`.
+footer lives in `sections/footer-group.json`.
+
+### The scroll film
+
+`sections/scroll-video.liquid` sits directly under the hero: a full-screen
+film pinned to the viewport while the visitor scrolls through a tall track,
+with the scroll position driving `video.currentTime`. Scroll down and the film
+plays; scroll back up and it rewinds. The **Scroll length** setting controls
+the exchange rate — 300vh means three screen-heights of scrolling play the
+whole film.
+
+It ships with the Playform film bundled as a theme asset
+(`assets/playform-scroll-video.mp4`, remuxed for fast start so seeking works
+while it streams), and the **Video** setting swaps in any upload from the
+admin. Keep replacement films short and silent — around ten seconds scrubs
+beautifully; long files scrub coarsely and download slowly.
+
+Fallbacks: with JavaScript off the video is a muted autoplay loop, and
+`prefers-reduced-motion` gets that same loop in normal page flow instead of
+the pinned scrub. The overlay (eyebrow, rainbow heading, text, button) and the
+"Scroll to play" hint are all section settings.
 
 ## Setting it up
 

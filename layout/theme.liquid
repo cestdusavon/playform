@@ -12,16 +12,55 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
+    {%- liquid
+      comment
+        The title is assembled from a guaranteed-non-blank base so a page
+        with no SEO title can never render as "– shop name" with a leading
+        separator. Collections fall back to their own title, everything
+        else to the shop name.
+      endcomment
+      assign pf_meta_title = page_title | strip
+      if pf_meta_title == blank and collection
+        assign pf_meta_title = collection.title
+      endif
+      if pf_meta_title == blank
+        assign pf_meta_title = shop.name
+      endif
+      assign pf_tag_list = ''
+      if current_tags
+        assign pf_tag_list = current_tags | join: ', '
+      endif
+    -%}
     <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {{ pf_meta_title }}
+      {%- if pf_tag_list != blank %} &ndash; {{ 'general.meta.tags' | t: tags: pf_tag_list }}{% endif -%}
       {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- unless pf_meta_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
+    {%- liquid
+      assign pf_meta_description = page_description
+      if request.page_type == 'collection' and pf_meta_description == blank and collection.description != blank
+        assign pf_meta_description = collection.description | strip_html | strip_newlines | truncate: 155
+      endif
+    -%}
+    {%- if pf_meta_description != blank -%}
+      <meta name="description" content="{{ pf_meta_description | escape }}">
     {%- endif -%}
+
+    {%- liquid
+      comment
+        A collection with nothing in it stays crawlable (follow) but out of
+        the index until it is stocked. The boolean collection metafield
+        custom.index_when_empty opts a collection out — for the ones whose
+        landing copy is the point even while the shelf is bare.
+      endcomment
+      if request.page_type == 'collection' and collection.all_products_count == 0
+        unless collection.metafields.custom.index_when_empty.value == true
+          echo '<meta name="robots" content="noindex, follow">'
+        endunless
+      endif
+    -%}
 
     {%- if settings.use_google_fonts -%}
       <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -24,6 +24,17 @@
           {{ collection.description }}
         </div>
       {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'intro' -%}
+          {%- assign pf_intro_mf = collection.metafields.custom.collection_intro -%}
+          {%- if pf_intro_mf != blank -%}
+            <div class="pf-rte pf-collection-intro__extra" {{ block.shopify_attributes }}>
+              {{ pf_intro_mf | metafield_tag }}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 
@@ -61,11 +72,102 @@
             {%- endif -%}
           </nav>
         {%- endif -%}
+
+        {% render 'pf-collection-jsonld', collection: collection, paginate: paginate %}
       {%- endpaginate -%}
     {%- else -%}
       <p class="pf-text-center">{{ 'collections.general.empty' | t }}</p>
+      {% render 'pf-collection-jsonld', collection: collection %}
     {%- endif -%}
   </div>
+
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'long_form' -%}
+        {%- assign pf_long_mf = collection.metafields.custom.collection_longform -%}
+        {%- if pf_long_mf != blank -%}
+          <section class="pf-collection-extra pf-wrap" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h2 class="pf-collection-extra__heading">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+            <div class="pf-rte pf-collection-longform">
+              {{ pf_long_mf | metafield_tag }}
+            </div>
+          </section>
+        {%- endif -%}
+
+      {%- when 'faq' -%}
+        {%- liquid
+          assign pf_faq_items = collection.metafields.custom.collection_faq.value
+          assign pf_faq_count = 0
+        -%}
+        {%- capture pf_faq_html -%}
+          {%- for item in pf_faq_items -%}
+            {%- if item.question != blank and item.answer != blank -%}
+              {%- assign pf_faq_count = pf_faq_count | plus: 1 -%}
+              <details class="pf-faq__item"{% if pf_faq_count == 1 %} open{% endif %}>
+                <summary class="pf-faq__question">{{ item.question | escape }}</summary>
+                <div class="pf-faq__answer"><p>{{ item.answer | escape | newline_to_br }}</p></div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if pf_faq_count > 0 -%}
+          <section class="pf-collection-extra pf-wrap" {{ block.shopify_attributes }}>
+            <h2 class="pf-collection-extra__heading">{{ block.settings.heading | default: 'FAQs' | escape }}</h2>
+            <div class="pf-faq">{{ pf_faq_html }}</div>
+          </section>
+          <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {%- assign pf_faq_printed = 0 -%}
+              {%- for item in pf_faq_items -%}
+                {%- if item.question != blank and item.answer != blank -%}
+                  {%- if pf_faq_printed > 0 -%},{%- endif -%}
+                  {
+                    "@type": "Question",
+                    "name": {{ item.question | json }},
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": {{ item.answer | json }}
+                    }
+                  }
+                  {%- assign pf_faq_printed = pf_faq_printed | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+            ]
+          }
+          </script>
+        {%- endif -%}
+
+      {%- when 'related' -%}
+        {%- assign pf_related = collection.metafields.custom.related_collections.value -%}
+        {%- capture pf_related_html -%}
+          {%- for rel in pf_related -%}
+            {%- unless rel.handle == collection.handle -%}
+              <a class="pf-related-card" href="{{ rel.url }}">
+                {%- if rel.image -%}
+                  <span class="pf-related-card__media">
+                    {{ rel.image | image_url: width: 480 | image_tag: alt: rel.title, loading: 'lazy' }}
+                  </span>
+                {%- endif -%}
+                <span class="pf-related-card__title">{{ rel.title | escape }}</span>
+              </a>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if pf_related_html contains 'pf-related-card' -%}
+          <section class="pf-collection-extra pf-wrap" {{ block.shopify_attributes }}>
+            <h2 class="pf-collection-extra__heading">{{ block.settings.heading | default: 'Keep exploring' | escape }}</h2>
+            <nav class="pf-related-grid" aria-label="{{ block.settings.heading | default: 'Keep exploring' | escape }}">
+              {{ pf_related_html }}
+            </nav>
+          </section>
+        {%- endif -%}
+    {%- endcase -%}
+  {%- endfor -%}
 </div>
 
 <style>
@@ -141,6 +243,98 @@
     text-align: center;
   }
 
+  .pf-collection-intro__extra {
+    margin-top: 16px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .pf-collection-extra {
+    padding: 0 0 48px;
+  }
+
+  .pf-collection-extra__heading {
+    font-family: var(--pf-font-display);
+    font-weight: 700;
+    font-size: clamp(1.35rem, 3.5vw, 1.75rem);
+    margin-bottom: 16px;
+  }
+
+  .pf-collection-longform {
+    max-width: 720px;
+    line-height: 1.7;
+  }
+
+  .pf-collection-longform h3 {
+    font-family: var(--pf-font-display);
+    margin: 24px 0 8px;
+  }
+
+  .pf-faq {
+    max-width: 720px;
+  }
+
+  .pf-faq__item {
+    border: 1px solid var(--pf-line, rgba(43, 45, 58, 0.15));
+    border-radius: var(--pf-radius, 20px);
+    background: var(--ptoys-surface, #fff);
+    padding: 4px 20px;
+    margin-bottom: 12px;
+  }
+
+  .pf-faq__question {
+    cursor: pointer;
+    font-weight: 700;
+    padding: 12px 0;
+    list-style-position: inside;
+  }
+
+  .pf-faq__answer {
+    padding: 0 0 16px;
+    line-height: 1.6;
+  }
+
+  .pf-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .pf-related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--pf-line, rgba(43, 45, 58, 0.15));
+    border-radius: var(--pf-radius, 20px);
+    background: var(--ptoys-surface, #fff);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease;
+  }
+
+  .pf-related-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .pf-related-card__media {
+    display: block;
+    border-radius: calc(var(--pf-radius, 20px) - 8px);
+    overflow: hidden;
+  }
+
+  .pf-related-card__media img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pf-related-card__title {
+    font-weight: 700;
+    font-family: var(--pf-font-display);
+  }
+
   @media (max-width: 988px) {
     .pf-product-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -185,6 +379,69 @@
       "max": 4,
       "step": 1,
       "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "intro",
+      "name": "Extended intro",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows the collection metafield custom.collection_intro (rich text) under the description. Collections without the metafield render nothing extra."
+        }
+      ]
+    },
+    {
+      "type": "long_form",
+      "name": "Long-form copy",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows the collection metafield custom.collection_longform (rich text) below the product grid. Collections without the metafield render nothing extra."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows the collection metafield custom.collection_faq (JSON list of question\/answer pairs) as an accordion, with matching FAQPage structured data. Collections without the metafield render nothing extra."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "FAQs"
+        }
+      ]
+    },
+    {
+      "type": "related",
+      "name": "Related collections",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows the collection metafield custom.related_collections (list of collections) as link cards — internal linking without nesting the menus."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Keep exploring"
+        }
+      ]
     }
   ]
 }

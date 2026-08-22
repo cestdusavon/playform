@@ -1,4 +1,8 @@
 {
+  "order": [
+    "main",
+    "trade-note"
+  ],
   "sections": {
     "main": {
       "type": "main-collection-product-grid",
@@ -20,9 +24,5 @@
         "button_color": "accent"
       }
     }
-  },
-  "order": [
-    "main",
-    "trade-note"
-  ]
+  }
 }

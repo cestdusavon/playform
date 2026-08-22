@@ -17,9 +17,12 @@
         "text_alignment": "center",
         "button_label": "Request a quote",
         "button_url": "/pages/rentals",
-        "button_color": "blue"
+        "button_color": "accent"
       }
     }
   },
-  "order": ["main", "trade-note"]
+  "order": [
+    "main",
+    "trade-note"
+  ]
 }

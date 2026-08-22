@@ -10,7 +10,7 @@
         "rainbow_start": 0,
         "text": "<p>Playful pieces made through 3D printing, laser cutting, hand finishing, and a lot of imagination.</p>",
         "button_label": "Shop Playform",
-        "button_color": "red"
+        "button_color": "accent"
       }
     },
     "categories": {
@@ -204,7 +204,7 @@
         "text": "Every piece starts flat and gets stacked, glued and finished by hand.",
         "button_label": "See how we make it",
         "button_link": "/pages/about",
-        "button_color": "yellow",
+        "button_color": "accent",
         "overlay_position": "bottom-left",
         "show_hint": true,
         "hint_text": "Scroll to play"

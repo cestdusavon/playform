@@ -13,7 +13,7 @@
           "type": "buy_buttons",
           "settings": {
             "show_quantity": true,
-            "button_color": "red"
+            "button_color": "accent"
           }
         },
         "description": {

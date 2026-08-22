@@ -3423,19 +3423,69 @@ a {
   pointer-events: none;
 }
 
-/* The film is scrubbed by scrolling, so it must never wear playback chrome.
-   iOS in particular paints a start-playback button over a paused video even
-   with no controls attribute set. */
-.pf-scrollvid__video::-webkit-media-controls,
-.pf-scrollvid__video::-webkit-media-controls-enclosure,
-.pf-scrollvid__video::-webkit-media-controls-panel,
-.pf-scrollvid__video::-webkit-media-controls-play-button,
-.pf-scrollvid__video::-webkit-media-controls-overlay-play-button,
+/* The canvas carries the picture once a frame has been drawn; the video stays
+   in the DOM decoding, but is no longer the thing on screen. This is what
+   actually guarantees no play button: a canvas has no playback chrome. */
+.pf-scrollvid__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pf-scrollvid[data-canvas='ready'] .pf-scrollvid__canvas {
+  opacity: 1;
+}
+
+.pf-scrollvid[data-canvas='ready'] .pf-scrollvid__video {
+  opacity: 0;
+}
+
+/* If the film cannot load, show nothing rather than broken player furniture. */
+.pf-scrollvid[data-video-failed='true'] .pf-scrollvid__video {
+  display: none;
+}
+
+/* Belt and braces for the pre-canvas moment and for the no-canvas fallback.
+   Written as separate rules on purpose: a selector list is discarded whole by
+   engines that reject any one selector in it, and these pseudo-elements are
+   not supported by the same set of browsers. */
+.pf-scrollvid__video::-webkit-media-controls {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.pf-scrollvid__video::-webkit-media-controls-enclosure {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.pf-scrollvid__video::-webkit-media-controls-overlay-enclosure {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.pf-scrollvid__video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.pf-scrollvid__video::-webkit-media-controls-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.pf-scrollvid__video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
 .pf-scrollvid__video::-webkit-media-controls-start-playback-button {
   display: none !important;
-  opacity: 0 !important;
   -webkit-appearance: none;
-  appearance: none;
 }
 
 .pf-scrollvid__shade {

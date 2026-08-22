@@ -40,6 +40,13 @@
       {%- endif -%}
     </video>
 
+    {%- comment -%}
+      Once a frame has been drawn here the canvas covers the video entirely.
+      A canvas cannot grow playback chrome, so no browser — in any power mode
+      — can paint a play button over the film.
+    {%- endcomment -%}
+    <canvas class="pf-scrollvid__canvas" aria-hidden="true" data-pf-scrollvid-canvas></canvas>
+
     <div class="pf-scrollvid__shade" aria-hidden="true"></div>
 
     <div class="pf-scrollvid__overlay pf-scrollvid__overlay--{{ section.settings.overlay_position }}">
@@ -85,6 +92,41 @@
 
     var video = root.querySelector('[data-pf-scrollvid-video]');
     var hint = root.querySelector('[data-pf-scrollvid-hint]');
+    var canvas = root.querySelector('[data-pf-scrollvid-canvas]');
+    var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+    var painted = false;
+
+    /* Mirror the current frame onto the canvas. Drawing a cross-origin video
+       is allowed (only reading pixels back would be blocked), so a
+       Shopify-hosted file works the same as a theme asset. */
+    function paint() {
+      if (!ctx || !video.videoWidth) return;
+
+      if (canvas.width !== video.videoWidth) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      }
+
+      try {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      } catch (e) {
+        /* Leave the video visible and let the CSS chrome rules carry it. */
+        return;
+      }
+
+      if (!painted) {
+        painted = true;
+        root.setAttribute('data-canvas', 'ready');
+      }
+    }
+
+    video.addEventListener('seeked', paint);
+    video.addEventListener('loadeddata', paint);
+
+    /* A film that cannot load must not sit there showing broken chrome. */
+    video.addEventListener('error', function () {
+      root.setAttribute('data-video-failed', 'true');
+    });
 
     /* Reduced motion keeps the plain autoplay loop instead of scrubbing. */
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -144,6 +186,8 @@
         seekStamp = now;
         video.currentTime = next;
       }
+
+      paint();
 
       if (hint) hint.classList.toggle('is-hidden', progress() > 0.04);
 

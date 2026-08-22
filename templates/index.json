@@ -22,6 +22,7 @@
             "color": "yellow",
             "title": "Toys",
             "text": "3D-printed collectibles, characters, puzzles, desk pieces & more.",
+            "image": "shopify://shop_images/pf-brick-toys.png",
             "emoji": "\ud83e\udd16",
             "button_label": "Shop toys"
           }
@@ -32,6 +33,7 @@
             "color": "red",
             "title": "Props",
             "text": "Oversized event pieces, party displays, themed props & rentals.",
+            "image": "shopify://shop_images/pf-brick-props.png",
             "emoji": "\u2b50",
             "button_label": "Explore props",
             "link": "/pages/rentals"
@@ -43,6 +45,7 @@
             "color": "purple",
             "title": "Nursery signs",
             "text": "Custom names, wall lettering, room signs & decorative pieces.",
+            "image": "shopify://shop_images/pf-brick-nursery.png",
             "emoji": "\ud83e\udea7",
             "button_label": "Shop nursery"
           }
@@ -78,6 +81,7 @@
             "color": "blue",
             "title": "Designed",
             "text": "Original pieces modeled specifically for Playform.",
+            "image": "shopify://shop_images/pf-step-designed.png",
             "emoji": "\ud83d\udda5\ufe0f"
           }
         },
@@ -87,6 +91,7 @@
             "color": "yellow",
             "title": "Printed + cut",
             "text": "3D printing, resin printing and precision laser cutting.",
+            "image": "shopify://shop_images/pf-step-printed.png",
             "emoji": "\ud83d\udda8\ufe0f"
           }
         },
@@ -96,6 +101,7 @@
             "color": "red",
             "title": "Finished by hand",
             "text": "Sanded, assembled, painted and detailed individually.",
+            "image": "shopify://shop_images/pf-step-finished.png",
             "emoji": "\ud83d\udd8c\ufe0f"
           }
         },
@@ -105,6 +111,7 @@
             "color": "green",
             "title": "Made for you",
             "text": "Custom colors, names, sizing and designs.",
+            "image": "shopify://shop_images/pf-step-madeforyou.png",
             "emoji": "\ud83c\udf81"
           }
         }
@@ -136,22 +143,40 @@
       "type": "instagram-strip",
       "blocks": {
         "p1": {
-          "type": "photo"
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/pf-ig-01-printer.png"
+          }
         },
         "p2": {
-          "type": "photo"
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/pf-ig-02-sanding.png"
+          }
         },
         "p3": {
-          "type": "photo"
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/pf-ig-03-shelf.png"
+          }
         },
         "p4": {
-          "type": "photo"
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/pf-ig-04-star-prop.png"
+          }
         },
         "p5": {
-          "type": "photo"
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/pf-ig-05-nursery.png"
+          }
         },
         "p6": {
-          "type": "photo"
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/pf-ig-06-workbench.png"
+          }
         }
       },
       "block_order": [

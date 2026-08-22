@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+{%- capture pf_season -%}{% render 'pf-season' %}{%- endcapture -%}
+<html lang="{{ request.locale.iso_code }}" data-season="{{ pf_season | strip }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_cream | default: '#F8F4EA' }}">
+    <meta name="theme-color" content="{{ settings.color_cream | default: '#F5F1E8' }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
@@ -35,14 +36,21 @@
     {{ 'playform.css' | asset_url | stylesheet_tag }}
 
     {%- style -%}
+      {%- comment -%}
+        The core tokens come from theme settings; the stylesheet holds the
+        same values as its fallbacks. The seasonal accent is deliberately NOT
+        emitted here — this block would otherwise outrank the [data-season]
+        rules, which are in the linked stylesheet above.
+      {%- endcomment -%}
       :root {
+        --ptoys-bg: {{ settings.color_cream }};
+        --ptoys-text: {{ settings.color_ink }};
+
         --pf-red: {{ settings.color_red }};
         --pf-yellow: {{ settings.color_yellow }};
         --pf-blue: {{ settings.color_blue }};
         --pf-green: {{ settings.color_green }};
         --pf-purple: {{ settings.color_purple }};
-        --pf-cream: {{ settings.color_cream }};
-        --pf-ink: {{ settings.color_ink }};
         --pf-radius: {{ settings.corner_radius }}px;
       }
     {%- endstyle -%}

@@ -111,40 +111,103 @@
   "name": "Custom order form",
   "tag": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F8F4EA"
+    },
     {
       "type": "select",
       "id": "color",
       "label": "Panel colour",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        }
       ],
       "default": "red"
     },
-    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#F9C218" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Have Something Weird in Mind?" },
-    { "type": "text", "id": "heading_accent", "label": "Accent line", "default": "Good. We Like Weird." },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#F9C218"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Have Something Weird in Mind?"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Accent line",
+      "default": "Good. We Like Weird."
+    },
     {
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Send your sketch, reference or theme and we'll figure out how to make it. Most custom pieces get a quote back within 2–3 days.</p>"
+      "default": "<p>Send your sketch, reference or theme and we'll figure out how to make it. Most custom pieces get a quote back within 2\u20133 days.</p>"
     },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Send the idea" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Send the idea"
+    },
     {
       "type": "select",
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "red", "label": "Red" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "white", "label": "White" }
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "yellow"
     },
@@ -152,15 +215,19 @@
       "type": "text",
       "id": "success_text",
       "label": "Success message",
-      "default": "Got it! We'll come back with a quote within 2–3 days."
+      "default": "Got it! We'll come back with a quote within 2\u20133 days."
     },
     {
       "type": "text",
       "id": "disclaimer",
       "label": "Disclaimer",
-      "default": "No payment is taken here — we'll send a quote first."
+      "default": "No payment is taken here \u2014 we'll send a quote first."
     }
   ],
-  "presets": [{ "name": "Custom order form" }]
+  "presets": [
+    {
+      "name": "Custom order form"
+    }
+  ]
 }
 {% endschema %}

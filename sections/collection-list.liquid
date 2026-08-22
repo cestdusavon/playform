@@ -30,7 +30,7 @@
               {%- else -%}
                 <div class="pf-collection-card__placeholder">
                   <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="200" height="200" fill="#E8E4DC"/>
+                    <rect width="200" height="200" fill="var(--ptoys-placeholder)"/>
                   </svg>
                 </div>
               {%- endif -%}
@@ -83,7 +83,7 @@
     color: inherit;
     border-radius: var(--pf-radius, 20px);
     overflow: hidden;
-    background: white;
+    background: var(--ptoys-surface);
     transition: transform 0.3s;
   }
 
@@ -95,7 +95,7 @@
     width: 100%;
     aspect-ratio: 1;
     overflow: hidden;
-    background: #f5f5f5;
+    background: var(--ptoys-placeholder);
   }
 
   .pf-collection-card__image img {
@@ -130,7 +130,7 @@
   .pf-text-small {
     margin: 0;
     font-size: 0.875rem;
-    color: #666;
+    color: var(--ptoys-muted);
   }
 
   .pf-text-center {
@@ -173,11 +173,26 @@
       "id": "rainbow_start",
       "label": "Rainbow line start color",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        }
       ],
       "default": "red"
     },
@@ -225,11 +240,34 @@
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "red"
     }

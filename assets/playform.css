@@ -2,20 +2,73 @@
    Playform.toys — brick-built storefront styles
    ========================================================================== */
 
+/* ==========================================================================
+   Design tokens
+
+   Three layers, in cascade order:
+
+   1. Core     — fixed year round. Page ground, text, and the interactive
+                 accent. Overridable from theme settings.
+   2. Seasonal — [data-season] swaps the accent pair only. Everything else
+                 holds still, so a season change cannot move the layout or
+                 alter the brand palette.
+   3. Brand    — the five brick colours. These are categorical, not
+                 decorative: a Props brick is red because Props is red, and a
+                 sold-out badge is red because sold out is red. They are
+                 deliberately NOT seasonal.
+   ========================================================================== */
+
 :root {
+  /* --- 1. Core, fixed year round ------------------------------------- */
+  --ptoys-bg: #f5f1e8;
+  --ptoys-text: #2b2d3a;
+  --ptoys-accent: #d97a5c;
+  --ptoys-accent-hover: #c4643f;
+
+  /* No season selected: the secondary falls back to the signature accent so
+     every rule that reads it still resolves. */
+  --ptoys-accent-secondary: var(--ptoys-accent);
+
+  /* The spec accents are chosen as fills. As TEXT on the cream ground only
+     winter clears WCAG AA, so link-coloured text uses this darkened
+     companion instead. Derived, never hand-picked: the lightest mix that
+     still measures >= 4.5:1. See the contrast table in the README. */
+  --ptoys-accent-text: color-mix(in srgb, var(--ptoys-accent) 74%, #000);
+
+  /* Derived surfaces. Not in the original spec — see the README note on
+     tokens the design needed beyond bg/text/accent. */
+  --ptoys-surface: #fff;
+  /* Ink, not white: on the signature terracotta white measures 3.05:1 and
+     ink 4.48:1. Neither clears AA — see the contrast note in the README. */
+  --ptoys-on-accent: var(--ptoys-text);
+  /* 76%, not a lighter mix: secondary text must clear AA against the page,
+     and --ptoys-text is settings-driven so this needs headroom. 62% measured
+     3.94:1; this measures 5.90:1. */
+  --ptoys-muted: color-mix(in srgb, var(--ptoys-text) 76%, var(--ptoys-bg));
+  --ptoys-line: color-mix(in srgb, var(--ptoys-text) 12%, transparent);
+  --ptoys-line-strong: color-mix(in srgb, var(--ptoys-text) 25%, transparent);
+  --ptoys-scrim: color-mix(in srgb, var(--ptoys-text) 42%, transparent);
+  --ptoys-shadow-color: color-mix(in srgb, var(--ptoys-text) 10%, transparent);
+  --ptoys-placeholder: color-mix(in srgb, var(--ptoys-text) 10%, var(--ptoys-bg));
+  --ptoys-btn-shadow: color-mix(in srgb, #000 16%, transparent);
+
+  /* --- 3. Brand brick palette, fixed --------------------------------- */
   --pf-red: #e63329;
   --pf-yellow: #f9c218;
   --pf-blue: #1156c4;
   --pf-green: #1e8a45;
   --pf-purple: #7b3fb5;
-  --pf-cream: #f8f4ea;
-  --pf-ink: #12100e;
   --pf-radius: 20px;
 
-  --pf-white: #fff;
-  --pf-muted: #5d574f;
-  --pf-line: rgba(18, 16, 14, 0.12);
-  --pf-shadow: 0 12px 28px rgba(18, 16, 14, 0.1);
+  /* Compatibility aliases: the stylesheet and every section still speak
+     --pf-*, so these keep ~200 existing references working while the
+     --ptoys-* layer above is the single source of truth. */
+  --pf-cream: var(--ptoys-bg);
+  --pf-ink: var(--ptoys-text);
+  --pf-white: var(--ptoys-surface);
+  --pf-muted: var(--ptoys-muted);
+  --pf-line: var(--ptoys-line);
+  --pf-shadow: 0 12px 28px var(--ptoys-shadow-color);
 
   --pf-font-display: "Fredoka", "Nunito", ui-rounded, "Segoe UI Rounded",
     "SF Pro Rounded", system-ui, -apple-system, "Helvetica Neue", sans-serif;
@@ -25,6 +78,44 @@
   --pf-page: 1240px;
   --pf-gutter: 24px;
 }
+
+/* --- 2. Seasonal accents ---------------------------------------------
+   Set by the data-season attribute on <html>, written server-side from
+   theme settings. Accent only: bg, text and the brick palette do not move.
+   ------------------------------------------------------------------- */
+
+[data-season='spring'] {
+  --ptoys-accent: #8fa888;
+  --ptoys-accent-secondary: #f2c4a0;
+  --ptoys-accent-hover: color-mix(in srgb, var(--ptoys-accent) 82%, #000);
+  --ptoys-accent-text: color-mix(in srgb, var(--ptoys-accent) 68%, #000);
+  --ptoys-on-accent: var(--ptoys-text);
+}
+
+[data-season='summer'] {
+  --ptoys-accent: #f0b840;
+  --ptoys-accent-secondary: #7fb8c4;
+  --ptoys-accent-hover: color-mix(in srgb, var(--ptoys-accent) 82%, #000);
+  --ptoys-accent-text: color-mix(in srgb, var(--ptoys-accent) 57%, #000);
+  --ptoys-on-accent: var(--ptoys-text);
+}
+
+[data-season='fall'] {
+  --ptoys-accent: #b8563a;
+  --ptoys-accent-secondary: #d9a441;
+  --ptoys-accent-hover: color-mix(in srgb, var(--ptoys-accent) 82%, #000);
+  --ptoys-accent-text: color-mix(in srgb, var(--ptoys-accent) 95%, #000);
+  --ptoys-on-accent: #fff;
+}
+
+[data-season='winter'] {
+  --ptoys-accent: #3d5c4c;
+  --ptoys-accent-secondary: #c9a24b;
+  --ptoys-accent-hover: color-mix(in srgb, var(--ptoys-accent) 82%, #000);
+  --ptoys-accent-text: color-mix(in srgb, var(--ptoys-accent) 100%, #000);
+  --ptoys-on-accent: #fff;
+}
+
 
 *,
 *::before,
@@ -67,7 +158,7 @@ a {
   top: 0;
   z-index: 999;
   background: var(--pf-ink);
-  color: #fff;
+  color: var(--ptoys-surface);
   padding: 12px 18px;
   border-radius: 0 0 12px 0;
 }
@@ -136,8 +227,8 @@ a {
    -------------------------------------------------------------------------- */
 
 .pf-btn {
-  --pf-btn-bg: var(--pf-red);
-  --pf-btn-fg: #fff;
+  --pf-btn-bg: var(--ptoys-accent);
+  --pf-btn-fg: var(--ptoys-on-accent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -154,19 +245,19 @@ a {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.16);
+  box-shadow: 0 6px 0 var(--ptoys-btn-shadow);
   transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
 .pf-btn:hover {
   transform: translateY(2px);
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.16);
+  box-shadow: 0 4px 0 var(--ptoys-btn-shadow);
   filter: saturate(1.08);
 }
 
 .pf-btn:active {
   transform: translateY(6px);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0 0 var(--ptoys-btn-shadow);
 }
 
 .pf-btn:disabled,
@@ -178,13 +269,19 @@ a {
   filter: none;
 }
 
+.pf-btn--red { --pf-btn-bg: var(--pf-red); --pf-btn-fg: var(--ptoys-surface); }
 .pf-btn--yellow { --pf-btn-bg: var(--pf-yellow); --pf-btn-fg: var(--pf-ink); }
 .pf-btn--blue { --pf-btn-bg: var(--pf-blue); }
 .pf-btn--green { --pf-btn-bg: var(--pf-green); }
 .pf-btn--purple { --pf-btn-bg: var(--pf-purple); }
+.pf-btn--accent { --pf-btn-bg: var(--ptoys-accent); --pf-btn-fg: var(--ptoys-on-accent); }
+.pf-btn--accent-secondary {
+  --pf-btn-bg: var(--ptoys-accent-secondary);
+  --pf-btn-fg: var(--ptoys-text);
+}
 
 .pf-btn--white {
-  --pf-btn-bg: #fff;
+  --pf-btn-bg: var(--ptoys-surface);
   --pf-btn-fg: var(--pf-ink);
   padding: 12px 26px;
   font-size: 0.875rem;
@@ -201,7 +298,7 @@ a {
 .pf-btn--outline:hover {
   transform: none;
   background: var(--pf-ink);
-  color: #fff;
+  color: var(--ptoys-surface);
   box-shadow: none;
 }
 
@@ -225,7 +322,7 @@ a {
   border-radius: 11px 11px 3px 3px;
   background: var(--pf-brick-color, currentColor);
   filter: brightness(0.9);
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 2px 0 color-mix(in srgb, var(--ptoys-surface) 35%, transparent);
 }
 
 /* --------------------------------------------------------------------------
@@ -356,7 +453,7 @@ a {
 }
 
 .pf-header__link:hover {
-  border-bottom-color: var(--pf-red);
+  border-bottom-color: var(--ptoys-accent-text);
 }
 
 .pf-header__link[aria-current="page"] {
@@ -454,11 +551,11 @@ a {
 }
 
 .pf-menu__link:hover {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-menu__link[aria-current="page"] {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-menu__link--group {
@@ -504,7 +601,7 @@ a {
 }
 
 .pf-icon-btn:hover {
-  background: rgba(18, 16, 14, 0.07);
+  background: color-mix(in srgb, var(--ptoys-text) 7%, transparent);
 }
 
 .pf-icon-btn svg {
@@ -521,7 +618,7 @@ a {
   padding: 0 5px;
   border-radius: 999px;
   background: var(--pf-red);
-  color: #fff;
+  color: var(--ptoys-surface);
   font-family: var(--pf-font-display);
   font-size: 0.6875rem;
   font-weight: 600;
@@ -574,7 +671,7 @@ a {
 }
 
 .pf-header__mobile a[aria-current="page"] {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-header[data-open="true"] .pf-header__mobile {
@@ -632,11 +729,11 @@ a {
 
 .pf-hero__placeholder {
   border-radius: var(--pf-radius);
-  background: rgba(18, 16, 14, 0.05);
+  background: color-mix(in srgb, var(--ptoys-text) 5%, transparent);
   aspect-ratio: 4 / 5;
   display: grid;
   place-items: center;
-  color: rgba(18, 16, 14, 0.3);
+  color: color-mix(in srgb, var(--ptoys-text) 30%, transparent);
 }
 
 .pf-hero__placeholder svg {
@@ -659,7 +756,7 @@ a {
 }
 
 .pf-brick {
-  color: #fff;
+  color: var(--ptoys-surface);
   display: flex;
   flex-direction: column;
   padding-top: 12px;
@@ -762,7 +859,7 @@ a {
   position: relative;
   border-radius: var(--pf-radius);
   overflow: hidden;
-  background: #fff;
+  background: var(--ptoys-surface);
   aspect-ratio: 1 / 1;
 }
 
@@ -780,7 +877,7 @@ a {
 .pf-card__media .placeholder-svg {
   width: 100%;
   height: 100%;
-  fill: rgba(18, 16, 14, 0.14);
+  fill: color-mix(in srgb, var(--ptoys-text) 14%, transparent);
 }
 
 .pf-badge {
@@ -790,7 +887,7 @@ a {
   padding: 6px 12px;
   border-radius: 8px;
   background: var(--pf-badge-color, var(--pf-purple));
-  color: #fff;
+  color: var(--ptoys-surface);
   font-family: var(--pf-font-display);
   font-weight: 600;
   font-size: 0.6875rem;
@@ -854,7 +951,7 @@ a {
   top: 52px;
   left: -30%;
   width: 60%;
-  border-top: 3px dashed rgba(18, 16, 14, 0.28);
+  border-top: 3px dashed color-mix(in srgb, var(--ptoys-text) 28%, transparent);
 }
 
 .pf-step__media {
@@ -888,7 +985,7 @@ a {
   flex: 0 0 30px;
   border-radius: 50%;
   background: var(--pf-step-color, var(--pf-blue));
-  color: #fff;
+  color: var(--ptoys-surface);
   font-family: var(--pf-font-display);
   font-weight: 600;
   font-size: 0.8125rem;
@@ -935,7 +1032,7 @@ a {
   padding: 26px 32px;
   border-radius: var(--pf-radius);
   background: var(--pf-cta-color, var(--pf-blue));
-  color: #fff;
+  color: var(--ptoys-surface);
   overflow: hidden;
 }
 
@@ -1014,7 +1111,7 @@ a {
   border-radius: 12px;
   overflow: hidden;
   aspect-ratio: 1 / 1;
-  background: rgba(18, 16, 14, 0.06);
+  background: color-mix(in srgb, var(--ptoys-text) 6%, transparent);
 }
 
 .pf-insta__tile img {
@@ -1081,7 +1178,7 @@ a {
 
 .pf-footer__list a:hover,
 .pf-footer__list a[aria-current='page'] {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-footer__legal {
@@ -1106,7 +1203,7 @@ a {
 }
 
 .pf-footer__legal a:hover {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -1236,7 +1333,7 @@ a {
 .pf-product__media .placeholder-svg {
   width: 100%;
   border-radius: var(--pf-radius);
-  background: #fff;
+  background: var(--ptoys-surface);
 }
 
 .pf-product--media-right .pf-product__media {
@@ -1255,7 +1352,7 @@ a {
   border: 2px solid transparent;
   border-radius: 12px;
   overflow: hidden;
-  background: #fff;
+  background: var(--ptoys-surface);
   cursor: pointer;
   aspect-ratio: 1;
 }
@@ -1299,7 +1396,7 @@ a {
 .pf-variant-option:has(input:checked) {
   border-color: var(--pf-ink);
   background: var(--pf-ink);
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-variant-option:has(input:focus-visible) {
@@ -1333,7 +1430,7 @@ a {
   border: 2px solid var(--pf-line);
   border-radius: 12px;
   font: inherit;
-  background: #fff;
+  background: var(--ptoys-surface);
   resize: vertical;
 }
 
@@ -1351,7 +1448,7 @@ a {
   height: 20px;
   flex: 0 0 auto;
   padding: 0;
-  accent-color: var(--pf-red);
+  accent-color: var(--ptoys-accent-text);
 }
 
 .pf-field__count {
@@ -1432,7 +1529,7 @@ a {
   border: 2px solid var(--pf-line);
   border-radius: 12px;
   font: inherit;
-  background: #fff;
+  background: var(--ptoys-surface);
 }
 
 .pf-cart__table {
@@ -1529,9 +1626,9 @@ a {
   border-color: currentColor;
 }
 .pf-btn--outline-light:hover {
-  background: #fff;
+  background: var(--ptoys-surface);
   color: var(--pf-ink);
-  border-color: #fff;
+  border-color: var(--ptoys-surface);
 }
 
 .pf-trade__stats {
@@ -1543,7 +1640,7 @@ a {
 .pf-trade__stat {
   padding: 16px 22px;
   border-radius: var(--pf-radius);
-  background: rgba(255, 255, 255, 0.14);
+  background: color-mix(in srgb, var(--ptoys-surface) 14%, transparent);
   display: flex;
   align-items: baseline;
   gap: 14px;
@@ -1588,7 +1685,7 @@ a {
   display: flex;
   flex-direction: column;
   padding-top: 12px;
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-rate-card--yellow { --pf-brick-color: var(--pf-yellow); color: var(--pf-ink); }
@@ -1623,7 +1720,7 @@ a {
   padding: 5px 12px;
   border-radius: 8px;
   background: var(--pf-ink);
-  color: #fff;
+  color: var(--ptoys-surface);
   font-family: var(--pf-font-display);
   font-weight: 600;
   font-size: 0.6875rem;
@@ -1666,7 +1763,7 @@ a {
   margin: 0;
   padding: 14px 0 0;
   list-style: none;
-  border-top: 2px solid rgba(255, 255, 255, 0.28);
+  border-top: 2px solid color-mix(in srgb, var(--ptoys-surface) 28%, transparent);
   display: grid;
   gap: 8px;
   font-size: 0.875rem;
@@ -1674,7 +1771,7 @@ a {
 }
 
 .pf-rate-card--yellow .pf-rate-card__list {
-  border-top-color: rgba(18, 16, 14, 0.2);
+  border-top-color: color-mix(in srgb, var(--ptoys-text) 20%, transparent);
 }
 
 .pf-rate-card__list li {
@@ -1700,7 +1797,7 @@ a {
 
 .pf-tiers {
   margin-top: 36px;
-  background: #fff;
+  background: var(--ptoys-surface);
   border-radius: var(--pf-radius);
   padding: 26px 28px;
   box-shadow: var(--pf-shadow);
@@ -1763,7 +1860,7 @@ a {
   padding: 30px 34px;
   border-radius: var(--pf-radius);
   background: var(--pf-panel-color, var(--pf-green));
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-deposit--green { --pf-panel-color: var(--pf-green); }
@@ -1773,7 +1870,7 @@ a {
 .pf-deposit--yellow { --pf-panel-color: var(--pf-yellow); color: var(--pf-ink); }
 
 .pf-deposit__figure {
-  --pf-brick-color: #fff;
+  --pf-brick-color: var(--ptoys-surface);
   padding-top: 10px;
 }
 
@@ -1783,7 +1880,7 @@ a {
   margin-top: -10px;
   padding: 22px 20px 24px;
   border-radius: 14px;
-  background: #fff;
+  background: var(--ptoys-surface);
   color: var(--pf-ink);
   text-align: center;
 }
@@ -1904,7 +2001,7 @@ a {
 }
 
 .pf-rate-table {
-  background: #fff;
+  background: var(--ptoys-surface);
   border-radius: var(--pf-radius);
   padding: 22px 24px;
   box-shadow: var(--pf-shadow);
@@ -1966,11 +2063,11 @@ a {
    -------------------------------------------------------------------------- */
 
 .pf-gate {
-  border: 3px dashed rgba(18, 16, 14, 0.25);
+  border: 3px dashed color-mix(in srgb, var(--ptoys-text) 25%, transparent);
   border-radius: var(--pf-radius);
   padding: 26px 28px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.6);
+  background: color-mix(in srgb, var(--ptoys-surface) 60%, transparent);
 }
 
 .pf-gate__title {
@@ -2008,7 +2105,7 @@ a {
   padding: 34px 36px 38px;
   border-radius: var(--pf-radius);
   background: var(--pf-panel-color, var(--pf-blue));
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-quote--blue { --pf-panel-color: var(--pf-blue); }
@@ -2068,7 +2165,7 @@ a {
   border: 2px solid transparent;
   border-radius: 12px;
   font: inherit;
-  background: #fff;
+  background: var(--ptoys-surface);
   color: var(--pf-ink);
   resize: vertical;
 }
@@ -2198,13 +2295,13 @@ a {
 .pf-story__media .placeholder-svg {
   width: 100%;
   height: 100%;
-  fill: rgba(18, 16, 14, 0.1);
-  background: rgba(18, 16, 14, 0.04);
+  fill: color-mix(in srgb, var(--ptoys-text) 10%, transparent);
+  background: color-mix(in srgb, var(--ptoys-text) 4%, transparent);
 }
 
 .pf-story__eyebrow {
   margin: 0 0 10px;
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-story__title {
@@ -2232,7 +2329,7 @@ a {
 }
 
 .pf-faq__item {
-  background: #fff;
+  background: var(--ptoys-surface);
   border-radius: 16px;
   box-shadow: var(--pf-shadow);
   padding: 4px 22px;
@@ -2360,7 +2457,7 @@ a {
 .pf-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(18, 16, 14, 0.42);
+  background: color-mix(in srgb, var(--ptoys-text) 42%, transparent);
 }
 
 .pf-drawer__panel {
@@ -2589,7 +2686,7 @@ a {
 .pf-meter__track {
   height: 14px;
   border-radius: 999px;
-  background: rgba(18, 16, 14, 0.08);
+  background: color-mix(in srgb, var(--ptoys-text) 8%, transparent);
   overflow: hidden;
 }
 
@@ -2642,7 +2739,7 @@ a {
 }
 
 .pf-cart-line__title:hover {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-cart-line__body p {
@@ -2677,7 +2774,7 @@ a {
 }
 
 .pf-cart-line__remove:hover {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-stepper {
@@ -2888,7 +2985,7 @@ a {
 }
 
 .pf-auth__link:hover {
-  color: var(--pf-red);
+  color: var(--ptoys-accent-text);
 }
 
 .pf-auth__foot {
@@ -2906,7 +3003,7 @@ a {
   padding: 22px;
   border-radius: var(--pf-radius);
   border: 3px solid var(--pf-ink);
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-auth__panel h2 {
@@ -2979,12 +3076,12 @@ a {
 
 .pf-notice--error {
   border-color: var(--pf-red);
-  background: rgba(230, 51, 41, 0.08);
+  background: color-mix(in srgb, var(--pf-red) 8%, transparent);
 }
 
 .pf-notice--success {
   border-color: var(--pf-green);
-  background: rgba(30, 138, 69, 0.1);
+  background: color-mix(in srgb, var(--pf-green) 10%, transparent);
 }
 
 .pf-account-head {
@@ -3037,7 +3134,7 @@ a {
 
 .pf-account-nav__link.is-active {
   background: var(--pf-ink);
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-stat-row {
@@ -3053,7 +3150,7 @@ a {
   padding: 18px 20px;
   border-radius: var(--pf-radius);
   border: 3px solid var(--pf-ink);
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-stat--red { background: var(--pf-red); }
@@ -3181,7 +3278,7 @@ a {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #fff;
+  color: var(--ptoys-surface);
 }
 
 .pf-status--red { background: var(--pf-red); }
@@ -3493,9 +3590,9 @@ a {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(18, 16, 14, 0.55) 0%,
-    rgba(18, 16, 14, 0.12) 38%,
-    rgba(18, 16, 14, 0) 60%
+    color-mix(in srgb, var(--ptoys-text) 55%, transparent) 0%,
+    color-mix(in srgb, var(--ptoys-text) 12%, transparent) 38%,
+    color-mix(in srgb, var(--ptoys-text) 0%, transparent) 60%
   );
   pointer-events: none;
 }
@@ -3507,7 +3604,7 @@ a {
   flex-direction: column;
   gap: 14px;
   padding: clamp(24px, 6vw, 64px);
-  color: #fff;
+  color: var(--ptoys-surface);
   pointer-events: none;
 }
 
@@ -3534,7 +3631,7 @@ a {
 
 .pf-scrollvid__eyebrow {
   margin: 0;
-  color: #fff;
+  color: var(--ptoys-surface);
   opacity: 0.85;
 }
 
@@ -3542,14 +3639,14 @@ a {
   margin: 0;
   font-size: clamp(2rem, 6vw, 3.6rem);
   line-height: 1.05;
-  text-shadow: 0 2px 18px rgba(18, 16, 14, 0.45);
+  text-shadow: 0 2px 18px color-mix(in srgb, var(--ptoys-text) 45%, transparent);
 }
 
 .pf-scrollvid__text {
   margin: 0;
   max-width: 44ch;
   font-size: clamp(1rem, 2vw, 1.2rem);
-  text-shadow: 0 1px 12px rgba(18, 16, 14, 0.5);
+  text-shadow: 0 1px 12px color-mix(in srgb, var(--ptoys-text) 50%, transparent);
 }
 
 .pf-scrollvid__hint {
@@ -3561,13 +3658,13 @@ a {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  color: #fff;
+  color: var(--ptoys-surface);
   font-family: var(--pf-font-display);
   font-weight: 600;
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  text-shadow: 0 1px 10px rgba(18, 16, 14, 0.6);
+  text-shadow: 0 1px 10px color-mix(in srgb, var(--ptoys-text) 60%, transparent);
   opacity: 0.9;
   transition: opacity 0.4s ease;
   animation: pf-hint-bob 1.8s ease-in-out infinite;

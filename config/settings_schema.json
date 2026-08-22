@@ -8,6 +8,72 @@
     "theme_support_url": "https://playform.toys"
   },
   {
+    "name": "Seasonal",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Swaps the accent colour and the hero image sitewide. The brand brick colours, the page background and the text colour do not change with the season."
+      },
+      {
+        "type": "select",
+        "id": "season",
+        "label": "Season",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Auto (follow the calendar)"
+          },
+          {
+            "value": "spring",
+            "label": "Spring"
+          },
+          {
+            "value": "summer",
+            "label": "Summer"
+          },
+          {
+            "value": "fall",
+            "label": "Fall"
+          },
+          {
+            "value": "winter",
+            "label": "Winter"
+          }
+        ],
+        "default": "auto",
+        "info": "Auto uses the current month (northern hemisphere). Pick a season to pin it for a campaign."
+      },
+      {
+        "type": "header",
+        "content": "Seasonal hero image"
+      },
+      {
+        "type": "paragraph",
+        "content": "Used by the home page hero for the matching season. If the slot for the active season is empty the hero falls back to its own image settings, so it is safe to fill these in one at a time."
+      },
+      {
+        "type": "image_picker",
+        "id": "spring_hero_image",
+        "label": "Spring hero"
+      },
+      {
+        "type": "image_picker",
+        "id": "summer_hero_image",
+        "label": "Summer hero"
+      },
+      {
+        "type": "image_picker",
+        "id": "fall_hero_image",
+        "label": "Fall hero"
+      },
+      {
+        "type": "image_picker",
+        "id": "winter_hero_image",
+        "label": "Winter hero"
+      }
+    ]
+  },
+  {
     "name": "Brand colors",
     "settings": [
       {
@@ -48,13 +114,15 @@
         "type": "color",
         "id": "color_cream",
         "label": "Cream background",
-        "default": "#F8F4EA"
+        "default": "#F5F1E8",
+        "info": "Core token, fixed year round. The season changes only the accent."
       },
       {
         "type": "color",
         "id": "color_ink",
         "label": "Text",
-        "default": "#12100E"
+        "default": "#2B2D3A",
+        "info": "Core token, fixed year round. The season changes only the accent."
       }
     ]
   },
@@ -85,7 +153,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Defaults for prop rentals. Any product can override these with metafields in the `rental` namespace — see the README."
+        "content": "Defaults for prop rentals. Any product can override these with metafields in the `rental` namespace \u2014 see the README."
       },
       {
         "type": "header",
@@ -207,7 +275,7 @@
         "type": "checkbox",
         "id": "free_shipping_enabled",
         "label": "Show free shipping progress",
-        "info": "A bar on the cart page counting up to the threshold. Set the actual rate under Settings → Shipping.",
+        "info": "A bar on the cart page counting up to the threshold. Set the actual rate under Settings \u2192 Shipping.",
         "default": false
       },
       {

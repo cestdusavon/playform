@@ -111,41 +111,107 @@
   "name": "Rental quote request",
   "tag": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F8F4EA"
+    },
     {
       "type": "select",
       "id": "color",
       "label": "Panel colour",
       "options": [
-        { "value": "blue", "label": "Blue" },
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        }
       ],
       "default": "blue"
     },
-    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#F9C218" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Tell Us What You're Building." },
-    { "type": "text", "id": "heading_accent", "label": "Accent line", "default": "We'll Quote It in 48 Hours." },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#F9C218"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tell Us What You're Building."
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Accent line",
+      "default": "We'll Quote It in 48 Hours."
+    },
     {
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Send the brief — pieces, dates, venue — and we'll come back with hire rates, the deposit, and a delivery cost. Trade accounts get a standing rate card.</p>"
+      "default": "<p>Send the brief \u2014 pieces, dates, venue \u2014 and we'll come back with hire rates, the deposit, and a delivery cost. Trade accounts get a standing rate card.</p>"
     },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Request a quote" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Request a quote"
+    },
     {
       "type": "select",
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "red", "label": "Red" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" },
-        { "value": "white", "label": "White" }
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "yellow"
     },
@@ -162,6 +228,10 @@
       "default": "Quotes hold for 14 days. Dates are only held once the deposit clears."
     }
   ],
-  "presets": [{ "name": "Rental quote request" }]
+  "presets": [
+    {
+      "name": "Rental quote request"
+    }
+  ]
 }
 {% endschema %}

@@ -1,18 +1,42 @@
 {%- liquid
   assign hero_logo = section.settings.logo | default: settings.logo
+
+  comment
+    The seasonal hero comes from theme settings so it can be swapped from one
+    panel alongside the accent. It takes the left slot; an empty slot for the
+    active season falls back to this section's own image, so the seasons can
+    be filled in one at a time without the hero going blank.
+  endcomment
+  capture pf_season
+    render 'pf-season'
+  endcapture
+  assign pf_season = pf_season | strip
+
+  case pf_season
+    when 'spring'
+      assign seasonal_hero = settings.spring_hero_image
+    when 'summer'
+      assign seasonal_hero = settings.summer_hero_image
+    when 'fall'
+      assign seasonal_hero = settings.fall_hero_image
+    when 'winter'
+      assign seasonal_hero = settings.winter_hero_image
+  endcase
+
+  assign hero_left = seasonal_hero | default: section.settings.image_left
 -%}
 
 <div class="pf-hero" style="background: {{ section.settings.background }};">
   <div class="pf-wrap pf-hero__grid">
-    {%- if section.settings.image_left != blank -%}
+    {%- if hero_left != blank -%}
       <div class="pf-hero__aside pf-hero__aside--left">
         {{
-          section.settings.image_left
+          hero_left
           | image_url: width: 900
           | image_tag:
             widths: '300, 450, 600, 900',
             sizes: '(min-width: 990px) 28vw, 0px',
-            alt: section.settings.image_left.alt
+            alt: hero_left.alt
         }}
       </div>
     {%- endif -%}
@@ -73,11 +97,32 @@
   "name": "Hero",
   "tag": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
-    { "type": "header", "content": "Logo" },
-    { "type": "checkbox", "id": "show_logo", "label": "Show logo above the headline", "default": true },
-    { "type": "image_picker", "id": "logo", "label": "Hero logo", "info": "Falls back to the logo in theme settings." },
-    { "type": "header", "content": "Text" },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F8F4EA"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show logo above the headline",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Hero logo",
+      "info": "Falls back to the logo in theme settings."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
     {
       "type": "textarea",
       "id": "heading",
@@ -106,26 +151,76 @@
       "label": "Subheading",
       "default": "<p>Playful pieces made through 3D printing, laser cutting, hand finishing, and a lot of imagination.</p>"
     },
-    { "type": "header", "content": "Button" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Playform" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Playform"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
     {
       "type": "select",
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "red"
     },
-    { "type": "header", "content": "Decoration" },
-    { "type": "image_picker", "id": "image_left", "label": "Left image" },
-    { "type": "image_picker", "id": "image_right", "label": "Right image" }
+    {
+      "type": "header",
+      "content": "Decoration"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Left image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right image"
+    }
   ],
-  "presets": [{ "name": "Hero" }]
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
 }
 {% endschema %}

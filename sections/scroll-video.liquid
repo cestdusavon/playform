@@ -264,13 +264,13 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "A full-screen film that plays as the visitor scrolls — forwards on the way down, backwards on the way up. Without JavaScript it falls back to a muted autoplay loop."
+      "content": "A full-screen film that plays as the visitor scrolls \u2014 forwards on the way down, backwards on the way up. Without JavaScript it falls back to a muted autoplay loop."
     },
     {
       "type": "video",
       "id": "video",
       "label": "Video",
-      "info": "Keep it short and silent — around 10 seconds scrubs beautifully. Falls back to the bundled Playform film."
+      "info": "Keep it short and silent \u2014 around 10 seconds scrubs beautifully. Falls back to the bundled Playform film."
     },
     {
       "type": "image_picker",
@@ -289,36 +289,103 @@
       "default": 200,
       "info": "How much scrolling plays the whole film. 200vh reads the 10-second film in about five seconds of natural scrolling; bigger = slower."
     },
-    { "type": "header", "content": "Overlay" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Built Brick by Brick" },
-    { "type": "checkbox", "id": "heading_rainbow", "label": "Rainbow heading", "default": true },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Built Brick by Brick"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_rainbow",
+      "label": "Rainbow heading",
+      "default": true
+    },
     {
       "type": "select",
       "id": "rainbow_start",
       "label": "Rainbow start colour",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        }
       ],
       "default": "red"
     },
-    { "type": "text", "id": "text", "label": "Text" },
-    { "type": "text", "id": "button_label", "label": "Button label" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
     {
       "type": "select",
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "yellow"
     },
@@ -327,16 +394,42 @@
       "id": "overlay_position",
       "label": "Overlay position",
       "options": [
-        { "value": "center", "label": "Centre" },
-        { "value": "bottom-left", "label": "Bottom left" },
-        { "value": "bottom-center", "label": "Bottom centre" }
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom centre"
+        }
       ],
       "default": "bottom-left"
     },
-    { "type": "header", "content": "Scroll hint" },
-    { "type": "checkbox", "id": "show_hint", "label": "Show scroll hint", "default": true },
-    { "type": "text", "id": "hint_text", "label": "Hint text", "default": "Scroll to play" }
+    {
+      "type": "header",
+      "content": "Scroll hint"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hint",
+      "label": "Show scroll hint",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hint_text",
+      "label": "Hint text",
+      "default": "Scroll to play"
+    }
   ],
-  "presets": [{ "name": "Scroll video" }]
+  "presets": [
+    {
+      "name": "Scroll video"
+    }
+  ]
 }
 {% endschema %}

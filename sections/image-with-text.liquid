@@ -23,7 +23,7 @@
         {%- else -%}
           <div class="pf-image-with-text__placeholder">
             {%- liquid
-              echo '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#E8E4DC"/></svg>'
+              echo '<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="var(--ptoys-placeholder)"/></svg>'
             -%}
           </div>
         {%- endif -%}
@@ -79,7 +79,7 @@
   .pf-image-with-text__image {
     border-radius: var(--pf-radius, 20px);
     overflow: hidden;
-    background: white;
+    background: var(--ptoys-surface);
   }
 
   .pf-image-with-text__image img {
@@ -89,7 +89,7 @@
   }
 
   .pf-image-with-text__placeholder {
-    background: #E8E4DC;
+    background: var(--ptoys-placeholder);
     aspect-ratio: 1;
     display: flex;
     align-items: center;
@@ -154,8 +154,14 @@
       "id": "image_position",
       "label": "Image position",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "left"
     },
@@ -174,11 +180,26 @@
       "id": "rainbow_start",
       "label": "Rainbow line start color",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        }
       ],
       "default": "red"
     },
@@ -208,11 +229,34 @@
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "red"
     }

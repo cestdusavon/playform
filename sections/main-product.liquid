@@ -525,8 +525,14 @@
       "id": "media_position",
       "label": "Image position",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "left"
     },
@@ -539,9 +545,21 @@
     }
   ],
   "blocks": [
-    { "type": "title", "name": "Title", "limit": 1 },
-    { "type": "price", "name": "Price", "limit": 1 },
-    { "type": "vendor", "name": "Vendor", "limit": 1 },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1
+    },
     {
       "type": "variant_picker",
       "name": "Variant picker",
@@ -549,15 +567,21 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "One control per option (Size, Colour…). Products with a single variant show nothing."
+          "content": "One control per option (Size, Colour\u2026). Products with a single variant show nothing."
         },
         {
           "type": "select",
           "id": "picker_style",
           "label": "Style",
           "options": [
-            { "value": "dropdown", "label": "Dropdowns" },
-            { "value": "buttons", "label": "Buttons" }
+            {
+              "value": "dropdown",
+              "label": "Dropdowns"
+            },
+            {
+              "value": "buttons",
+              "label": "Buttons"
+            }
           ],
           "default": "dropdown"
         }
@@ -568,17 +592,45 @@
       "name": "Buy buttons",
       "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "show_quantity", "label": "Show quantity", "default": true },
+        {
+          "type": "checkbox",
+          "id": "show_quantity",
+          "label": "Show quantity",
+          "default": true
+        },
         {
           "type": "select",
           "id": "button_color",
           "label": "Button colour",
           "options": [
-            { "value": "red", "label": "Red" },
-            { "value": "yellow", "label": "Yellow" },
-            { "value": "blue", "label": "Blue" },
-            { "value": "green", "label": "Green" },
-            { "value": "purple", "label": "Purple" }
+            {
+              "value": "red",
+              "label": "Red"
+            },
+            {
+              "value": "yellow",
+              "label": "Yellow"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            },
+            {
+              "value": "green",
+              "label": "Green"
+            },
+            {
+              "value": "purple",
+              "label": "Purple"
+            },
+            {
+              "value": "accent",
+              "label": "Seasonal accent"
+            },
+            {
+              "value": "accent-secondary",
+              "label": "Seasonal accent (secondary)"
+            }
           ],
           "default": "red"
         }
@@ -590,19 +642,39 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "One input the customer fills in. Add a block per field. The label is what prints on the order, so keep it short and specific — \"Name on sign\", not \"Text\"."
+          "content": "One input the customer fills in. Add a block per field. The label is what prints on the order, so keep it short and specific \u2014 \"Name on sign\", not \"Text\"."
         },
-        { "type": "text", "id": "label", "label": "Label", "default": "Name on sign" },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Name on sign"
+        },
         {
           "type": "select",
           "id": "field_type",
           "label": "Type",
           "options": [
-            { "value": "text", "label": "Single line" },
-            { "value": "textarea", "label": "Paragraph" },
-            { "value": "select", "label": "Choice list" },
-            { "value": "number", "label": "Number" },
-            { "value": "checkbox", "label": "Tick box" }
+            {
+              "value": "text",
+              "label": "Single line"
+            },
+            {
+              "value": "textarea",
+              "label": "Paragraph"
+            },
+            {
+              "value": "select",
+              "label": "Choice list"
+            },
+            {
+              "value": "number",
+              "label": "Number"
+            },
+            {
+              "value": "checkbox",
+              "label": "Tick box"
+            }
           ],
           "default": "text"
         },
@@ -613,9 +685,23 @@
           "info": "Choice list only. Comma separated, e.g. Small, Medium, Large.",
           "default": "Small, Medium, Large"
         },
-        { "type": "text", "id": "placeholder", "label": "Placeholder" },
-        { "type": "text", "id": "help", "label": "Help text", "info": "Shown under the label." },
-        { "type": "checkbox", "id": "required", "label": "Required", "default": false },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "text",
+          "id": "help",
+          "label": "Help text",
+          "info": "Shown under the label."
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required",
+          "default": false
+        },
         {
           "type": "range",
           "id": "max_length",
@@ -626,11 +712,25 @@
           "step": 5,
           "default": 0
         },
-        { "type": "text", "id": "min_number", "label": "Minimum", "info": "Number only." },
-        { "type": "text", "id": "max_number", "label": "Maximum", "info": "Number only." }
+        {
+          "type": "text",
+          "id": "min_number",
+          "label": "Minimum",
+          "info": "Number only."
+        },
+        {
+          "type": "text",
+          "id": "max_number",
+          "label": "Maximum",
+          "info": "Number only."
+        }
       ]
     },
-    { "type": "description", "name": "Description", "limit": 1 },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
     {
       "type": "rental_rates",
       "name": "Rental rates",
@@ -641,8 +741,14 @@
           "id": "layout",
           "label": "Layout",
           "options": [
-            { "value": "table", "label": "Rate table" },
-            { "value": "inline", "label": "Inline" }
+            {
+              "value": "table",
+              "label": "Rate table"
+            },
+            {
+              "value": "inline",
+              "label": "Inline"
+            }
           ],
           "default": "table"
         }
@@ -651,7 +757,13 @@
     {
       "type": "text",
       "name": "Text",
-      "settings": [{ "type": "richtext", "id": "text", "label": "Text" }]
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
     }
   ]
 }

@@ -41,42 +41,102 @@
   "name": "Story",
   "tag": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
-    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F8F4EA"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
     {
       "type": "select",
       "id": "image_position",
       "label": "Image position",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "left"
     },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our story" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Started in a garage. Still kind of is." },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Our story"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Started in a garage. Still kind of is."
+    },
     {
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Playform started as a way to make one kid's room feel like theirs. It turned into 3D printers, laser cutters and a workbench that never quite gets tidy — and a lot of custom pieces for other people's kids, parties and stores.</p>"
+      "default": "<p>Playform started as a way to make one kid's room feel like theirs. It turned into 3D printers, laser cutters and a workbench that never quite gets tidy \u2014 and a lot of custom pieces for other people's kids, parties and stores.</p>"
     },
-    { "type": "text", "id": "button_label", "label": "Button label" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
     {
       "type": "select",
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "red", "label": "Red" },
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "purple", "label": "Purple" }
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "red"
     }
   ],
-  "presets": [{ "name": "Story" }]
+  "presets": [
+    {
+      "name": "Story"
+    }
+  ]
 }
 {% endschema %}

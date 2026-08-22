@@ -124,40 +124,103 @@
   "name": "Trade application form",
   "tag": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F8F4EA"
+    },
     {
       "type": "select",
       "id": "color",
       "label": "Panel colour",
       "options": [
-        { "value": "purple", "label": "Purple" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "red", "label": "Red" },
-        { "value": "green", "label": "Green" },
-        { "value": "yellow", "label": "Yellow" }
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        }
       ],
       "default": "purple"
     },
-    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#F9C218" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Apply for a Trade Account." },
-    { "type": "text", "id": "heading_accent", "label": "Accent line", "default": "We Review Every Application by Hand." },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#F9C218"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Apply for a Trade Account."
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Accent line",
+      "default": "We Review Every Application by Hand."
+    },
     {
       "type": "richtext",
       "id": "text",
       "label": "Text",
       "default": "<p>Trade accounts get standing rate cards, volume discounts and Net 30 invoicing once you've completed a few hires. Tell us about your business and we'll set you up.</p>"
     },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Submit application" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Submit application"
+    },
     {
       "type": "select",
       "id": "button_color",
       "label": "Button colour",
       "options": [
-        { "value": "yellow", "label": "Yellow" },
-        { "value": "red", "label": "Red" },
-        { "value": "blue", "label": "Blue" },
-        { "value": "green", "label": "Green" },
-        { "value": "white", "label": "White" }
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
       ],
       "default": "yellow"
     },
@@ -165,7 +228,7 @@
       "type": "text",
       "id": "success_text",
       "label": "Success message",
-      "default": "Thanks — we review applications within 2 business days and will email you directly."
+      "default": "Thanks \u2014 we review applications within 2 business days and will email you directly."
     },
     {
       "type": "text",
@@ -174,6 +237,10 @@
       "default": "Approval isn't automatic. We may ask a follow-up question before your account is upgraded."
     }
   ],
-  "presets": [{ "name": "Trade application form" }]
+  "presets": [
+    {
+      "name": "Trade application form"
+    }
+  ]
 }
 {% endschema %}

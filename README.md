@@ -60,6 +60,64 @@ the pinned scrub. The overlay (eyebrow, rainbow heading, text, button) and the
 Every section works before any of that is done — text falls back to the
 Playform copy and products fall back to placeholder cards.
 
+## Colour tokens and the seasonal accent
+
+`assets/playform.css` opens with three token layers, in cascade order.
+
+**1. Core — fixed year round.** `--ptoys-bg`, `--ptoys-text`, `--ptoys-accent`
+and `--ptoys-accent-hover`. Background and text come from theme settings
+(`Brand colors → Cream background / Text`), with the same values as fallbacks
+in the stylesheet.
+
+**2. Seasonal — the accent pair only.** Four `[data-season="..."]` blocks swap
+`--ptoys-accent` and `--ptoys-accent-secondary`. Nothing else moves: a season
+change cannot shift the layout, the page ground, or the brand palette.
+
+**3. Brand — the five brick colours.** `--pf-red` through `--pf-purple` are
+categorical, not decorative. A Props brick is red because Props is red; a
+sold-out badge is red because sold out is red. They are deliberately *not*
+seasonal.
+
+Derived tokens fill the gaps the three-part scheme leaves: `--ptoys-surface`
+(white panels), `--ptoys-on-accent` (label colour on an accent fill),
+`--ptoys-muted`, `--ptoys-line`, `--ptoys-scrim`, `--ptoys-placeholder`,
+`--ptoys-btn-shadow`, and `--ptoys-accent-text`. The last one matters: the
+seasonal accents are chosen as *fills*, and as text on the cream ground only
+winter clears WCAG AA, so link-coloured text uses a derived darker companion.
+
+`--pf-cream`, `--pf-ink`, `--pf-white`, `--pf-muted` and `--pf-line` remain as
+aliases onto the `--ptoys-*` layer, so the ~200 existing references across the
+sections keep working with one source of truth behind them.
+
+### Choosing the season
+
+**Theme settings → Seasonal → Season.** `Auto` follows the calendar; picking a
+season pins it for a campaign regardless of the date.
+
+`snippets/pf-season.liquid` resolves it and every layout writes the result to
+`<html data-season="...">`, so the cascade activates sitewide with no
+JavaScript. The month mapping is northern hemisphere (Mar–May spring, Jun–Aug
+summer, Sep–Nov fall, Dec–Feb winter).
+
+**Seasonal hero image.** Four image pickers under the same panel —
+`spring_hero_image` and friends. The home page hero uses the one matching the
+active season and falls back to its own image setting when that slot is empty,
+so the seasons can be filled in one at a time.
+
+**Using the accent in a section.** Every button colour picker now offers
+*Seasonal accent* and *Seasonal accent (secondary)* alongside the five brick
+colours. The shipped templates still specify brick colours explicitly, so the
+accent currently shows on links, hover and current-page states, the default
+button, and anywhere it is chosen deliberately.
+
+### B2B and the season
+
+There is one stylesheet. The rentals page, trade application, `collection.b2b`
+and the trade gate all render through `layout/theme.liquid` and inherit the
+same tokens, so a season change carries across consumer and trade views alike.
+To hold the B2B side static instead, scope the season blocks to a body class
+and omit it on those templates — nothing else would need to change.
+
 ## Conventions worth knowing
 
 **Rainbow headlines.** The "Rainbow line" setting colours each word with the

@@ -347,8 +347,10 @@
     }
 
     .pf-product-grid {
-      grid-template-columns: 1fr;
-      gap: 16px;
+      /* Two-up on phones, like the original collection grid — a single
+         full-width card reads as the product taking over the page. */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
     }
 
     .pf-collection-header {

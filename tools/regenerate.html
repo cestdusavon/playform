@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playform — Regenerate production file</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0; padding: 28px;
+    background: #131A24; color: #E8ECF3;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+  h1 { font-size: 1.1rem; display: flex; gap: 10px; align-items: center; }
+  h1 .stripe { display: inline-flex; gap: 3px; }
+  h1 .stripe i { width: 5px; height: 18px; border-radius: 2px; display: inline-block; }
+  h1 .stripe i:nth-child(1) { background: #E8256F; }
+  h1 .stripe i:nth-child(2) { background: #F2A03D; }
+  h1 .stripe i:nth-child(3) { background: #2BB3C0; }
+  p.lead { color: #8A93A6; max-width: 62ch; }
+  label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #8A93A6; margin: 18px 0 6px; }
+  textarea {
+    width: 100%; min-height: 110px; box-sizing: border-box;
+    background: #1B2431; color: #E8ECF3; border: 1px solid #2A3547; border-radius: 6px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; padding: 10px;
+  }
+  button {
+    background: #E8256F; color: #fff; border: none; border-radius: 6px;
+    padding: 12px 20px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 14px;
+  }
+  button.secondary { background: none; border: 1px solid #2A3547; }
+  #out { margin-top: 22px; }
+  #msg { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: #F2A03D; white-space: pre-wrap; }
+  #stage { background: #EFEDE6; border-radius: 6px; padding: 20px; margin-top: 12px; }
+  #stage svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  table { border-collapse: collapse; font-size: 0.85rem; margin-top: 12px; }
+  th, td { text-align: left; padding: 5px 14px 5px 0; border-bottom: 1px solid #2A3547; }
+  th { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: #8A93A6; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <h1><span class="stripe"><i></i><i></i><i></i></span> Regenerate production file</h1>
+  <p class="lead">Paste the <code>_spec</code> value from an order's line item properties. If the order
+  carried uploaded artwork, also paste all of its <code>_asset_*</code> properties as JSON
+  (<code>{"_asset_x_0":"…","_asset_x_n":"1"}</code>). You get back the production SVG at true
+  physical size with CUT / ENGRAVE / PRINT layers coloured for LightBurn.</p>
+
+  <label for="spec">_spec</label>
+  <textarea id="spec" spellcheck="false" placeholder='{"v":1,"t":"name-sign","e":"1.0.0","p":{"tx":"Naya","w":30,"f":"dancing-script"}}'></textarea>
+
+  <label for="assets">_asset_* properties (only for orders with uploads)</label>
+  <textarea id="assets" spellcheck="false" placeholder='optional'></textarea>
+
+  <button id="go">Regenerate SVG</button>
+  <button id="dl" class="secondary" hidden>Download SVG</button>
+
+  <div id="out">
+    <p id="msg" role="alert"></p>
+    <div id="stage" hidden></div>
+    <div id="meta"></div>
+  </div>
+
+  <script src="../assets/playform-opentype.js"></script>
+  <script src="../assets/playform-config.js"></script>
+  <script>
+    (function () {
+      var lib = window.PlayformConfigurator;
+      var msg = document.getElementById('msg');
+      var stage = document.getElementById('stage');
+      var meta = document.getElementById('meta');
+      var dl = document.getElementById('dl');
+      var lastSvg = null;
+      var lastName = 'playform-production.svg';
+      var fontCache = {};
+
+      function loadFont(id) {
+        if (fontCache[id]) return Promise.resolve(fontCache[id]);
+        var entry = lib.fonts.find(function (f) { return f.id === id; });
+        if (!entry || !entry.file) return Promise.reject(new Error('no binary registered for font ' + id));
+        if (entry.allowOutlineExport === false) return Promise.reject(new Error('font "' + entry.name + '" does not permit outline export'));
+        return fetch('../assets/' + entry.file)
+          .then(function (r) { if (!r.ok) throw new Error('font fetch failed'); return r.arrayBuffer(); })
+          .then(function (buf) { fontCache[id] = window.opentype.parse(buf); return fontCache[id]; });
+      }
+
+      document.getElementById('go').addEventListener('click', function () {
+        msg.textContent = '';
+        stage.hidden = true;
+        meta.textContent = '';
+        dl.hidden = true;
+        var spec;
+        try {
+          spec = lib.deserializeSpec(document.getElementById('spec').value.trim());
+        } catch (err) {
+          msg.textContent = 'Spec problem: ' + err.message;
+          return;
+        }
+        var schema = lib.schemas[spec.t];
+        if (!schema) { msg.textContent = 'Unknown product schema in spec: ' + spec.t; return; }
+
+        var assets = {};
+        var assetsRaw = document.getElementById('assets').value.trim();
+        if (assetsRaw) {
+          try {
+            var props = JSON.parse(assetsRaw);
+            if (spec.a && spec.a.h) {
+              var content = lib.reassembleAsset(props, spec.a.h);
+              if (!content) throw new Error('asset chunks incomplete for ref ' + spec.a.h);
+              assets[spec.a.h] = spec.a.k === 'svg' ? lib.sanitizeSvg(content).svg : content;
+            }
+          } catch (err) {
+            msg.textContent = 'Asset problem: ' + err.message;
+            return;
+          }
+        }
+
+        var engine = lib.createEngine(schema, { fonts: lib.fonts, motifs: lib.motifs });
+        engine.loadSpec(spec, { assets: assets });
+
+        var fontIds = [engine.getValue('font')].filter(Boolean);
+        Promise.all(fontIds.map(loadFont)).then(
+          function (loaded) {
+            engine.setOutlineProvider(function (id) {
+              var i = fontIds.indexOf(id);
+              return i >= 0 ? loaded[i] : null;
+            });
+            render(engine, spec);
+          },
+          function (err) {
+            msg.textContent = 'Outline fonts unavailable (' + err.message + ') — regenerating anyway; the file will carry a LIVE TEXT warning.';
+            render(engine, spec);
+          }
+        );
+      });
+
+      function render(engine, spec) {
+        var result;
+        try {
+          result = engine.buildProductionSvg();
+        } catch (err) {
+          msg.textContent = 'Export blocked: ' + err.message;
+          return;
+        }
+        lastSvg = result.svg;
+        lastName = 'playform-' + spec.t + '-' + (engine.getValue('text') || 'order').replace(/[^\w-]+/g, '_').slice(0, 30) + '.svg';
+        stage.hidden = false;
+        stage.innerHTML = result.svg.replace(/width="[^"]+" height="[^"]+" viewBox/, 'viewBox');
+        var m = engine.getMetrics();
+        meta.innerHTML =
+          '<table><tbody>' +
+          '<tr><th>Finished size</th><td>' + m.widthIn + '" × ' + m.heightIn + '"</td></tr>' +
+          '<tr><th>Layers</th><td>' + engine.getGeometry('production').layerSet.layers().join(', ') + '</td></tr>' +
+          '<tr><th>Engine</th><td>spec v' + spec.v + ' · written by ' + (spec.e || '?') + ' · regenerated by ' + engine.ENGINE_VERSION + '</td></tr>' +
+          '</tbody></table>';
+        if (result.warnings.length) {
+          msg.textContent = result.warnings.map(function (w) { return '⚠ ' + w; }).join('\n');
+        }
+        dl.hidden = false;
+      }
+
+      dl.addEventListener('click', function () {
+        var blob = new Blob([lastSvg], { type: 'image/svg+xml' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = lastName;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    })();
+  </script>
+</body>
+</html>

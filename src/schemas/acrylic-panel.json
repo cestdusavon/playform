@@ -1,0 +1,66 @@
+{
+  "id": "acrylic-panel",
+  "v": 1,
+  "title": "Acrylic Sign / Panel",
+  "description": "A cut acrylic blank with UV-printed or engraved artwork.",
+  "processes": ["laser", "uv"],
+  "geometry": { "kind": "panel" },
+  "target": { "param": "widthIn", "solves": "heightIn" },
+  "safeAreaIn": 0.25,
+  "preview": { "framing": "wide" },
+  "allowUpload": true,
+  "params": [
+    { "key": "widthIn", "s": "w", "type": "number", "label": "Width", "unit": "in", "min": 4, "max": 24, "step": 0.5, "default": 12, "alwaysInSpec": true },
+    { "key": "aspect", "s": "as", "type": "choice", "label": "Proportions", "default": "3:2", "options": [
+      { "v": "3:2", "label": "3 : 2" },
+      { "v": "2:1", "label": "2 : 1" },
+      { "v": "4:3", "label": "4 : 3" },
+      { "v": "1:1", "label": "Square" }
+    ] },
+    { "key": "corner", "s": "c", "type": "choice", "label": "Shape", "default": "rounded", "options": [
+      { "v": "rounded", "label": "Rounded" },
+      { "v": "square", "label": "Boxy" },
+      { "v": "arch", "label": "Arch" },
+      { "v": "capsule", "label": "Capsule" },
+      { "v": "circle", "label": "Circle" }
+    ] },
+    { "key": "cornerRadiusIn", "s": "cr", "type": "number", "label": "Corner radius", "unit": "in", "min": 0, "max": 3, "step": 0.25, "default": 0.5, "showIf": { "corner": "rounded" } },
+    { "key": "text", "s": "tx", "type": "text", "label": "Text (optional)", "max": 60, "default": "", "alwaysInSpec": true },
+    { "key": "font", "s": "f", "type": "font", "label": "Lettering style", "categories": ["sans", "serif", "display", "script", "slab", "mono"], "default": "archivo", "alwaysInSpec": true },
+    { "key": "textLayer", "s": "tl", "type": "choice", "label": "Text finish", "default": "print", "options": [
+      { "v": "print", "label": "UV printed" },
+      { "v": "engrave", "label": "Engraved" }
+    ] },
+    { "key": "fullBleed", "s": "fb", "type": "toggle", "label": "Full-bleed printed background", "default": false },
+    { "key": "motif", "s": "mo", "type": "motif", "label": "Add a design", "optional": true },
+    { "key": "motifLayer", "s": "ml", "type": "choice", "label": "Design finish", "default": "PRINT", "showIf": { "motif": "*" }, "options": [
+      { "v": "PRINT", "label": "UV printed" },
+      { "v": "ENGRAVE", "label": "Engraved" }
+    ] },
+    { "key": "motifScale", "s": "ms", "type": "number", "label": "Design size", "min": 0.1, "max": 0.9, "step": 0.05, "default": 0.35, "showIf": { "motif": "*" } },
+    { "key": "motifX", "s": "mx", "type": "number", "label": "Design position (across)", "min": 0, "max": 1, "step": 0.05, "default": 0.5, "showIf": { "motif": "*" } },
+    { "key": "motifY", "s": "my", "type": "number", "label": "Design position (down)", "min": 0, "max": 1, "step": 0.05, "default": 0.25, "showIf": { "motif": "*" } },
+    { "key": "motifRotation", "s": "mr", "type": "number", "label": "Design rotation", "unit": "deg", "min": -180, "max": 180, "step": 5, "default": 0, "showIf": { "motif": "*" } },
+    { "key": "material", "s": "mat", "type": "choice", "label": "Acrylic", "default": "clear", "options": [
+      { "v": "clear", "label": "Clear" },
+      { "v": "white", "label": "White" },
+      { "v": "black", "label": "Black" }
+    ] },
+    { "key": "thickness", "s": "th", "type": "choice", "label": "Thickness", "default": "3mm", "options": [
+      { "v": "3mm", "label": "3 mm" },
+      { "v": "5mm", "label": "5 mm" },
+      { "v": "6mm", "label": "6 mm" }
+    ] }
+  ],
+  "pricing": {
+    "setupFee": 10.0,
+    "perSquareInch": 0.09,
+    "perLetter": 0.4,
+    "perInchOfCut": 0.06,
+    "perSquareInchPrinted": 0.11,
+    "materialMultipliers": { "clear": 1.0, "white": 1.05, "black": 1.05 },
+    "thicknessMultipliers": { "3mm": 1.0, "5mm": 1.25, "6mm": 1.4 },
+    "minimum": 24.0
+  },
+  "proof": { "fields": ["Size", "Lettering", "Font", "Material", "Shape", "Finish"] }
+}

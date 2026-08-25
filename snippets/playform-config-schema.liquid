@@ -1,0 +1,44 @@
+{%- comment -%}
+  Emits the configurator's shop-side config as JSON in a
+  <script type="application/json"> tag. This is the ONLY channel between
+  Liquid and the engine — Liquid is never interpolated into JavaScript
+  string literals.
+
+  Accepts: section (the playform-configurator section), product.
+  The schema id comes from the product metafield
+  custom.configurator_schema when set, else the section setting.
+{%- endcomment -%}
+
+{%- liquid
+  assign schema_id = section.settings.schema_id
+  if product.metafields.custom.configurator_schema != blank
+    assign schema_id = product.metafields.custom.configurator_schema
+  endif
+
+  assign variant_id = product.selected_or_first_available_variant.id
+-%}
+
+<script type="application/json" data-pfc-config>
+  {
+    "schemaId": {{ schema_id | json }},
+    "assetBase": {{ 'playform-config.css' | asset_url | split: 'playform-config.css' | first | json }},
+    "opentypeUrl": {{ 'playform-opentype.js' | asset_url | json }},
+    "cart": {
+      "addUrl": {{ routes.cart_add_url | append: '.js' | json }},
+      "cartUrl": {{ routes.cart_url | json }},
+      "variantId": {{ variant_id | json }}
+    },
+    "product": {
+      "id": {{ product.id | json }},
+      "title": {{ product.title | json }},
+      "handle": {{ product.handle | json }}
+    },
+    "allowUploads": {{ section.settings.allow_uploads | json }},
+    "termsCopy": {{ section.settings.terms_copy | json }},
+    "rateOverridesRaw": {{ section.settings.rate_overrides | json }},
+    "brand": {
+      "chrome": {{ section.settings.color_chrome | json }},
+      "accent": {{ section.settings.color_accent | json }}
+    }
+  }
+</script>

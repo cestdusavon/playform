@@ -1,0 +1,632 @@
+[
+  {
+    "id": "dancing-script",
+    "name": "Dancing Script",
+    "family": "'Dancing Script', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-dancing-script.ttf"
+  },
+  {
+    "id": "great-vibes",
+    "name": "Great Vibes",
+    "family": "'Great Vibes', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-great-vibes.ttf"
+  },
+  {
+    "id": "pacifico",
+    "name": "Pacifico",
+    "family": "'Pacifico', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-pacifico.ttf"
+  },
+  {
+    "id": "satisfy",
+    "name": "Satisfy",
+    "family": "'Satisfy', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-satisfy.ttf"
+  },
+  {
+    "id": "allura",
+    "name": "Allura",
+    "family": "'Allura', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-allura.ttf"
+  },
+  {
+    "id": "sacramento",
+    "name": "Sacramento",
+    "family": "'Sacramento', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-sacramento.ttf"
+  },
+  {
+    "id": "yellowtail",
+    "name": "Yellowtail",
+    "family": "'Yellowtail', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-yellowtail.ttf"
+  },
+  {
+    "id": "parisienne",
+    "name": "Parisienne",
+    "family": "'Parisienne', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-parisienne.ttf"
+  },
+  {
+    "id": "kaushan-script",
+    "name": "Kaushan Script",
+    "family": "'Kaushan Script', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-kaushan-script.ttf"
+  },
+  {
+    "id": "courgette",
+    "name": "Courgette",
+    "family": "'Courgette', cursive",
+    "category": "script",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-courgette.ttf"
+  },
+  {
+    "id": "caveat",
+    "name": "Caveat",
+    "family": "'Caveat', cursive",
+    "category": "handwriting",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-caveat.ttf"
+  },
+  {
+    "id": "shadows-into-light",
+    "name": "Shadows Into Light",
+    "family": "'Shadows Into Light', cursive",
+    "category": "handwriting",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-shadows-into-light.ttf"
+  },
+  {
+    "id": "patrick-hand",
+    "name": "Patrick Hand",
+    "family": "'Patrick Hand', cursive",
+    "category": "handwriting",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-patrick-hand.ttf"
+  },
+  {
+    "id": "indie-flower",
+    "name": "Indie Flower",
+    "family": "'Indie Flower', cursive",
+    "category": "handwriting",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-indie-flower.ttf"
+  },
+  {
+    "id": "amatic-sc",
+    "name": "Amatic SC",
+    "family": "'Amatic SC', cursive",
+    "category": "handwriting",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-amatic-sc.ttf"
+  },
+  {
+    "id": "gochi-hand",
+    "name": "Gochi Hand",
+    "family": "'Gochi Hand', cursive",
+    "category": "handwriting",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-gochi-hand.ttf"
+  },
+  {
+    "id": "lobster",
+    "name": "Lobster",
+    "family": "'Lobster', cursive",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": true,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-lobster.ttf"
+  },
+  {
+    "id": "fredoka",
+    "name": "Fredoka",
+    "family": "'Fredoka', sans-serif",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-fredoka.ttf"
+  },
+  {
+    "id": "righteous",
+    "name": "Righteous",
+    "family": "'Righteous', sans-serif",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-righteous.ttf"
+  },
+  {
+    "id": "bangers",
+    "name": "Bangers",
+    "family": "'Bangers', sans-serif",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-bangers.ttf"
+  },
+  {
+    "id": "abril-fatface",
+    "name": "Abril Fatface",
+    "family": "'Abril Fatface', sans-serif",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-abril-fatface.ttf"
+  },
+  {
+    "id": "titan-one",
+    "name": "Titan One",
+    "family": "'Titan One', sans-serif",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-titan-one.ttf"
+  },
+  {
+    "id": "baloo-2",
+    "name": "Baloo 2",
+    "family": "'Baloo 2', sans-serif",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-baloo-2.ttf"
+  },
+  {
+    "id": "bebas-neue",
+    "name": "Bebas Neue",
+    "family": "'Bebas Neue', sans-serif",
+    "category": "display",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-bebas-neue.ttf"
+  },
+  {
+    "id": "playfair-display",
+    "name": "Playfair Display",
+    "family": "'Playfair Display', serif",
+    "category": "serif",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-playfair-display.ttf"
+  },
+  {
+    "id": "merriweather",
+    "name": "Merriweather",
+    "family": "'Merriweather', serif",
+    "category": "serif",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-merriweather.ttf"
+  },
+  {
+    "id": "lora",
+    "name": "Lora",
+    "family": "'Lora', serif",
+    "category": "serif",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-lora.ttf"
+  },
+  {
+    "id": "libre-baskerville",
+    "name": "Libre Baskerville",
+    "family": "'Libre Baskerville', serif",
+    "category": "serif",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-libre-baskerville.ttf"
+  },
+  {
+    "id": "cormorant-garamond",
+    "name": "Cormorant Garamond",
+    "family": "'Cormorant Garamond', serif",
+    "category": "serif",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-cormorant-garamond.ttf"
+  },
+  {
+    "id": "archivo",
+    "name": "Archivo",
+    "family": "'Archivo', sans-serif",
+    "category": "sans",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-archivo.ttf"
+  },
+  {
+    "id": "montserrat",
+    "name": "Montserrat",
+    "family": "'Montserrat', sans-serif",
+    "category": "sans",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-montserrat.ttf"
+  },
+  {
+    "id": "poppins",
+    "name": "Poppins",
+    "family": "'Poppins', sans-serif",
+    "category": "sans",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-poppins.ttf"
+  },
+  {
+    "id": "nunito",
+    "name": "Nunito",
+    "family": "'Nunito', sans-serif",
+    "category": "sans",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-nunito.ttf"
+  },
+  {
+    "id": "raleway",
+    "name": "Raleway",
+    "family": "'Raleway', sans-serif",
+    "category": "sans",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-raleway.ttf"
+  },
+  {
+    "id": "oswald",
+    "name": "Oswald",
+    "family": "'Oswald', sans-serif",
+    "category": "sans",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-oswald.ttf"
+  },
+  {
+    "id": "quicksand",
+    "name": "Quicksand",
+    "family": "'Quicksand', sans-serif",
+    "category": "sans",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-quicksand.ttf"
+  },
+  {
+    "id": "ibm-plex-mono",
+    "name": "IBM Plex Mono",
+    "family": "'IBM Plex Mono', monospace",
+    "category": "mono",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-ibm-plex-mono.ttf"
+  },
+  {
+    "id": "jetbrains-mono",
+    "name": "JetBrains Mono",
+    "family": "'JetBrains Mono', monospace",
+    "category": "mono",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-jetbrains-mono.ttf"
+  },
+  {
+    "id": "space-mono",
+    "name": "Space Mono",
+    "family": "'Space Mono', monospace",
+    "category": "mono",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-space-mono.ttf"
+  },
+  {
+    "id": "arvo",
+    "name": "Arvo",
+    "family": "'Arvo', serif",
+    "category": "slab",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-arvo.ttf"
+  },
+  {
+    "id": "zilla-slab",
+    "name": "Zilla Slab",
+    "family": "'Zilla Slab', serif",
+    "category": "slab",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-zilla-slab.ttf"
+  },
+  {
+    "id": "alfa-slab-one",
+    "name": "Alfa Slab One",
+    "family": "'Alfa Slab One', serif",
+    "category": "slab",
+    "source": "google",
+    "licence": "OFL-1.1",
+    "allowOutlineExport": true,
+    "allowWebEmbed": true,
+    "connected": false,
+    "weights": [
+      400
+    ],
+    "file": "pf-font-alfa-slab-one.ttf"
+  }
+]

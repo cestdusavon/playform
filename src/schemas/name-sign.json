@@ -1,0 +1,54 @@
+{
+  "id": "name-sign",
+  "v": 1,
+  "title": "Name Sign",
+  "description": "Cursive or block lettering, cut as a standalone piece or mounted on a backer.",
+  "processes": ["laser", "fdm"],
+  "geometry": { "kind": "lettering" },
+  "target": { "param": "widthIn", "solves": "heightIn" },
+  "safeAreaIn": 0.25,
+  "preview": { "framing": "wide" },
+  "params": [
+    { "key": "text", "s": "tx", "type": "text", "label": "Name or word", "placeholder": "Naya", "max": 40, "required": true, "default": "Naya", "alwaysInSpec": true },
+    { "key": "font", "s": "f", "type": "font", "label": "Lettering style", "categories": ["script", "handwriting", "display", "serif", "sans", "slab"], "default": "dancing-script", "alwaysInSpec": true },
+    { "key": "widthIn", "s": "w", "type": "number", "label": "Finished width", "unit": "in", "min": 6, "max": 48, "step": 0.5, "default": 30, "alwaysInSpec": true },
+    { "key": "mount", "s": "m", "type": "choice", "label": "Style", "default": "standalone", "options": [
+      { "v": "standalone", "label": "Cut lettering", "hint": "The letters are the sign" },
+      { "v": "backer", "label": "On a backer", "hint": "Lettering on a solid panel" }
+    ] },
+    { "key": "corner", "s": "c", "type": "choice", "label": "Backer shape", "default": "rounded", "showIf": { "mount": "backer" }, "options": [
+      { "v": "rounded", "label": "Rounded" },
+      { "v": "square", "label": "Boxy" },
+      { "v": "arch", "label": "Arch" },
+      { "v": "capsule", "label": "Capsule" }
+    ] },
+    { "key": "cornerRadiusIn", "s": "cr", "type": "number", "label": "Corner radius", "unit": "in", "min": 0, "max": 6, "step": 0.25, "default": 1, "showIf": { "mount": "backer", "corner": "rounded" } },
+    { "key": "connector", "s": "cb", "type": "choice", "label": "Connector bar", "default": "auto", "showIf": { "mount": "standalone" }, "hint": "A thin rail joining the letters so a script cut stays in one piece.", "options": [
+      { "v": "auto", "label": "Auto (on for scripts)" },
+      { "v": true, "label": "On" },
+      { "v": false, "label": "Off" }
+    ] },
+    { "key": "connectorThicknessIn", "s": "cbt", "type": "number", "label": "Bar thickness", "unit": "in", "min": 0.125, "max": 0.75, "step": 0.125, "default": 0.25, "showIf": { "mount": "standalone" } },
+    { "key": "material", "s": "mat", "type": "choice", "label": "Material", "default": "birch", "options": [
+      { "v": "birch", "label": "Baltic birch" },
+      { "v": "acrylic", "label": "Acrylic" },
+      { "v": "pla", "label": "Matte PLA (3D printed)" }
+    ] },
+    { "key": "thickness", "s": "th", "type": "choice", "label": "Thickness", "default": "6mm", "options": [
+      { "v": "3mm", "label": "3 mm" },
+      { "v": "5mm", "label": "5 mm" },
+      { "v": "6mm", "label": "6 mm" }
+    ] }
+  ],
+  "pricing": {
+    "setupFee": 8.0,
+    "perSquareInch": 0.09,
+    "perLetter": 1.25,
+    "perInchOfCut": 0.06,
+    "perSquareInchPrinted": 0.11,
+    "materialMultipliers": { "birch": 1.0, "acrylic": 1.4, "pla": 1.1 },
+    "thicknessMultipliers": { "3mm": 1.0, "5mm": 1.25, "6mm": 1.4 },
+    "minimum": 18.0
+  },
+  "proof": { "fields": ["Size", "Lettering", "Font", "Material", "Shape"] }
+}

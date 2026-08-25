@@ -1,0 +1,14 @@
+{
+  "order": [
+    "main"
+  ],
+  "sections": {
+    "main": {
+      "type": "playform-configurator",
+      "settings": {
+        "schema_id": "name-sign",
+        "allow_uploads": true
+      }
+    }
+  }
+}

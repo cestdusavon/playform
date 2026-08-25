@@ -1,0 +1,55 @@
+{
+  "id": "container",
+  "v": 1,
+  "title": "Container",
+  "description": "A 3D-printed body with a printed or engraved wrap design.",
+  "processes": ["fdm", "uv", "laser"],
+  "geometry": { "kind": "wrap" },
+  "target": { "param": "bodySize", "solves": "wrap" },
+  "safeAreaIn": 0.2,
+  "preview": { "framing": "wide" },
+  "allowUpload": true,
+  "bodies": [
+    { "id": "small", "label": "Small — 2.5\" dia", "dIn": 2.5, "bandIn": 2 },
+    { "id": "medium", "label": "Medium — 3.5\" dia", "dIn": 3.5, "bandIn": 3 },
+    { "id": "large", "label": "Large — 4.5\" dia", "dIn": 4.5, "bandIn": 4 }
+  ],
+  "params": [
+    { "key": "bodySize", "s": "bs", "type": "choice", "label": "Size", "default": "medium", "alwaysInSpec": true, "options": [
+      { "v": "small", "label": "Small — 2.5\" dia" },
+      { "v": "medium", "label": "Medium — 3.5\" dia" },
+      { "v": "large", "label": "Large — 4.5\" dia" }
+    ] },
+    { "key": "text", "s": "tx", "type": "text", "label": "Text (optional)", "max": 30, "default": "", "alwaysInSpec": true },
+    { "key": "font", "s": "f", "type": "font", "label": "Lettering style", "categories": ["sans", "serif", "display", "script", "handwriting"], "default": "archivo", "alwaysInSpec": true },
+    { "key": "textLayer", "s": "tl", "type": "choice", "label": "Text finish", "default": "print", "options": [
+      { "v": "print", "label": "UV printed" },
+      { "v": "engrave", "label": "Engraved" }
+    ] },
+    { "key": "fullBleed", "s": "fb", "type": "toggle", "label": "Full-bleed wrap background", "default": false },
+    { "key": "motif", "s": "mo", "type": "motif", "label": "Wrap design", "optional": true },
+    { "key": "motifLayer", "s": "ml", "type": "choice", "label": "Design finish", "default": "PRINT", "showIf": { "motif": "*" }, "options": [
+      { "v": "PRINT", "label": "UV printed" },
+      { "v": "ENGRAVE", "label": "Engraved" }
+    ] },
+    { "key": "motifScale", "s": "ms", "type": "number", "label": "Design size", "min": 0.1, "max": 0.9, "step": 0.05, "default": 0.4, "showIf": { "motif": "*" } },
+    { "key": "motifX", "s": "mx", "type": "number", "label": "Design position (around)", "min": 0, "max": 1, "step": 0.05, "default": 0.5, "showIf": { "motif": "*" } },
+    { "key": "motifY", "s": "my", "type": "number", "label": "Design position (down)", "min": 0, "max": 1, "step": 0.05, "default": 0.5, "showIf": { "motif": "*" } },
+    { "key": "motifRotation", "s": "mr", "type": "number", "label": "Design rotation", "unit": "deg", "min": -180, "max": 180, "step": 5, "default": 0, "showIf": { "motif": "*" } },
+    { "key": "material", "s": "mat", "type": "choice", "label": "Body material", "default": "pla", "options": [
+      { "v": "pla", "label": "Matte PLA" },
+      { "v": "petg", "label": "PETG" }
+    ] }
+  ],
+  "pricing": {
+    "setupFee": 6.0,
+    "perSquareInch": 0.18,
+    "perLetter": 0.5,
+    "perInchOfCut": 0,
+    "perSquareInchPrinted": 0.11,
+    "materialMultipliers": { "pla": 1.0, "petg": 1.15 },
+    "thicknessMultipliers": {},
+    "minimum": 16.0
+  },
+  "proof": { "fields": ["Size", "Lettering", "Font", "Material", "Finish"] }
+}

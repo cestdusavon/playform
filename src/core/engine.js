@@ -438,7 +438,7 @@ export function createEngine(schema, options = {}) {
     const wPx = inToPx(g.widthIn);
     const hPx = inToPx(g.heightIn);
     const label = (x, y, s) =>
-      `<text x="${fmt(x)}" y="${fmt(y)}" font-family="'IBM Plex Mono', monospace" font-size="${fmt(Math.max(10, wPx * 0.02))}" fill="#8A93A6" text-anchor="middle">${escText(s)}</text>`;
+      `<text x="${fmt(x)}" y="${fmt(y)}" font-family="ui-monospace, monospace" font-size="${fmt(Math.max(10, wPx * 0.02))}" fill="#8A8B94" text-anchor="middle">${escText(s)}</text>`;
     return [
       { raw: `<line x1="0" y1="${fmt(hPx + 24)}" x2="${fmt(wPx)}" y2="${fmt(hPx + 24)}" stroke="#8A93A6" stroke-width="1" stroke-dasharray="4 3"/>` },
       { raw: label(wPx / 2, hPx + 44, `${g.widthIn}"`) },

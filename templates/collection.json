@@ -1,0 +1,44 @@
+{
+  "order": [
+    "main"
+  ],
+  "sections": {
+    "main": {
+      "type": "main-collection-product-grid",
+      "blocks": {
+        "intro": {
+          "type": "intro",
+          "settings": {}
+        },
+        "long-form": {
+          "type": "long_form",
+          "settings": {
+            "heading": ""
+          }
+        },
+        "faq": {
+          "type": "faq",
+          "settings": {
+            "heading": "FAQs"
+          }
+        },
+        "related": {
+          "type": "related",
+          "settings": {
+            "heading": "Keep exploring"
+          }
+        }
+      },
+      "block_order": [
+        "intro",
+        "long-form",
+        "faq",
+        "related"
+      ],
+      "settings": {
+        "products_per_page": 24,
+        "columns": 3
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "mark": { "type": "mark", "settings": {} },
+        "menu": { "type": "menu", "settings": { "title": "Footer", "menu": "footer" } }
+      },
+      "block_order": ["mark", "menu"],
+      "settings": {
+        "background": "#F8F4EA",
+        "legal_text": "All rights reserved.",
+        "show_policies": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

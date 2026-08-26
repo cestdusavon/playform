@@ -1,0 +1,181 @@
+<div class="pf-cta">
+  <div class="pf-wrap">
+    <div class="pf-cta__inner pf-cta--{{ section.settings.color }}">
+      {%- if section.settings.image_left != blank -%}
+        <div class="pf-cta__media pf-cta__media--left">
+          {{
+            section.settings.image_left
+            | image_url: width: 500
+            | image_tag: loading: 'lazy', widths: '200, 320, 500', sizes: '200px', alt: section.settings.image_left.alt
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="pf-cta__content">
+        <h2 class="pf-display pf-cta__title">
+          {%- if section.settings.heading != blank -%}
+            <span class="pf-line">{{ section.settings.heading | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.heading_accent != blank -%}
+            <span class="pf-line" style="color: {{ section.settings.accent_color }};">
+              {{- section.settings.heading_accent | escape -}}
+            </span>
+          {%- endif -%}
+        </h2>
+
+        {%- if section.settings.text != blank -%}
+          <p class="pf-cta__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="pf-cta__actions">
+        {%- if section.settings.button_label != blank -%}
+          <a class="pf-btn pf-btn--{{ section.settings.button_color }}" href="{{ section.settings.button_link }}">
+            {{ section.settings.button_label }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.image_right != blank -%}
+        <div class="pf-cta__media pf-cta__media--right">
+          {{
+            section.settings.image_right
+            | image_url: width: 500
+            | image_tag: loading: 'lazy', widths: '180, 320, 500', sizes: '180px', alt: section.settings.image_right.alt
+          }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom project banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color",
+      "label": "Banner colour",
+      "options": [
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        }
+      ],
+      "default": "blue"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Have Something Weird in Mind?"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Accent line",
+      "default": "Good. We Like Weird."
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent colour",
+      "default": "#F9C218"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Send us your sketch, reference, theme or idea and we'll figure out how to make it."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Start a custom project"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_color",
+      "label": "Button colour",
+      "options": [
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
+      ],
+      "default": "yellow"
+    },
+    {
+      "type": "header",
+      "content": "Decoration"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Left image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom project banner"
+    }
+  ]
+}
+{% endschema %}

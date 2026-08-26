@@ -1,0 +1,160 @@
+{%- liquid
+  assign deposit_figure = section.settings.figure
+  if deposit_figure == blank
+    assign deposit_figure = settings.rental_deposit_percent | append: '%'
+  endif
+-%}
+
+<div class="pf-deposit" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap">
+    <div class="pf-deposit__panel pf-deposit--{{ section.settings.color }}">
+      <div class="pf-deposit__figure">
+        {% render 'pf-studs', count: 3 %}
+        <div class="pf-deposit__figure-body">
+          <p class="pf-deposit__amount">{{ deposit_figure | escape }}</p>
+          <p class="pf-deposit__caption">{{ section.settings.figure_label | escape }}</p>
+        </div>
+      </div>
+
+      <div class="pf-deposit__copy">
+        <h2 class="pf-display pf-deposit__title">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}
+          <div class="pf-deposit__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+        {%- if settings.rental_deposit_note != blank -%}
+          <p class="pf-deposit__note">{{ settings.rental_deposit_note }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="pf-terms">
+        {%- for block in section.blocks -%}
+          <div class="pf-term" {{ block.shopify_attributes }}>
+            <h3 class="pf-term__title">
+              <span class="pf-term__dot pf-term__dot--{{ block.settings.color }}" aria-hidden="true"></span>
+              {{ block.settings.title | escape }}
+            </h3>
+            <p class="pf-term__text">{{ block.settings.text | escape }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Deposit & terms",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "Panel colour",
+      "options": [
+        { "value": "green", "label": "Green" },
+        { "value": "red", "label": "Red" },
+        { "value": "yellow", "label": "Yellow" },
+        { "value": "blue", "label": "Blue" },
+        { "value": "purple", "label": "Purple" }
+      ],
+      "default": "green"
+    },
+    {
+      "type": "text",
+      "id": "figure",
+      "label": "Headline figure",
+      "info": "Leave blank to use the deposit percentage from theme settings."
+    },
+    { "type": "text", "id": "figure_label", "label": "Figure label", "default": "Refundable deposit" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The deposit, plainly." },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>We hold a refundable deposit on every hire. It covers damage beyond normal wear and late returns — nothing else. Trade accounts on approved terms can have it waived.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "term",
+      "name": "Term",
+      "settings": [
+        {
+          "type": "select",
+          "id": "color",
+          "label": "Dot colour",
+          "options": [
+            { "value": "red", "label": "Red" },
+            { "value": "yellow", "label": "Yellow" },
+            { "value": "blue", "label": "Blue" },
+            { "value": "green", "label": "Green" },
+            { "value": "purple", "label": "Purple" }
+          ],
+          "default": "red"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "What it covers" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Deposit & terms",
+      "blocks": [
+        {
+          "type": "term",
+          "settings": {
+            "color": "red",
+            "title": "What it covers",
+            "text": "Damage beyond normal wear, missing fixings, and returns more than 24 hours late."
+          }
+        },
+        {
+          "type": "term",
+          "settings": {
+            "color": "yellow",
+            "title": "When it comes back",
+            "text": "Released within 5 business days of return, once the piece has been checked and cleaned."
+          }
+        },
+        {
+          "type": "term",
+          "settings": {
+            "color": "blue",
+            "title": "Delivery & install",
+            "text": "Quoted separately by distance and piece size. Install and strike available for oversized props."
+          }
+        },
+        {
+          "type": "term",
+          "settings": {
+            "color": "green",
+            "title": "Cancellations",
+            "text": "Free up to 14 days out. Inside 14 days the deposit is retained against the booked slot."
+          }
+        },
+        {
+          "type": "term",
+          "settings": {
+            "color": "purple",
+            "title": "Trade accounts",
+            "text": "Approved accounts are invoiced on Net 30 with the deposit waived after three completed hires."
+          }
+        },
+        {
+          "type": "term",
+          "settings": {
+            "color": "red",
+            "title": "Insurance",
+            "text": "Venues needing a certificate of insurance — tell us at quote stage and we'll supply one."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,128 @@
+{%- comment -%}
+  Structured data for a collection page. Rendered from inside the paginate
+  block of the main collection section so ItemList positions reflect the
+  visitor's actual page.
+
+  Accepts:
+    collection — the collection being rendered
+    paginate   — the paginate drop (for current_offset)
+
+  Emits CollectionPage + BreadcrumbList always, and an ItemList only when
+  the page actually lists products. Nothing here is ever invented: image,
+  description and offer fields appear only when the underlying data exists,
+  and availability comes straight from product.available.
+
+  FAQPage markup is NOT emitted here — the FAQ block in
+  main-collection-product-grid owns it, so it only ever appears alongside
+  visible questions.
+{%- endcomment -%}
+
+{%- liquid
+  assign pf_ld_url = request.origin | append: collection.url
+
+  assign pf_ld_name = page_title | strip
+  if pf_ld_name == blank
+    assign pf_ld_name = collection.title
+  endif
+
+  assign pf_ld_desc = page_description
+  if pf_ld_desc == blank and collection.description != blank
+    assign pf_ld_desc = collection.description | strip_html | strip_newlines | truncate: 155
+  endif
+
+  assign pf_ld_image = ''
+  if collection.image
+    assign pf_ld_image = collection.image | image_url: width: 1200
+    unless pf_ld_image contains 'http'
+      assign pf_ld_image = 'https:' | append: pf_ld_image
+    endunless
+  endif
+
+  assign pf_ld_currency = cart.currency.iso_code | default: shop.currency
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": {{ pf_ld_url | append: '#collection' | json }},
+      "url": {{ pf_ld_url | json }},
+      "name": {{ pf_ld_name | json }},
+      {%- if pf_ld_desc != blank %}
+      "description": {{ pf_ld_desc | json }},
+      {%- endif %}
+      {%- if pf_ld_image != blank %}
+      "image": {{ pf_ld_image | json }},
+      {%- endif %}
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": {{ shop.name | json }},
+        "url": {{ request.origin | json }}
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": {{ request.origin | append: '/' | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Collections",
+          "item": {{ request.origin | append: '/collections' | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ collection.title | json }},
+          "item": {{ pf_ld_url | json }}
+        }
+      ]
+    }{%- if collection.products.size > 0 -%},
+    {
+      "@type": "ItemList",
+      "url": {{ pf_ld_url | json }},
+      "numberOfItems": {{ collection.all_products_count }},
+      "itemListElement": [
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign pf_ld_pos = paginate.current_offset | plus: forloop.index
+            assign pf_ld_pimg = ''
+            if product.featured_image
+              assign pf_ld_pimg = product.featured_image | image_url: width: 800
+              unless pf_ld_pimg contains 'http'
+                assign pf_ld_pimg = 'https:' | append: pf_ld_pimg
+              endunless
+            endif
+          -%}
+          {
+            "@type": "ListItem",
+            "position": {{ pf_ld_pos }},
+            "item": {
+              "@type": "Product",
+              "name": {{ product.title | json }},
+              "url": {{ request.origin | append: product.url | json }},
+              {%- if pf_ld_pimg != blank %}
+              "image": {{ pf_ld_pimg | json }},
+              {%- endif %}
+              "offers": {
+                "@type": "Offer",
+                "price": {{ product.price | divided_by: 100.0 | json }},
+                "priceCurrency": {{ pf_ld_currency | json }},
+                "availability": {% if product.available %}"https://schema.org/InStock"{% else %}"https://schema.org/OutOfStock"{% endif %}
+              }
+            }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+    {%- endif %}
+  ]
+}
+</script>

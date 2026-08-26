@@ -1,0 +1,70 @@
+<div class="pf-page pf-wrap">
+  <div class="pf-auth pf-auth--single">
+    <div class="pf-auth__card">
+      {%- render 'pf-studs', count: 5 -%}
+
+      <div class="pf-auth__body">
+        <h1 class="pf-display pf-auth__title">{{ 'customer.register.title' | t }}</h1>
+        <p class="pf-auth__subtitle">{{ 'customer.register.subtitle' | t }}</p>
+
+        {%- form 'create_customer', novalidate: 'novalidate' -%}
+          {%- if form.errors -%}
+            <div class="pf-notice pf-notice--error" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="pf-field-row">
+            <div class="pf-field">
+              <label for="RegisterFirstName">{{ 'customer.register.first_name' | t }}</label>
+              <input id="RegisterFirstName" type="text" name="customer[first_name]" autocomplete="given-name">
+            </div>
+            <div class="pf-field">
+              <label for="RegisterLastName">{{ 'customer.register.last_name' | t }}</label>
+              <input id="RegisterLastName" type="text" name="customer[last_name]" autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="pf-field">
+            <label for="RegisterEmail">{{ 'customer.register.email' | t }}</label>
+            <input
+              id="RegisterEmail"
+              type="email"
+              name="customer[email]"
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              required>
+          </div>
+
+          <div class="pf-field">
+            <label for="RegisterPassword">{{ 'customer.register.password' | t }}</label>
+            <div class="pf-password">
+              <input
+                id="RegisterPassword"
+                type="password"
+                name="customer[password]"
+                autocomplete="new-password"
+                required>
+              <button
+                class="pf-password__toggle"
+                type="button"
+                data-pf-password-toggle="RegisterPassword"
+                data-label-show="{{ 'customer.login.show_password' | t | escape }}"
+                data-label-hide="{{ 'customer.login.hide_password' | t | escape }}">
+                {{ 'customer.login.show_password' | t }}
+              </button>
+            </div>
+          </div>
+
+          <button class="pf-btn pf-btn--full" type="submit">{{ 'customer.register.submit' | t }}</button>
+
+          <p class="pf-auth__foot">
+            {{ 'customer.register.has_account' | t }}
+            <a href="{{ routes.account_login_url }}">{{ 'customer.register.sign_in' | t }}</a>
+          </p>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>

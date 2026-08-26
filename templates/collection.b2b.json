@@ -1,0 +1,28 @@
+{
+  "order": [
+    "main",
+    "trade-note"
+  ],
+  "sections": {
+    "main": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 12,
+        "columns": 3
+      }
+    },
+    "trade-note": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Hire terms",
+        "rainbow_start": "blue",
+        "content": "<p>Rates on this page are trade rates and already include your account's volume discount. Lead time is 14 days, the refundable deposit is 30% of replacement value, and we quote every booking within 48 hours.</p>",
+        "background_color": "#F8F4EA",
+        "text_alignment": "center",
+        "button_label": "Request a quote",
+        "button_url": "/pages/rentals",
+        "button_color": "accent"
+      }
+    }
+  }
+}

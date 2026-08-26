@@ -1,0 +1,26 @@
+{
+  "current": {
+    "color_red": "#E63329",
+    "color_yellow": "#F9C218",
+    "color_blue": "#1156C4",
+    "color_green": "#1E8A45",
+    "color_purple": "#7B3FB5",
+    "color_cream": "#F5F1E8",
+    "color_ink": "#2B2D3A",
+    "use_google_fonts": true,
+    "corner_radius": 20,
+    "logo_width": 200,
+    "social_instagram": "https://instagram.com/playform.toys",
+    "social_tiktok": "https://tiktok.com/@playform.toys",
+    "social_etsy": "https://www.etsy.com/shop/playformtoys",
+    "rental_weekend_percent": 250,
+    "rental_week_percent": 400,
+    "rental_month_percent": 1200,
+    "rental_deposit_percent": 30,
+    "rental_deposit_note": "Refunded within 5 business days of return, less any damage.",
+    "rental_min_days": 1,
+    "rental_lead_days": 14,
+    "rental_rate_visibility": "everyone",
+    "season": "auto"
+  }
+}

@@ -1,0 +1,226 @@
+{%- liquid
+  assign hero_logo = section.settings.logo | default: settings.logo
+
+  comment
+    The seasonal hero comes from theme settings so it can be swapped from one
+    panel alongside the accent. It takes the left slot; an empty slot for the
+    active season falls back to this section's own image, so the seasons can
+    be filled in one at a time without the hero going blank.
+  endcomment
+  capture pf_season
+    render 'pf-season'
+  endcapture
+  assign pf_season = pf_season | strip
+
+  case pf_season
+    when 'spring'
+      assign seasonal_hero = settings.spring_hero_image
+    when 'summer'
+      assign seasonal_hero = settings.summer_hero_image
+    when 'fall'
+      assign seasonal_hero = settings.fall_hero_image
+    when 'winter'
+      assign seasonal_hero = settings.winter_hero_image
+  endcase
+
+  assign hero_left = seasonal_hero | default: section.settings.image_left
+-%}
+
+<div class="pf-hero" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap pf-hero__grid">
+    {%- if hero_left != blank -%}
+      <div class="pf-hero__aside pf-hero__aside--left">
+        {{
+          hero_left
+          | image_url: width: 900
+          | image_tag:
+            widths: '300, 450, 600, 900',
+            sizes: '(min-width: 990px) 28vw, 0px',
+            alt: hero_left.alt
+        }}
+      </div>
+    {%- endif -%}
+
+    <div class="pf-hero__content">
+      {%- if hero_logo != blank and section.settings.show_logo -%}
+        {%- assign hero_logo_alt = hero_logo.alt | default: shop.name | escape -%}
+        <div class="pf-hero__logo">
+          {{
+            hero_logo
+            | image_url: width: 800
+            | image_tag: widths: '280, 420, 560, 800', sizes: '340px', alt: hero_logo_alt
+          }}
+        </div>
+      {%- endif -%}
+
+      <h1 class="pf-display pf-hero__title">
+        {%- if section.settings.heading != blank -%}
+          <span class="pf-line">{{ section.settings.heading | escape | newline_to_br }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading_rainbow != blank -%}
+          <span class="pf-line">
+            {%- render 'pf-rainbow', text: section.settings.heading_rainbow, start: section.settings.rainbow_start -%}
+          </span>
+        {%- endif -%}
+      </h1>
+
+      {%- if section.settings.text != blank -%}
+        <div class="pf-hero__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          class="pf-btn pf-btn--{{ section.settings.button_color }}"
+          href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.image_right != blank -%}
+      <div class="pf-hero__aside pf-hero__aside--right">
+        {{
+          section.settings.image_right
+          | image_url: width: 900
+          | image_tag:
+            widths: '300, 450, 600, 900',
+            sizes: '(min-width: 990px) 28vw, 0px',
+            alt: section.settings.image_right.alt
+        }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F8F4EA"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show logo above the headline",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Hero logo",
+      "info": "Falls back to the logo in theme settings."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Headline",
+      "default": "Toys, Props &\nCustom Signs"
+    },
+    {
+      "type": "text",
+      "id": "heading_rainbow",
+      "label": "Rainbow line",
+      "info": "Every word gets the next colour in the palette.",
+      "default": "Made to Play With."
+    },
+    {
+      "type": "range",
+      "id": "rainbow_start",
+      "label": "Start the rainbow on colour",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Subheading",
+      "default": "<p>Playful pieces made through 3D printing, laser cutting, hand finishing, and a lot of imagination.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Playform"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_color",
+      "label": "Button colour",
+      "options": [
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
+      ],
+      "default": "red"
+    },
+    {
+      "type": "header",
+      "content": "Decoration"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Left image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

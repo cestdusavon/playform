@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "hero": {
+      "type": "split-hero",
+      "settings": {
+        "background": "#E63329",
+        "text_color": "#FFFFFF",
+        "accent_color": "#F9C218",
+        "eyebrow": "Custom orders",
+        "heading": "If You Can",
+        "heading_accent": "Sketch It, We Can Build It.",
+        "text": "<p>Nursery signs, toys, collectibles, party props — send us your idea and we'll figure out how to make it in 3D print, laser cut, resin, or a mix of all three.</p>",
+        "button_label": "Send your idea",
+        "button_link": "#CustomOrder",
+        "button_2_label": "See examples",
+        "button_2_link": "/collections/all"
+      }
+    },
+    "process": {
+      "type": "process-steps",
+      "blocks": {
+        "designed": {
+          "type": "step",
+          "settings": {
+            "color": "blue",
+            "title": "You tell us",
+            "text": "Send a sketch, reference photo, or just describe the idea.",
+            "emoji": "💬"
+          }
+        },
+        "printed": {
+          "type": "step",
+          "settings": {
+            "color": "yellow",
+            "title": "We quote it",
+            "text": "A price and timeline back within 2–3 days, no payment needed yet.",
+            "emoji": "📝"
+          }
+        },
+        "finished": {
+          "type": "step",
+          "settings": {
+            "color": "red",
+            "title": "We make it",
+            "text": "Designed, printed or cut, then sanded and finished by hand.",
+            "emoji": "🖌️"
+          }
+        },
+        "yours": {
+          "type": "step",
+          "settings": {
+            "color": "green",
+            "title": "It's yours",
+            "text": "Shipped, or ready for pickup, exactly as discussed.",
+            "emoji": "🎁"
+          }
+        }
+      },
+      "block_order": ["designed", "printed", "finished", "yours"],
+      "settings": { "background": "#F8F4EA", "heading": "How a Custom Order Works." }
+    },
+    "form": {
+      "type": "custom-order-form",
+      "settings": {
+        "background": "#F8F4EA",
+        "color": "red",
+        "accent_color": "#F9C218",
+        "heading": "Have Something Weird in Mind?",
+        "heading_accent": "Good. We Like Weird.",
+        "text": "<p>Send your sketch, reference or theme and we'll figure out how to make it. Most custom pieces get a quote back within 2–3 days.</p>",
+        "button_label": "Send the idea",
+        "button_color": "yellow",
+        "success_text": "Got it! We'll come back with a quote within 2–3 days.",
+        "disclaimer": "No payment is taken here — we'll send a quote first."
+      }
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "How long does a custom piece take?",
+            "answer": "<p>Most pieces are 1–2 weeks from approved quote to done, depending on size and finish. Rush timelines are sometimes possible — ask when you send your idea.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "How much does a custom piece cost?",
+            "answer": "<p>It depends entirely on size, material and finish — a small painted name sign is a different job to an oversized event prop. We always quote before any payment is taken.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Can I see a proof before it's made?",
+            "answer": "<p>Yes — for anything with text or a specific layout, we send a digital proof to approve before production starts.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship custom orders?",
+            "answer": "<p>Yes, worldwide. Larger or fragile pieces may ship in multiple parts with assembly instructions.</p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4"],
+      "settings": {
+        "background": "#F8F4EA",
+        "heading": "Custom Order",
+        "heading_rainbow": "Questions.",
+        "rainbow_start": 1,
+        "cta_text": "Still not sure?",
+        "cta_label": "Send us a message",
+        "cta_link": "#CustomOrder"
+      }
+    },
+    "content": { "type": "page-content", "settings": {} }
+  },
+  "order": ["hero", "process", "form", "faq", "content"]
+}

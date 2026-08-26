@@ -1,0 +1,119 @@
+<div class="pf-page pf-wrap">
+  <div class="pf-auth" data-pf-login>
+    <div class="pf-auth__card pf-auth__card--login">
+      {%- render 'pf-studs', count: 5 -%}
+
+      <div class="pf-auth__body">
+        <h1 class="pf-display pf-auth__title">{{ 'customer.login.title' | t }}</h1>
+        <p class="pf-auth__subtitle">{{ 'customer.login.subtitle' | t }}</p>
+
+        {%- form 'customer_login', novalidate: 'novalidate' -%}
+          {%- if form.errors -%}
+            <div class="pf-notice pf-notice--error" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="pf-field">
+            <label for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+            <input
+              id="CustomerEmail"
+              type="email"
+              name="customer[email]"
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              required>
+          </div>
+
+          <div class="pf-field">
+            <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+            <div class="pf-password">
+              <input
+                id="CustomerPassword"
+                type="password"
+                name="customer[password]"
+                autocomplete="current-password"
+                required>
+              <button
+                class="pf-password__toggle"
+                type="button"
+                data-pf-password-toggle="CustomerPassword"
+                data-label-show="{{ 'customer.login.show_password' | t | escape }}"
+                data-label-hide="{{ 'customer.login.hide_password' | t | escape }}">
+                {{ 'customer.login.show_password' | t }}
+              </button>
+            </div>
+          </div>
+
+          <button class="pf-btn pf-btn--full" type="submit">{{ 'customer.login.submit' | t }}</button>
+
+          <button class="pf-auth__link" type="button" data-pf-show-recover>
+            {{ 'customer.login.forgot' | t }}
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+
+    <div class="pf-auth__card pf-auth__card--recover" data-pf-recover hidden>
+      {%- render 'pf-studs', count: 5 -%}
+
+      <div class="pf-auth__body">
+        <h1 class="pf-display pf-auth__title">{{ 'customer.recover_password.title' | t }}</h1>
+        <p class="pf-auth__subtitle">{{ 'customer.recover_password.subtitle' | t }}</p>
+
+        {%- form 'recover_customer_password' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="pf-notice pf-notice--success" role="status">
+              {{ 'customer.recover_password.success' | t }}
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="pf-notice pf-notice--error" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="pf-field">
+            <label for="RecoverEmail">{{ 'customer.login.email' | t }}</label>
+            <input
+              id="RecoverEmail"
+              type="email"
+              name="email"
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              required>
+          </div>
+
+          <button class="pf-btn pf-btn--blue pf-btn--full" type="submit">
+            {{ 'customer.recover_password.submit' | t }}
+          </button>
+
+          <button class="pf-auth__link" type="button" data-pf-hide-recover>
+            {{ 'customer.recover_password.cancel' | t }}
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+
+    <aside class="pf-auth__aside">
+      <div class="pf-auth__panel pf-auth__panel--yellow">
+        <h2>{{ 'customer.login.guest_title' | t }}</h2>
+        <p>{{ 'customer.login.guest_body' | t }}</p>
+        <a class="pf-btn pf-btn--white" href="{{ routes.account_register_url }}">
+          {{ 'customer.login.create' | t }}
+        </a>
+      </div>
+
+      <div class="pf-auth__panel pf-auth__panel--blue">
+        <h2>{{ 'customer.login.trade_title' | t }}</h2>
+        <p>{{ 'customer.login.trade_body' | t }}</p>
+        <a class="pf-btn pf-btn--white" href="/pages/trade-application">
+          {{ 'customer.login.trade_apply' | t }}
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>

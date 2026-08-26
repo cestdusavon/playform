@@ -1,0 +1,56 @@
+{
+  "id": "keychain",
+  "v": 1,
+  "title": "Keychain",
+  "description": "A small tag with a keyring hole — text, a motif, or both.",
+  "processes": ["fdm", "laser"],
+  "geometry": { "kind": "tag" },
+  "target": { "param": "widthIn", "solves": "heightIn" },
+  "safeAreaIn": 0.125,
+  "preview": { "framing": "close" },
+  "params": [
+    { "key": "text", "s": "tx", "type": "text", "label": "Text", "placeholder": "Naya", "max": 20, "default": "Naya", "alwaysInSpec": true },
+    { "key": "font", "s": "f", "type": "font", "label": "Lettering style", "categories": ["sans", "display", "script", "mono", "slab"], "default": "fredoka", "alwaysInSpec": true },
+    { "key": "widthIn", "s": "w", "type": "number", "label": "Width", "unit": "in", "min": 1.5, "max": 4, "step": 0.25, "default": 2.5, "alwaysInSpec": true },
+    { "key": "corner", "s": "c", "type": "choice", "label": "Shape", "default": "capsule", "options": [
+      { "v": "capsule", "label": "Capsule" },
+      { "v": "rounded", "label": "Rounded" },
+      { "v": "circle", "label": "Circle" }
+    ] },
+    { "key": "cornerRadiusIn", "s": "cr", "type": "number", "label": "Corner radius", "unit": "in", "min": 0.1, "max": 0.5, "step": 0.05, "default": 0.25, "showIf": { "corner": "rounded" } },
+    { "key": "holeDiameterIn", "s": "hd", "type": "number", "label": "Hole size", "unit": "in", "min": 0.15, "max": 0.3, "step": 0.05, "default": 0.2 },
+    { "key": "textLayer", "s": "tl", "type": "choice", "label": "Lettering finish", "default": "engraved", "options": [
+      { "v": "engraved", "label": "Engraved" },
+      { "v": "raised", "label": "Raised print" }
+    ] },
+    { "key": "motif", "s": "mo", "type": "motif", "label": "Add a design", "optional": true },
+    { "key": "motifLayer", "s": "ml", "type": "choice", "label": "Design finish", "default": "ENGRAVE", "showIf": { "motif": "*" }, "options": [
+      { "v": "ENGRAVE", "label": "Engraved" },
+      { "v": "PRINT", "label": "Printed" }
+    ] },
+    { "key": "motifScale", "s": "ms", "type": "number", "label": "Design size", "min": 0.1, "max": 0.9, "step": 0.05, "default": 0.35, "showIf": { "motif": "*" } },
+    { "key": "motifX", "s": "mx", "type": "number", "label": "Design position (across)", "min": 0, "max": 1, "step": 0.05, "default": 0.85, "showIf": { "motif": "*" } },
+    { "key": "motifY", "s": "my", "type": "number", "label": "Design position (down)", "min": 0, "max": 1, "step": 0.05, "default": 0.5, "showIf": { "motif": "*" } },
+    { "key": "motifRotation", "s": "mr", "type": "number", "label": "Design rotation", "unit": "deg", "min": -180, "max": 180, "step": 5, "default": 0, "showIf": { "motif": "*" } },
+    { "key": "material", "s": "mat", "type": "choice", "label": "Material", "default": "pla", "options": [
+      { "v": "pla", "label": "Matte PLA" },
+      { "v": "petg", "label": "PETG" },
+      { "v": "acrylic", "label": "Acrylic" }
+    ] },
+    { "key": "thickness", "s": "th", "type": "choice", "label": "Thickness", "default": "3mm", "options": [
+      { "v": "3mm", "label": "3 mm" },
+      { "v": "5mm", "label": "5 mm" }
+    ] }
+  ],
+  "pricing": {
+    "setupFee": 3.0,
+    "perSquareInch": 0.35,
+    "perLetter": 0.6,
+    "perInchOfCut": 0.05,
+    "perSquareInchPrinted": 0.2,
+    "materialMultipliers": { "pla": 1.0, "petg": 1.15, "acrylic": 1.4 },
+    "thicknessMultipliers": { "3mm": 1.0, "5mm": 1.2 },
+    "minimum": 9.0
+  },
+  "proof": { "fields": ["Size", "Lettering", "Font", "Material", "Shape", "Finish"] }
+}

@@ -1,0 +1,78 @@
+{%- liquid
+  assign insta_url = section.settings.link | default: settings.social_instagram
+-%}
+
+<div class="pf-insta" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap pf-insta__inner">
+    <div class="pf-insta__intro">
+      {%- if section.settings.handle != blank -%}
+        <a class="pf-display pf-insta__handle" href="{{ insta_url }}">{{ section.settings.handle | escape }}</a>
+      {%- endif -%}
+
+      {%- if section.settings.follow_label != blank -%}
+        <a class="pf-insta__follow" href="{{ insta_url }}">
+          {{ section.settings.follow_label | escape }}
+          {% render 'pf-icon', icon: 'instagram' %}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="pf-insta__grid" style="--pf-insta-count: {{ section.blocks.size }};">
+      {%- for block in section.blocks -%}
+        {%- assign tile_url = block.settings.link | default: insta_url -%}
+        <a class="pf-insta__tile" href="{{ tile_url }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{
+              block.settings.image
+              | image_url: width: 600
+              | image_tag:
+                loading: 'lazy',
+                widths: '160, 240, 320, 480, 600',
+                sizes: '(min-width: 990px) 160px, 30vw',
+                alt: block.settings.image.alt
+            }}
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Instagram strip",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    { "type": "text", "id": "handle", "label": "Handle", "default": "@playform.toys" },
+    { "type": "text", "id": "follow_label", "label": "Follow label", "default": "Follow the mess →" },
+    { "type": "url", "id": "link", "label": "Instagram link", "info": "Falls back to the URL in theme settings." }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram strip",
+      "blocks": [
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

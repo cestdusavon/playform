@@ -1,0 +1,155 @@
+{%- comment -%}
+  Rental rate table for a single product.
+
+  Accepts:
+  - product: {Object} the rental product.
+  - layout: {String} 'table' (default) or 'inline' for a compact two-line summary.
+  - heading: {String} optional heading above the table.
+
+  Rates are derived from the product price, which is treated as the one-day
+  rate. Any product can override a figure with a metafield in the `rental`
+  namespace: day_rate, weekend_rate, week_rate, month_rate, deposit,
+  replacement_value, min_days, lead_days. Money and decimal metafields are
+  both accepted.
+{%- endcomment -%}
+
+{%- liquid
+  assign rate_layout = layout | default: 'table'
+
+  comment
+    Trade rates can be held back from anonymous or non-B2B visitors.
+  endcomment
+  assign can_see_rates = true
+  case settings.rental_rate_visibility
+    when 'customers'
+      unless customer
+        assign can_see_rates = false
+      endunless
+    when 'b2b'
+      unless customer.b2b?
+        assign can_see_rates = false
+      endunless
+  endcase
+
+  comment
+    Day rate: metafield override, else the product price.
+  endcomment
+  assign day_mf = product.metafields.rental.day_rate
+  if day_mf != blank
+    if day_mf.type == 'money'
+      assign day_cents = day_mf.value.amount | times: 100 | round
+    else
+      assign day_cents = day_mf.value | times: 100 | round
+    endif
+  else
+    assign day_cents = product.price
+  endif
+
+  comment
+    Longer periods: metafield override, else a percentage of the day rate.
+  endcomment
+  assign weekend_mf = product.metafields.rental.weekend_rate
+  if weekend_mf != blank
+    if weekend_mf.type == 'money'
+      assign weekend_cents = weekend_mf.value.amount | times: 100 | round
+    else
+      assign weekend_cents = weekend_mf.value | times: 100 | round
+    endif
+  else
+    assign weekend_cents = day_cents | times: settings.rental_weekend_percent | divided_by: 100 | round
+  endif
+
+  assign week_mf = product.metafields.rental.week_rate
+  if week_mf != blank
+    if week_mf.type == 'money'
+      assign week_cents = week_mf.value.amount | times: 100 | round
+    else
+      assign week_cents = week_mf.value | times: 100 | round
+    endif
+  else
+    assign week_cents = day_cents | times: settings.rental_week_percent | divided_by: 100 | round
+  endif
+
+  assign month_mf = product.metafields.rental.month_rate
+  if month_mf != blank
+    if month_mf.type == 'money'
+      assign month_cents = month_mf.value.amount | times: 100 | round
+    else
+      assign month_cents = month_mf.value | times: 100 | round
+    endif
+  else
+    assign month_cents = day_cents | times: settings.rental_month_percent | divided_by: 100 | round
+  endif
+
+  comment
+    Deposit: explicit figure, else a percentage of the replacement value,
+    else the same percentage of the weekly rate.
+  endcomment
+  assign deposit_mf = product.metafields.rental.deposit
+  assign value_mf = product.metafields.rental.replacement_value
+  if deposit_mf != blank
+    if deposit_mf.type == 'money'
+      assign deposit_cents = deposit_mf.value.amount | times: 100 | round
+    else
+      assign deposit_cents = deposit_mf.value | times: 100 | round
+    endif
+  else
+    if value_mf != blank
+      if value_mf.type == 'money'
+        assign deposit_base = value_mf.value.amount | times: 100 | round
+      else
+        assign deposit_base = value_mf.value | times: 100 | round
+      endif
+    else
+      assign deposit_base = week_cents
+    endif
+    assign deposit_cents = deposit_base | times: settings.rental_deposit_percent | divided_by: 100 | round
+  endif
+
+  assign min_days = product.metafields.rental.min_days.value | default: settings.rental_min_days
+  assign lead_days = product.metafields.rental.lead_days.value | default: settings.rental_lead_days
+-%}
+
+{%- unless can_see_rates -%}
+  {% render 'pf-trade-gate' %}
+{%- else -%}
+  {%- if rate_layout == 'inline' -%}
+    <p class="pf-rate-inline">
+      <span class="pf-rate-inline__rate">{{ day_cents | money }}<span> / day</span></span>
+      <span class="pf-rate-inline__deposit">{{ deposit_cents | money }} deposit</span>
+    </p>
+  {%- else -%}
+    <div class="pf-rate-table">
+      {%- if heading != blank -%}
+        <h3 class="pf-rate-table__heading">{{ heading | escape }}</h3>
+      {%- endif -%}
+
+      <table>
+        <caption class="pf-visually-hidden">Rental rates for {{ product.title | escape }}</caption>
+        <thead>
+          <tr><th scope="col">Hire period</th><th scope="col">Rate</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">1 day</th><td>{{ day_cents | money }}</td></tr>
+          <tr><th scope="row">Weekend (Fri–Mon)</th><td>{{ weekend_cents | money }}</td></tr>
+          <tr><th scope="row">1 week</th><td>{{ week_cents | money }}</td></tr>
+          <tr><th scope="row">1 month</th><td>{{ month_cents | money }}</td></tr>
+        </tbody>
+        <tfoot>
+          <tr class="pf-rate-table__deposit">
+            <th scope="row">Refundable deposit</th>
+            <td>{{ deposit_cents | money }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <ul class="pf-rate-table__notes">
+        <li>Minimum hire {{ min_days }} day{% if min_days != 1 %}s{% endif %}.</li>
+        <li>Book at least {{ lead_days }} days ahead.</li>
+        {%- if settings.rental_deposit_note != blank -%}
+          <li>{{ settings.rental_deposit_note }}</li>
+        {%- endif -%}
+      </ul>
+    </div>
+  {%- endif -%}
+{%- endunless -%}

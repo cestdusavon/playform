@@ -1,0 +1,338 @@
+/* Playform configurator — themed to the Playform storefront: cream, ink,
+   seasonal accent, Fredoka/Nunito, big friendly radii. Reads the theme's
+   design tokens with hard fallbacks, so it still renders correctly if the
+   theme (and its variables) ever disappear. Everything scoped under
+   .pfc-root; nothing leaks out, no theme classes or JS are depended on. */
+
+.pfc-root {
+  --pfc-chrome: var(--ptoys-bg, #F5F1E8);
+  --pfc-card: var(--ptoys-surface, #FFFFFF);
+  --pfc-sheet: var(--ptoys-surface, #FFFFFF);
+  --pfc-cut: var(--ptoys-accent, #D97B5E);
+  --pfc-engrave: var(--pf-blue, #3F79D9);
+  --pfc-ink: var(--ptoys-text, #2B2D3A);
+  --pfc-ink-dim: var(--ptoys-muted, #5E6270);
+  --pfc-line: var(--ptoys-line, rgba(43, 45, 58, 0.15));
+  --pfc-ok: var(--pf-green, #4CAF6E);
+  --pfc-warn: #B26A1B;
+  --pfc-radius: var(--pf-radius, 20px);
+  --pfc-radius-sm: calc(var(--pf-radius, 20px) * 0.5);
+  --pfc-font: var(--pf-font-body, 'Nunito', ui-rounded, system-ui, sans-serif);
+  --pfc-display: var(--pf-font-display, 'Fredoka', 'Nunito', ui-rounded, sans-serif);
+  --pfc-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  font-family: var(--pfc-font);
+  color: var(--pfc-ink);
+  background: var(--pfc-chrome);
+  border: 1px solid var(--pfc-line);
+  border-radius: var(--pfc-radius);
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.pfc-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+}
+@media (max-width: 900px) {
+  .pfc-shell { grid-template-columns: 1fr; }
+}
+
+.pfc-pane--preview {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--pfc-line);
+  min-height: 420px;
+}
+
+.pfc-machinebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--pfc-card);
+  border-bottom: 1px solid var(--pfc-line);
+  font-family: var(--pfc-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+.pfc-machinebar__proc {
+  margin-left: auto;
+  color: var(--pfc-ink-dim);
+  font-family: var(--pfc-font);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pfc-tristripe { display: inline-flex; gap: 4px; }
+.pfc-tristripe i { width: 9px; height: 18px; border-radius: 4px; display: block; }
+.pfc-tristripe i:nth-child(1) { background: var(--pf-red, #E8453C); }
+.pfc-tristripe i:nth-child(2) { background: var(--pf-yellow, #F2C63D); }
+.pfc-tristripe i:nth-child(3) { background: var(--pf-blue, #3F79D9); }
+
+.pfc-preview { position: relative; flex: 1; display: flex; flex-direction: column; padding: 20px; }
+.pfc-sheet {
+  flex: 1;
+  background: var(--pfc-sheet);
+  background-image:
+    linear-gradient(rgba(43, 45, 58, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43, 45, 58, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border: 1px solid var(--pfc-line);
+  border-radius: var(--pfc-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  min-height: 280px;
+}
+.pfc-preview-svg { max-width: 100%; max-height: 420px; width: 100%; height: auto; overflow: visible; }
+.pfc-preview-svg [data-layer="CUT"] { stroke: var(--pfc-cut); }
+.pfc-preview-svg [data-layer="ENGRAVE"] { stroke: var(--pfc-engrave); }
+.pfc-preview-svg [data-layer="PRINT"] { fill: var(--pfc-ink); }
+/* On screen the document is scaled way down; keep tool lines readable
+   without touching the exported stroke widths. */
+.pfc-preview-svg [data-layer="CUT"] path,
+.pfc-preview-svg [data-layer="ENGRAVE"] path,
+.pfc-preview-svg [data-layer="SCORE"] path {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.6px;
+}
+.pfc-sizetag {
+  margin-top: 10px;
+  font-family: var(--pfc-mono);
+  font-size: 0.78rem;
+  color: var(--pfc-ink-dim);
+  text-align: right;
+}
+.pfc-statusline {
+  min-height: 1.2em;
+  padding: 0 20px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--pfc-warn);
+}
+
+.pfc-pane--controls { padding: 18px 18px 22px; background: var(--pfc-chrome); }
+
+.pfc-field { margin-bottom: 18px; }
+.pfc-label {
+  display: block;
+  font-family: var(--pfc-display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--pfc-ink);
+  margin-bottom: 7px;
+}
+.pfc-label--inline { display: flex; align-items: center; gap: 8px; font-family: var(--pfc-font); font-size: 0.92rem; font-weight: 600; }
+.pfc-unit { font-family: var(--pfc-font); font-weight: 600; font-size: 0.8rem; color: var(--pfc-ink-dim); }
+.pfc-hint { font-size: 0.8rem; color: var(--pfc-ink-dim); margin: 6px 0 0; }
+
+.pfc-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--pfc-card);
+  color: var(--pfc-ink);
+  border: 1px solid var(--pfc-line);
+  border-radius: var(--pfc-radius-sm);
+  padding: 11px 14px;
+  font-family: var(--pfc-font);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.pfc-input:focus-visible, .pfc-pill:focus-visible, .pfc-fontcard:focus-visible,
+.pfc-motifcard:focus-visible, .pfc-btn:focus-visible, .pfc-cat:focus-visible,
+.pfc-check:focus-visible, .pfc-range:focus-visible, .pfc-file:focus-visible {
+  outline: 2px solid var(--pfc-engrave);
+  outline-offset: 2px;
+}
+
+.pfc-number { display: flex; gap: 12px; align-items: center; }
+.pfc-range { flex: 1; accent-color: var(--pfc-cut); }
+.pfc-input--num { width: 88px; flex: none; font-family: var(--pfc-mono); }
+
+.pfc-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pfc-pill {
+  background: var(--pfc-card);
+  color: var(--pfc-ink);
+  border: 1px solid var(--pfc-line);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-family: var(--pfc-font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pfc-pill[aria-checked="true"] {
+  border-color: var(--pfc-cut);
+  box-shadow: inset 0 0 0 1.5px var(--pfc-cut);
+  color: var(--pfc-ink);
+}
+
+.pfc-cats { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.pfc-cat {
+  background: none;
+  border: 1px solid var(--pfc-line);
+  color: var(--pfc-ink-dim);
+  border-radius: 999px;
+  font-family: var(--pfc-font);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 11px;
+  cursor: pointer;
+}
+.pfc-cat[aria-selected="true"] { color: var(--pfc-ink); border-color: var(--pfc-engrave); box-shadow: inset 0 0 0 1px var(--pfc-engrave); }
+
+.pfc-fontgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.pfc-fontcard {
+  background: var(--pfc-card);
+  border: 1px solid var(--pfc-line);
+  border-radius: var(--pfc-radius-sm);
+  color: var(--pfc-ink);
+  padding: 10px 8px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  min-height: 64px;
+}
+.pfc-fontcard[aria-checked="true"] { border-color: var(--pfc-cut); box-shadow: inset 0 0 0 1.5px var(--pfc-cut); }
+.pfc-fontcard__sample { font-size: 1.3rem; line-height: 1.1; max-width: 100%; overflow: hidden; white-space: nowrap; }
+.pfc-fontcard__name { font-size: 0.66rem; font-weight: 700; color: var(--pfc-ink-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.pfc-motifgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+.pfc-motifcard {
+  background: var(--pfc-card);
+  border: 1px solid var(--pfc-line);
+  border-radius: var(--pfc-radius-sm);
+  color: var(--pfc-ink);
+  padding: 10px 6px 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.pfc-motifcard[aria-checked="true"] { border-color: var(--pfc-engrave); box-shadow: inset 0 0 0 1.5px var(--pfc-engrave); }
+.pfc-motifcard__art { width: 38px; height: 38px; display: block; }
+.pfc-motifcard__art svg { width: 100%; height: 100%; }
+.pfc-motifcard__name { font-size: 0.64rem; font-weight: 700; color: var(--pfc-ink-dim); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.pfc-check { width: 18px; height: 18px; accent-color: var(--pfc-cut); }
+.pfc-file { color: var(--pfc-ink-dim); font-size: 0.85rem; }
+
+.pfc-checkout { border-top: 1px solid var(--pfc-line); margin-top: 8px; padding-top: 16px; }
+.pfc-price {
+  font-family: var(--pfc-display);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.pfc-approval { font-size: 0.84rem; font-weight: 600; color: var(--pfc-warn); margin: 0 0 12px; }
+
+.pfc-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 15px 20px;
+  font-family: var(--pfc-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  box-shadow: var(--ptoys-btn-shadow, 0 2px 0 rgba(43, 45, 58, 0.2));
+}
+.pfc-btn--primary { background: var(--pfc-cut); color: var(--ptoys-on-accent, #2B2D3A); }
+.pfc-btn--primary:hover { background: var(--ptoys-accent-hover, var(--pfc-cut)); }
+.pfc-btn--confirm { background: var(--pfc-ok); color: #14241A; }
+.pfc-btn--ghost { background: none; border: 1.5px solid var(--pfc-line); color: var(--pfc-ink); box-shadow: none; }
+.pfc-btn[disabled] { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+.pfc-cart-error, .pfc-error { color: #B3261E; font-size: 0.85rem; font-weight: 600; }
+.pfc-upload-msg { color: var(--pfc-warn); font-size: 0.8rem; }
+
+/* Proof modal */
+.pfc-proof-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--ptoys-scrim, rgba(43, 45, 58, 0.55));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 18px;
+}
+.pfc-proof {
+  background: var(--ptoys-surface, #FFFFFF);
+  color: var(--ptoys-text, #2B2D3A);
+  font-family: var(--pf-font-body, 'Nunito', ui-rounded, system-ui, sans-serif);
+  width: min(680px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid var(--ptoys-line, rgba(43, 45, 58, 0.15));
+  border-radius: var(--pf-radius, 20px);
+  padding: 22px 24px;
+  box-shadow: var(--pf-shadow, 0 12px 40px rgba(43, 45, 58, 0.18));
+}
+.pfc-proof__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.pfc-proof__head h2 { font-family: var(--pf-font-display, 'Fredoka', sans-serif); font-weight: 600; font-size: 1.3rem; margin: 0; }
+.pfc-proof__close {
+  background: none; border: 1.5px solid var(--ptoys-line, rgba(43, 45, 58, 0.15)); color: inherit;
+  width: 36px; height: 36px; border-radius: 999px; font-size: 1.2rem; cursor: pointer;
+}
+.pfc-proof__art {
+  background: var(--ptoys-bg, #F5F1E8);
+  border-radius: calc(var(--pf-radius, 20px) * 0.5);
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+.pfc-proof__art svg { max-width: 100%; height: auto; max-height: 260px; }
+.pfc-proof__spelling { margin: 16px 0 4px; }
+.pfc-proof__spelling-label {
+  font-weight: 800;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ptoys-muted, #5E6270);
+  margin: 0 0 6px;
+}
+.pfc-proof__letters {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+  font-size: 1.5rem;
+  letter-spacing: 0.15em;
+  margin: 0;
+  word-break: break-word;
+}
+.pfc-proof__table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+.pfc-proof__table th, .pfc-proof__table td { text-align: left; padding: 8px 4px; border-bottom: 1px solid var(--ptoys-line, rgba(43, 45, 58, 0.15)); }
+.pfc-proof__table th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ptoys-muted, #5E6270); font-weight: 800; width: 40%; }
+.pfc-proof__terms { display: flex; gap: 10px; align-items: flex-start; font-size: 0.88rem; margin: 14px 0 18px; cursor: pointer; }
+.pfc-proof__terms input { width: 18px; height: 18px; flex: none; margin-top: 1px; accent-color: var(--ptoys-accent, #D97B5E); }
+.pfc-proof__foot { display: flex; gap: 10px; }
+.pfc-proof__foot .pfc-btn { margin-bottom: 0; }
+.pfc-warnbanner { background: rgba(242, 198, 61, 0.18); border: 1px solid #B26A1B; color: #7A4A12; border-radius: calc(var(--pf-radius, 20px) * 0.5); padding: 10px 12px; margin-bottom: 12px; font-size: 0.84rem; font-weight: 600; }
+.pfc-warnbanner p { margin: 0 0 4px; }
+
+.pfc-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip: rect(0 0 0 0); overflow: hidden; white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pfc-pill, .pfc-fontcard, .pfc-motifcard, .pfc-btn { transition: border-color 0.12s, box-shadow 0.12s, background 0.12s; }
+}

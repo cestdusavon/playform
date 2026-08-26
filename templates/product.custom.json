@@ -1,0 +1,129 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title"
+        },
+        "price": {
+          "type": "price"
+        },
+        "variant": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_style": "buttons"
+          }
+        },
+        "text_line": {
+          "type": "custom_field",
+          "settings": {
+            "label": "Text to make",
+            "field_type": "text",
+            "placeholder": "e.g. Wren",
+            "help": "Exactly as you want it cut \u2014 we copy your spelling and capitals.",
+            "required": true,
+            "max_length": 20
+          }
+        },
+        "second_line": {
+          "type": "custom_field",
+          "settings": {
+            "label": "Second line",
+            "field_type": "text",
+            "placeholder": "Optional",
+            "required": false,
+            "max_length": 20
+          }
+        },
+        "font": {
+          "type": "custom_field",
+          "settings": {
+            "label": "Lettering style",
+            "field_type": "select",
+            "options": "Rounded, Chunky, Script",
+            "required": true
+          }
+        },
+        "colour": {
+          "type": "custom_field",
+          "settings": {
+            "label": "Colour",
+            "field_type": "select",
+            "options": "Red, Yellow, Blue, Green, Purple, Natural wood",
+            "required": true
+          }
+        },
+        "size_note": {
+          "type": "custom_field",
+          "settings": {
+            "label": "Width in cm",
+            "field_type": "number",
+            "help": "Leave blank for the standard size shown above.",
+            "placeholder": "30",
+            "min_number": "10",
+            "max_number": "120",
+            "required": false
+          }
+        },
+        "notes": {
+          "type": "custom_field",
+          "settings": {
+            "label": "Anything else",
+            "field_type": "textarea",
+            "placeholder": "Deadline, colour matching, a photo to work from\u2026",
+            "required": false,
+            "max_length": 200
+          }
+        },
+        "rush": {
+          "type": "custom_field",
+          "settings": {
+            "label": "Needed by a date",
+            "field_type": "checkbox",
+            "placeholder": "I have a deadline \u2014 get in touch before making",
+            "required": false
+          }
+        },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity": true,
+            "button_color": "accent"
+          }
+        },
+        "made_note": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Made to order. We send a proof before anything gets cut, so check your spelling above but don't panic \u2014 nothing is final until you say so.</p>"
+          }
+        },
+        "description": {
+          "type": "description"
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variant",
+        "text_line",
+        "second_line",
+        "font",
+        "colour",
+        "size_note",
+        "notes",
+        "rush",
+        "buy",
+        "made_note",
+        "description"
+      ],
+      "settings": {
+        "media_position": "left",
+        "show_thumbs": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

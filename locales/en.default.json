@@ -1,0 +1,226 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search for toys, props and signs",
+      "results_with_count": {
+        "one": "{{ count }} result",
+        "other": "{{ count }} results"
+      },
+      "no_results": "No results for “{{ terms }}”. Try another spelling or browse everything."
+    },
+    "cart": {
+      "title": "Cart"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "404": {
+      "title": "This page went missing a brick.",
+      "subtext": "The page you were after is not here. Let's get you back to the good stuff.",
+      "link": "Back to the shop"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "menu": "Menu",
+    "primary_nav": "Primary"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Search for toys, props and signs",
+      "empty": "No results found.",
+      "submit": "Search",
+      "product": "Product"
+    }
+  },
+  "onboarding": {
+    "product_title": "Example product"
+  },
+  "products": {
+    "card": {
+      "from_price": "from {{ price }}",
+      "rental_from": "Rental from {{ price }}",
+      "sold_out": "Sold out"
+    },
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "choose": "Choose…",
+      "yes": "Yes",
+      "characters_left": {
+        "one": "{{ count }} character left",
+        "other": "{{ count }} characters left"
+      },
+      "quantity": "Quantity",
+      "description": "Details"
+    }
+  },
+  "collections": {
+    "general": {
+      "empty": "Nothing here yet — check back soon."
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your cart",
+      "empty": "Your cart is empty.",
+      "continue_shopping": "Keep shopping",
+      "subtotal": "Subtotal",
+      "checkout": "Check out",
+      "view_cart": "View cart",
+      "remove": "Remove",
+      "remove_notice": "Remove from cart",
+      "product": "Product",
+      "qty": "Qty",
+      "quantity": "Quantity",
+      "total": "Total",
+      "taxes_note": "Taxes and shipping calculated at checkout.",
+      "taxes_included": "Taxes included in price.",
+      "update": "Update cart",
+      "note": "Order notes",
+      "note_placeholder": "Deadlines, gift messages, anything we should know",
+      "note_toggle": "Add a note to this order",
+      "empty_title": "Nothing in the cart yet",
+      "empty_body": "Every good build starts with one brick.",
+      "items_one": "1 item",
+      "items_other": "{{ count }} items",
+      "increase": "Increase quantity",
+      "decrease": "Decrease quantity",
+      "free_shipping_progress": "{{ amount }} away from free shipping",
+      "free_shipping_reached": "Free shipping unlocked",
+      "updating": "Updating…",
+      "secure": "Secure checkout"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Account",
+      "welcome": "Hello, {{ name }}",
+      "details": "Account details",
+      "view_addresses": "Manage addresses",
+      "log_out": "Log out",
+      "orders": "Orders",
+      "no_orders": "No orders yet — that is fixable.",
+      "start_shopping": "Start shopping",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment",
+      "fulfillment_status": "Status",
+      "total": "Total",
+      "stat_orders": "Orders",
+      "stat_spent": "Spent with us",
+      "stat_since": "Customer since",
+      "trade_account": "Trade account",
+      "company": "Company",
+      "location": "Location",
+      "trade_note": "Trade rates are applied automatically while you are signed in.",
+      "view_rentals": "Browse hire stock",
+      "default_address": "Default address",
+      "no_default_address": "No address saved yet."
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Orders, addresses and trade rates live in here.",
+      "email": "Email",
+      "password": "Password",
+      "show_password": "Show password",
+      "hide_password": "Hide password",
+      "submit": "Sign in",
+      "forgot": "Forgotten your password?",
+      "guest_title": "No account?",
+      "guest_body": "You can check out without one. An account just saves your details and shows your orders.",
+      "create": "Create an account",
+      "trade_title": "Trade customer?",
+      "trade_body": "Sign in for your rate card, or apply for an account.",
+      "trade_apply": "Apply for trade"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "subtitle": "We will email you a link.",
+      "submit": "Send reset link",
+      "cancel": "Back to sign in",
+      "success": "Check your email for the reset link."
+    },
+    "register": {
+      "title": "Create an account",
+      "subtitle": "Saves your details and keeps your orders in one place.",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create account",
+      "has_account": "Already have an account?",
+      "sign_in": "Sign in"
+    },
+    "reset_password": {
+      "title": "Choose a new password",
+      "password": "New password",
+      "password_confirm": "Confirm new password",
+      "submit": "Save password"
+    },
+    "activate_account": {
+      "title": "Activate your account",
+      "subtitle": "Pick a password and you are in.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate account",
+      "decline": "Decline invitation"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "add_new": "Add an address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Delete this address?",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "country": "Country",
+      "province": "Region",
+      "zip": "Postcode",
+      "phone": "Phone",
+      "set_default": "Use as my default address",
+      "save": "Save address",
+      "cancel": "Cancel",
+      "back": "Back to account",
+      "none": "No addresses saved yet."
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "placed": "Placed {{ date }}",
+      "back": "Back to account",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "discount": "Discount",
+      "shipping_address": "Shipping address",
+      "billing_address": "Billing address",
+      "cancelled": "Cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "track": "Track shipment"
+    }
+  },
+  "blogs": {
+    "article": {
+      "back_to_blog": "Back to {{ title }}",
+      "read_more": "Read more"
+    }
+  }
+}

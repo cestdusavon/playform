@@ -1,0 +1,19 @@
+<div class="pf-page pf-wrap">
+  <h1 class="pf-display pf-page__title">{{ page_title | escape }}</h1>
+
+  <div class="pf-products__grid">
+    {%- for collection in collections -%}
+      {%- assign collection_alt = collection.featured_image.alt | default: collection.title | escape -%}
+      <a class="pf-card" href="{{ collection.url }}">
+        <div class="pf-card__media">
+          {%- if collection.featured_image != blank -%}
+            {{ collection.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '220, 440, 800', sizes: '(min-width: 750px) 25vw, 45vw', alt: collection_alt }}
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        <h2 class="pf-card__title">{{ collection.title | escape }}</h2>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>

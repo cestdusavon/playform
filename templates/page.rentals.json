@@ -1,0 +1,257 @@
+{
+  "sections": {
+    "hero": {
+      "type": "split-hero",
+      "blocks": {
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "500+",
+            "label": "Events supplied"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "value": "48h",
+            "label": "Quote turnaround"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "value": "30%",
+            "label": "Refundable deposit"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "background": "#1156C4",
+        "text_color": "#FFFFFF",
+        "accent_color": "#F9C218",
+        "eyebrow": "Trade & B2B",
+        "heading": "Prop Rentals for",
+        "heading_accent": "People Who Throw Big.",
+        "text": "<p>Oversized letters, themed set pieces and party props, hired by event planners, venues, photographers and brand teams. Day, weekend, weekly and monthly rates with a refundable deposit.</p>",
+        "button_label": "Request a quote",
+        "button_color": "yellow",
+        "button_2_label": "See the rate card"
+      }
+    },
+    "rates": {
+      "type": "rental-rates",
+      "blocks": {
+        "day": {
+          "type": "period",
+          "settings": {
+            "color": "yellow",
+            "period": "1 day",
+            "prefix": "from",
+            "price": "$95",
+            "note": "Collection from our studio",
+            "includes": "Cleaned and checked before pickup\nSpare fixings included\nCollection 9am, return 5pm"
+          }
+        },
+        "weekend": {
+          "type": "period",
+          "settings": {
+            "color": "red",
+            "period": "Weekend",
+            "prefix": "from",
+            "price": "$238",
+            "note": "Friday to Monday",
+            "includes": "Three days for the price of 2.5\nCovers Saturday events\nMonday morning return",
+            "featured": true,
+            "flag": "Most booked"
+          }
+        },
+        "week": {
+          "type": "period",
+          "settings": {
+            "color": "blue",
+            "period": "1 week",
+            "prefix": "from",
+            "price": "$380",
+            "note": "Seven days",
+            "includes": "Best rate for multi-day runs\nOn-site swap if a piece fails\nFree re-clean between days"
+          }
+        },
+        "month": {
+          "type": "period",
+          "settings": {
+            "color": "purple",
+            "period": "1 month",
+            "prefix": "from",
+            "price": "$1,140",
+            "note": "Long-run installs",
+            "includes": "Retail and showroom installs\nMonthly condition check\nRenewal at the same rate"
+          }
+        },
+        "t1": {
+          "type": "tier",
+          "settings": {
+            "tier": "5+ pieces",
+            "discount": "10% off",
+            "note": "Hire rate, one booking"
+          }
+        },
+        "t2": {
+          "type": "tier",
+          "settings": {
+            "tier": "10+ pieces",
+            "discount": "15% off",
+            "note": "Hire rate, one booking"
+          }
+        },
+        "t3": {
+          "type": "tier",
+          "settings": {
+            "tier": "Booked 4+ times a year",
+            "discount": "20% off",
+            "note": "All hires, trade account"
+          }
+        },
+        "t4": {
+          "type": "tier",
+          "settings": {
+            "tier": "Trade account",
+            "discount": "Net 30",
+            "note": "Invoiced, deposit waived"
+          }
+        }
+      },
+      "block_order": [
+        "day",
+        "weekend",
+        "week",
+        "month",
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "background": "#F8F4EA",
+        "heading": "Hire It By The",
+        "heading_rainbow": "Day. Weekend. Week.",
+        "rainbow_start": 0,
+        "text": "Standard hire rates. Custom builds and multi-week runs are quoted individually.",
+        "tiers_heading": "Trade & volume discounts",
+        "tiers_col_1": "Order",
+        "tiers_col_2": "Discount",
+        "tiers_col_3": "Applies to",
+        "footnote": "Rates exclude delivery, install and strike. Deposit is refundable — see below."
+      }
+    },
+    "deposit": {
+      "type": "rental-deposit",
+      "blocks": {
+        "d1": {
+          "type": "term",
+          "settings": {
+            "color": "red",
+            "title": "What it covers",
+            "text": "Damage beyond normal wear, missing fixings, and returns more than 24 hours late."
+          }
+        },
+        "d2": {
+          "type": "term",
+          "settings": {
+            "color": "yellow",
+            "title": "When it comes back",
+            "text": "Released within 5 business days of return, once the piece has been checked and cleaned."
+          }
+        },
+        "d3": {
+          "type": "term",
+          "settings": {
+            "color": "blue",
+            "title": "Delivery & install",
+            "text": "Quoted separately by distance and piece size. Install and strike available for oversized props."
+          }
+        },
+        "d4": {
+          "type": "term",
+          "settings": {
+            "color": "green",
+            "title": "Cancellations",
+            "text": "Free up to 14 days out. Inside 14 days the deposit is retained against the booked slot."
+          }
+        },
+        "d5": {
+          "type": "term",
+          "settings": {
+            "color": "purple",
+            "title": "Trade accounts",
+            "text": "Approved accounts are invoiced on Net 30 with the deposit waived after three completed hires."
+          }
+        },
+        "d6": {
+          "type": "term",
+          "settings": {
+            "color": "red",
+            "title": "Insurance",
+            "text": "Venues needing a certificate of insurance — tell us at quote stage and we'll supply one."
+          }
+        }
+      },
+      "block_order": [
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "d6"
+      ],
+      "settings": {
+        "background": "#F8F4EA",
+        "color": "green",
+        "figure_label": "Refundable deposit",
+        "heading": "The deposit, plainly.",
+        "text": "<p>We hold a refundable deposit on every hire. It covers damage beyond normal wear and late returns — nothing else. Trade accounts on approved terms can have it waived.</p>"
+      }
+    },
+    "catalog": {
+      "type": "rental-catalog",
+      "settings": {
+        "background": "#F8F4EA",
+        "heading": "What you can hire.",
+        "products_to_show": 8,
+        "show_badge": true,
+        "button_label": "See every rental"
+      }
+    },
+    "quote": {
+      "type": "rental-quote",
+      "settings": {
+        "background": "#F8F4EA",
+        "color": "blue",
+        "accent_color": "#F9C218",
+        "heading": "Tell Us What You're Building.",
+        "heading_accent": "We'll Quote It in 48 Hours.",
+        "text": "<p>Send the brief — pieces, dates, venue — and we'll come back with hire rates, the deposit, and a delivery cost. Trade accounts get a standing rate card.</p>",
+        "button_label": "Request a quote",
+        "button_color": "yellow",
+        "success_text": "Got it. We'll come back to you inside 48 hours with rates and availability.",
+        "disclaimer": "Quotes hold for 14 days. Dates are only held once the deposit clears."
+      }
+    },
+    "content": {
+      "type": "page-content",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "rates",
+    "deposit",
+    "catalog",
+    "content",
+    "quote"
+  ]
+}

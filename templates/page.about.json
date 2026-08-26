@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "hero": {
+      "type": "split-hero",
+      "settings": {
+        "background": "#1E8A45",
+        "text_color": "#FFFFFF",
+        "accent_color": "#F9C218",
+        "eyebrow": "About Playform",
+        "heading": "Made by Hand,",
+        "heading_accent": "Made to Play With.",
+        "text": "<p>We design, print, cut and finish every piece ourselves — toys, party props, and the nursery signs that started it all.</p>",
+        "button_label": "Shop Playform",
+        "button_link": "/collections/all"
+      }
+    },
+    "story": {
+      "type": "story-split",
+      "settings": {
+        "background": "#F8F4EA",
+        "image_position": "left",
+        "eyebrow": "Our story",
+        "heading": "Started in a garage. Still kind of is.",
+        "text": "<p>Playform started as a way to make one kid's room feel like theirs. It turned into 3D printers, laser cutters and a workbench that never quite gets tidy — and a lot of custom pieces for other people's kids, parties and stores.</p>",
+        "button_label": "Start a custom project",
+        "button_link": "/pages/custom-orders"
+      }
+    },
+    "process": {
+      "type": "process-steps",
+      "blocks": {
+        "designed": {
+          "type": "step",
+          "settings": {
+            "color": "blue",
+            "title": "Designed",
+            "text": "Original pieces modeled specifically for Playform.",
+            "emoji": "🖥️"
+          }
+        },
+        "printed": {
+          "type": "step",
+          "settings": {
+            "color": "yellow",
+            "title": "Printed + cut",
+            "text": "3D printing, resin printing and precision laser cutting.",
+            "emoji": "🖨️"
+          }
+        },
+        "finished": {
+          "type": "step",
+          "settings": {
+            "color": "red",
+            "title": "Finished by hand",
+            "text": "Sanded, assembled, painted and detailed individually.",
+            "emoji": "🖌️"
+          }
+        },
+        "yours": {
+          "type": "step",
+          "settings": {
+            "color": "green",
+            "title": "Made for you",
+            "text": "Custom colors, names, sizing and designs.",
+            "emoji": "🎁"
+          }
+        }
+      },
+      "block_order": ["designed", "printed", "finished", "yours"],
+      "settings": { "background": "#F8F4EA", "heading": "How Everything's Made." }
+    },
+    "values": {
+      "type": "feature-grid",
+      "blocks": {
+        "v1": {
+          "type": "feature",
+          "settings": {
+            "color": "red",
+            "title": "Handmade, not mass-made",
+            "text": "Every piece passes through someone's hands before it ships — nothing here comes off a line."
+          }
+        },
+        "v2": {
+          "type": "feature",
+          "settings": {
+            "color": "yellow",
+            "title": "Built to actually play with",
+            "text": "Toys are toys first. If it can't survive a kid's room, we redesign it."
+          }
+        },
+        "v3": {
+          "type": "feature",
+          "settings": {
+            "color": "blue",
+            "title": "Custom is the default",
+            "text": "Colors, names and sizing are options on almost everything we make, not a special request."
+          }
+        }
+      },
+      "block_order": ["v1", "v2", "v3"],
+      "settings": { "background": "#F8F4EA", "heading": "What We Believe", "text": "" }
+    },
+    "instagram": {
+      "type": "instagram-strip",
+      "blocks": {
+        "p1": { "type": "photo" },
+        "p2": { "type": "photo" },
+        "p3": { "type": "photo" },
+        "p4": { "type": "photo" },
+        "p5": { "type": "photo" },
+        "p6": { "type": "photo" }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6"],
+      "settings": {
+        "background": "#F8F4EA",
+        "handle": "@playform.toys",
+        "follow_label": "Follow the mess →"
+      }
+    },
+    "content": { "type": "page-content", "settings": {} }
+  },
+  "order": ["hero", "story", "process", "values", "instagram", "content"]
+}

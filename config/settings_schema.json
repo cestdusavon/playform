@@ -1,0 +1,335 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Playform",
+    "theme_version": "1.0.0",
+    "theme_author": "Playform Toys",
+    "theme_documentation_url": "https://playform.toys",
+    "theme_support_url": "https://playform.toys"
+  },
+  {
+    "name": "Seasonal",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Swaps the accent colour and the hero image sitewide. The brand brick colours, the page background and the text colour do not change with the season."
+      },
+      {
+        "type": "select",
+        "id": "season",
+        "label": "Season",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Auto (follow the calendar)"
+          },
+          {
+            "value": "spring",
+            "label": "Spring"
+          },
+          {
+            "value": "summer",
+            "label": "Summer"
+          },
+          {
+            "value": "fall",
+            "label": "Fall"
+          },
+          {
+            "value": "winter",
+            "label": "Winter"
+          }
+        ],
+        "default": "auto",
+        "info": "Auto uses the current month (northern hemisphere). Pick a season to pin it for a campaign."
+      },
+      {
+        "type": "header",
+        "content": "Seasonal hero image"
+      },
+      {
+        "type": "paragraph",
+        "content": "Used by the home page hero for the matching season. If the slot for the active season is empty the hero falls back to its own image settings, so it is safe to fill these in one at a time."
+      },
+      {
+        "type": "image_picker",
+        "id": "spring_hero_image",
+        "label": "Spring hero"
+      },
+      {
+        "type": "image_picker",
+        "id": "summer_hero_image",
+        "label": "Summer hero"
+      },
+      {
+        "type": "image_picker",
+        "id": "fall_hero_image",
+        "label": "Fall hero"
+      },
+      {
+        "type": "image_picker",
+        "id": "winter_hero_image",
+        "label": "Winter hero"
+      }
+    ]
+  },
+  {
+    "name": "Brand colors",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "The Playform palette. These drive every brick, badge and button across the theme."
+      },
+      {
+        "type": "color",
+        "id": "color_red",
+        "label": "Red",
+        "default": "#E63329"
+      },
+      {
+        "type": "color",
+        "id": "color_yellow",
+        "label": "Yellow",
+        "default": "#F9C218"
+      },
+      {
+        "type": "color",
+        "id": "color_blue",
+        "label": "Blue",
+        "default": "#1156C4"
+      },
+      {
+        "type": "color",
+        "id": "color_green",
+        "label": "Green",
+        "default": "#1E8A45"
+      },
+      {
+        "type": "color",
+        "id": "color_purple",
+        "label": "Purple",
+        "default": "#7B3FB5"
+      },
+      {
+        "type": "color",
+        "id": "color_cream",
+        "label": "Cream background",
+        "default": "#F5F1E8",
+        "info": "Core token, fixed year round. The season changes only the accent."
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Text",
+        "default": "#2B2D3A",
+        "info": "Core token, fixed year round. The season changes only the accent."
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_google_fonts",
+        "label": "Load rounded display fonts (Fredoka + Nunito)",
+        "info": "Turn off to fall back to the system rounded stack.",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "Rentals",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Defaults for prop rentals. Any product can override these with metafields in the `rental` namespace \u2014 see the README."
+      },
+      {
+        "type": "header",
+        "content": "Rates"
+      },
+      {
+        "type": "paragraph",
+        "content": "Rates are derived from the product price, which is treated as the one-day rate unless the product sets rental.day_rate."
+      },
+      {
+        "type": "range",
+        "id": "rental_weekend_percent",
+        "label": "Weekend rate",
+        "min": 100,
+        "max": 400,
+        "step": 10,
+        "unit": "%",
+        "default": 250,
+        "info": "Percent of the day rate. 250% = 2.5 days."
+      },
+      {
+        "type": "range",
+        "id": "rental_week_percent",
+        "label": "Weekly rate",
+        "min": 100,
+        "max": 900,
+        "step": 25,
+        "unit": "%",
+        "default": 400,
+        "info": "Percent of the day rate."
+      },
+      {
+        "type": "range",
+        "id": "rental_month_percent",
+        "label": "Monthly rate",
+        "min": 200,
+        "max": 2000,
+        "step": 50,
+        "unit": "%",
+        "default": 1200,
+        "info": "Percent of the day rate."
+      },
+      {
+        "type": "header",
+        "content": "Deposit"
+      },
+      {
+        "type": "range",
+        "id": "rental_deposit_percent",
+        "label": "Refundable deposit",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 30,
+        "info": "Percent of the item value, held against damage and late return."
+      },
+      {
+        "type": "text",
+        "id": "rental_deposit_note",
+        "label": "Deposit note",
+        "default": "Refunded within 5 business days of return, less any damage."
+      },
+      {
+        "type": "header",
+        "content": "Booking"
+      },
+      {
+        "type": "range",
+        "id": "rental_min_days",
+        "label": "Minimum hire",
+        "min": 1,
+        "max": 14,
+        "step": 1,
+        "unit": "d",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "rental_lead_days",
+        "label": "Lead time",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "d",
+        "default": 14
+      },
+      {
+        "type": "header",
+        "content": "Who sees trade rates"
+      },
+      {
+        "type": "select",
+        "id": "rental_rate_visibility",
+        "label": "Show rates to",
+        "options": [
+          {
+            "value": "everyone",
+            "label": "Everyone"
+          },
+          {
+            "value": "customers",
+            "label": "Logged-in customers"
+          },
+          {
+            "value": "b2b",
+            "label": "B2B company accounts only"
+          }
+        ],
+        "default": "everyone",
+        "info": "Hidden rates are replaced with a prompt to log in or apply for a trade account."
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "free_shipping_enabled",
+        "label": "Show free shipping progress",
+        "info": "A bar on the cart page counting up to the threshold. Set the actual rate under Settings \u2192 Shipping.",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping over",
+        "info": "In your store currency, numbers only. For example 75.",
+        "default": "75"
+      }
+    ]
+  },
+  {
+    "name": "Brand assets",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 80,
+        "max": 320,
+        "step": 10,
+        "unit": "px",
+        "default": 200
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_etsy",
+        "label": "Etsy shop URL"
+      }
+    ]
+  }
+]

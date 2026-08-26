@@ -1,0 +1,115 @@
+{%- comment -%}
+  The address field set, shared by the new-address and edit-address forms.
+
+  Accepts:
+  - address: {Object} the address being edited (customer.new_address for a new one).
+  - prefix: {String} unique per form, so ids and labels stay paired.
+{%- endcomment -%}
+
+<div class="pf-field-row">
+  <div class="pf-field">
+    <label for="AddressFirstName-{{ prefix }}">{{ 'customer.addresses.first_name' | t }}</label>
+    <input
+      id="AddressFirstName-{{ prefix }}"
+      type="text"
+      name="address[first_name]"
+      value="{{ address.first_name }}"
+      autocomplete="given-name">
+  </div>
+  <div class="pf-field">
+    <label for="AddressLastName-{{ prefix }}">{{ 'customer.addresses.last_name' | t }}</label>
+    <input
+      id="AddressLastName-{{ prefix }}"
+      type="text"
+      name="address[last_name]"
+      value="{{ address.last_name }}"
+      autocomplete="family-name">
+  </div>
+</div>
+
+<div class="pf-field">
+  <label for="AddressCompany-{{ prefix }}">{{ 'customer.addresses.company' | t }}</label>
+  <input
+    id="AddressCompany-{{ prefix }}"
+    type="text"
+    name="address[company]"
+    value="{{ address.company }}"
+    autocomplete="organization">
+</div>
+
+<div class="pf-field">
+  <label for="AddressLine1-{{ prefix }}">{{ 'customer.addresses.address1' | t }}</label>
+  <input
+    id="AddressLine1-{{ prefix }}"
+    type="text"
+    name="address[address1]"
+    value="{{ address.address1 }}"
+    autocomplete="address-line1">
+</div>
+
+<div class="pf-field">
+  <label for="AddressLine2-{{ prefix }}">{{ 'customer.addresses.address2' | t }}</label>
+  <input
+    id="AddressLine2-{{ prefix }}"
+    type="text"
+    name="address[address2]"
+    value="{{ address.address2 }}"
+    autocomplete="address-line2">
+</div>
+
+<div class="pf-field-row">
+  <div class="pf-field">
+    <label for="AddressCity-{{ prefix }}">{{ 'customer.addresses.city' | t }}</label>
+    <input
+      id="AddressCity-{{ prefix }}"
+      type="text"
+      name="address[city]"
+      value="{{ address.city }}"
+      autocomplete="address-level2">
+  </div>
+  <div class="pf-field">
+    <label for="AddressZip-{{ prefix }}">{{ 'customer.addresses.zip' | t }}</label>
+    <input
+      id="AddressZip-{{ prefix }}"
+      type="text"
+      name="address[zip]"
+      value="{{ address.zip }}"
+      autocapitalize="characters"
+      autocomplete="postal-code">
+  </div>
+</div>
+
+<div class="pf-field-row">
+  <div class="pf-field">
+    <label for="AddressCountry-{{ prefix }}">{{ 'customer.addresses.country' | t }}</label>
+    <select
+      id="AddressCountry-{{ prefix }}"
+      name="address[country]"
+      data-default="{{ address.country }}"
+      data-pf-country
+      data-province-target="AddressProvince-{{ prefix }}"
+      data-province-wrapper="AddressProvinceWrapper-{{ prefix }}">
+      {{ all_country_option_tags }}
+    </select>
+  </div>
+
+  <div class="pf-field" id="AddressProvinceWrapper-{{ prefix }}">
+    <label for="AddressProvince-{{ prefix }}">{{ 'customer.addresses.province' | t }}</label>
+    <select id="AddressProvince-{{ prefix }}" name="address[province]" data-default="{{ address.province }}"></select>
+  </div>
+</div>
+
+<div class="pf-field">
+  <label for="AddressPhone-{{ prefix }}">{{ 'customer.addresses.phone' | t }}</label>
+  <input
+    id="AddressPhone-{{ prefix }}"
+    type="tel"
+    name="address[phone]"
+    value="{{ address.phone }}"
+    autocomplete="tel">
+</div>
+
+<label class="pf-field__check">
+  {{ form.set_as_default_checkbox }}
+  <span>{{ 'customer.addresses.set_default' | t }}</span>
+</label>

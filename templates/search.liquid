@@ -1,0 +1,46 @@
+<div class="pf-page pf-wrap">
+  <h1 class="pf-display pf-page__title">{{ 'general.search.title' | t }}</h1>
+
+  <form action="{{ routes.search_url }}" method="get" role="search" class="pf-field">
+    <label class="pf-visually-hidden" for="SearchInput">{{ 'general.search.title' | t }}</label>
+    <input
+      id="SearchInput"
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ 'general.search.placeholder' | t }}">
+  </form>
+
+  {%- if search.performed -%}
+    {%- if search.results_count > 0 -%}
+      <p class="pf-page__intro">{{ 'general.search.results_with_count' | t: count: search.results_count }}</p>
+
+      {%- paginate search.results by 24 -%}
+        <div class="pf-products__grid">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'pf-product-card', product: item, placeholder_index: forloop.index %}
+            {%- else -%}
+              <a class="pf-card" href="{{ item.url }}">
+                <h2 class="pf-card__title">{{ item.title | escape }}</h2>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <ul class="pf-pagination">
+            {%- if paginate.previous -%}
+              <li><a class="pf-btn pf-btn--outline" href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a></li>
+            {%- endif -%}
+            {%- if paginate.next -%}
+              <li><a class="pf-btn pf-btn--outline" href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a></li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <p>{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+    {%- endif -%}
+  {%- endif -%}
+</div>

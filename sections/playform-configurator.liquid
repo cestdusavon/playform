@@ -1,0 +1,124 @@
+{%- comment -%}
+  Playform product configurator — thin Liquid adapter around the
+  framework-free engine in assets/playform-config.js. Everything mounts
+  into one root element; all CSS is scoped under .pfc-root; no theme
+  classes or theme JS are referenced, so a theme swap cannot break it.
+{%- endcomment -%}
+
+{{ 'playform-config.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="pf-wrap"
+  data-pfc-mount
+  {% if section.settings.color_chrome != blank or section.settings.color_accent != blank %}
+    style="{% if section.settings.color_chrome != blank %}--pfc-chrome: {{ section.settings.color_chrome }};{% endif %}{% if section.settings.color_accent != blank %}--pfc-cut: {{ section.settings.color_accent }};{% endif %}"
+  {% endif %}>
+  {% render 'playform-config-schema', section: section, product: product %}
+  <noscript>
+    <p>The design tool needs JavaScript. Contact us at {{ shop.email }} and we will design your piece with you directly.</p>
+  </noscript>
+</div>
+
+<script src="{{ 'playform-config.js' | asset_url }}" defer></script>
+<script>
+  /* Adapter only: reads the JSON config emitted above, resolves the schema
+     from the bundle's registry, mounts. No engine logic lives here. */
+  (function () {
+    function boot() {
+      var mountEl = document.querySelector('[data-pfc-mount]');
+      if (!mountEl || mountEl.dataset.pfcBooted === 'true') return;
+      var lib = window.PlayformConfigurator;
+      if (!lib) return;
+      mountEl.dataset.pfcBooted = 'true';
+
+      var configEl = mountEl.querySelector('[data-pfc-config]');
+      var config;
+      try {
+        config = JSON.parse(configEl.textContent);
+      } catch (err) {
+        mountEl.innerHTML = '<p>The design tool could not start (bad configuration).</p>';
+        return;
+      }
+
+      var schema = lib.schemas[config.schemaId];
+      if (!schema) {
+        mountEl.innerHTML = '<p>The design tool is not configured for this product yet.</p>';
+        return;
+      }
+
+      var rateOverrides = {};
+      if (config.rateOverridesRaw) {
+        try { rateOverrides = JSON.parse(config.rateOverridesRaw); } catch (err) { rateOverrides = {}; }
+      }
+
+      lib.mount(mountEl, {
+        schema: schema,
+        fonts: lib.fonts,
+        motifs: lib.motifs,
+        assetBase: config.assetBase,
+        opentypeUrl: config.opentypeUrl,
+        cart: config.cart,
+        termsCopy: config.termsCopy,
+        allowUploads: config.allowUploads,
+        rateOverrides: rateOverrides
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+    document.addEventListener('shopify:section:load', boot);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Playform configurator",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "schema_id",
+      "label": "Product configurator",
+      "info": "Overridden by the product metafield custom.configurator_schema when set.",
+      "options": [
+        { "value": "name-sign", "label": "Name sign" },
+        { "value": "acrylic-panel", "label": "Acrylic sign / panel" },
+        { "value": "keychain", "label": "Keychain" },
+        { "value": "character-3d", "label": "3D-printed character" },
+        { "value": "container", "label": "Container" }
+      ],
+      "default": "name-sign"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_uploads",
+      "label": "Allow customer artwork uploads",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "terms_copy",
+      "label": "Made-to-order terms",
+      "default": "I have checked the spelling, size and colours. I understand this piece is made to order for me and cannot be returned or exchanged, and that payment is taken in full now."
+    },
+    {
+      "type": "textarea",
+      "id": "rate_overrides",
+      "label": "Rate card overrides (JSON)",
+      "info": "Optional. Merged over the product schema's rate card, e.g. {\"minimum\": 20}."
+    },
+    {
+      "type": "color",
+      "id": "color_chrome",
+      "label": "Chrome colour override"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Accent colour override"
+    }
+  ]
+}
+{% endschema %}

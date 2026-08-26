@@ -1,0 +1,6 @@
+<div class="pf-page pf-wrap">
+  <h1 class="pf-display pf-page__title">{{ article.title | escape }}</h1>
+  <p class="pf-page__intro">{{ article.published_at | date: format: 'date' }}</p>
+  <div class="pf-rte">{{ article.content }}</div>
+  <p><a class="pf-btn pf-btn--outline" href="{{ blog.url }}">{{ 'blogs.article.back_to_blog' | t: title: blog.title }}</a></p>
+</div>

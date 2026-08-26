@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Configurator harness</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/playform-config.css">
+<style>body { margin: 0; padding: 16px; background: #F5F1E8; font-family: sans-serif; }</style>
+</head>
+<body>
+  <div data-pfc-mount>
+    <script type="application/json" data-pfc-config>
+      {
+        "schemaId": "name-sign",
+        "assetBase": "/assets/",
+        "opentypeUrl": "/assets/playform-opentype.js",
+        "cart": { "addUrl": "/cart/add.js", "cartUrl": null, "variantId": 424242 },
+        "product": { "id": 1, "title": "Custom Name Sign", "handle": "custom-name-sign" },
+        "allowUploads": true,
+        "termsCopy": "I have checked the spelling, size and colours. I understand this piece is made to order for me and cannot be returned or exchanged, and that payment is taken in full now.",
+        "rateOverridesRaw": "",
+        "brand": {}
+      }
+    </script>
+  </div>
+  <script src="/assets/playform-config.js"></script>
+  <script>
+    (function () {
+      var mountEl = document.querySelector('[data-pfc-mount]');
+      var config = JSON.parse(mountEl.querySelector('[data-pfc-config]').textContent);
+      var params = new URLSearchParams(location.search);
+      var schemaId = params.get('schema') || config.schemaId;
+      var lib = window.PlayformConfigurator;
+      window.__app = lib.mount(mountEl, {
+        schema: lib.schemas[schemaId],
+        fonts: lib.fonts,
+        motifs: lib.motifs,
+        assetBase: config.assetBase,
+        opentypeUrl: config.opentypeUrl,
+        cart: config.cart,
+        termsCopy: config.termsCopy,
+        allowUploads: config.allowUploads,
+        rateOverrides: {}
+      });
+    })();
+  </script>
+</body>
+</html>

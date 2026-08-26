@@ -1,0 +1,98 @@
+{%- comment -%}
+  Cart drawer. Rendered once per page from layout/theme.liquid and opened by
+  the header cart link, which stays a real link to /cart when JS is off.
+{%- endcomment -%}
+
+<aside
+  class="pf-drawer"
+  data-pf-cart-drawer
+  data-open="false"
+  aria-label="{{ 'cart.general.title' | t }}">
+  <div class="pf-drawer__backdrop" data-pf-overlay-close></div>
+
+  <div class="pf-drawer__panel">
+    <div class="pf-drawer__head">
+      <h2 class="pf-drawer__title">{{ 'cart.general.title' | t }}</h2>
+      <button class="pf-icon-btn" type="button" data-pf-overlay-close>
+        {% render 'pf-icon', icon: 'close' %}
+        <span class="pf-visually-hidden">{{ 'accessibility.close' | t }}</span>
+      </button>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <ul class="pf-drawer__items" role="list">
+        {%- for item in cart.items -%}
+          <li class="pf-drawer-item">
+            <a class="pf-drawer-item__media" href="{{ item.url }}">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.title | escape }}
+              {%- endif -%}
+            </a>
+
+            <div class="pf-drawer-item__body">
+              <a class="pf-drawer-item__title" href="{{ item.url }}">{{ item.product.title }}</a>
+              {%- unless item.product.has_only_default_variant -%}
+                <p class="pf-drawer-item__variant">{{ item.variant.title }}</p>
+              {%- endunless -%}
+              {% render 'pf-line-properties', item: item %}
+              <p class="pf-drawer-item__price">
+                {{ 'cart.general.qty' | t }} {{ item.quantity }} &middot; {{ item.final_line_price | money }}
+              </p>
+            </div>
+
+            <button
+              class="pf-icon-btn pf-drawer-item__remove"
+              type="button"
+              data-pf-cart-remove="{{ forloop.index }}">
+              {% render 'pf-icon', icon: 'close' %}
+              <span class="pf-visually-hidden">{{ 'cart.general.remove_notice' | t }}</span>
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="pf-drawer__foot">
+        <div class="pf-drawer__subtotal">
+          <span>{{ 'cart.general.subtotal' | t }}</span>
+          <span>{{ cart.items_subtotal_price | money }}</span>
+        </div>
+        <p class="pf-drawer__note">{{ 'cart.general.taxes_note' | t }}</p>
+        <a class="pf-btn pf-btn--green pf-btn--full" href="{{ routes.cart_url }}/checkout">
+          {{ 'cart.general.checkout' | t }}
+        </a>
+        <a class="pf-btn pf-btn--outline pf-btn--full" href="{{ routes.cart_url }}">
+          {{ 'cart.general.view_cart' | t }}
+        </a>
+      </div>
+    {%- else -%}
+      <div class="pf-drawer__empty">
+        <p>{{ 'cart.general.empty' | t }}</p>
+        <a class="pf-btn" href="{{ routes.all_products_collection_url }}">
+          {{ 'cart.general.continue_shopping' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</aside>
+
+<script>
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[data-pf-cart-remove]');
+    if (!button) return;
+
+    button.disabled = true;
+    fetch('{{ routes.cart_change_url }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ line: Number(button.dataset.pfCartRemove), quantity: 0 })
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error('cart');
+        window.location.reload();
+      })
+      .catch(function () {
+        button.disabled = false;
+        window.location.href = '{{ routes.cart_url }}';
+      });
+  });
+</script>

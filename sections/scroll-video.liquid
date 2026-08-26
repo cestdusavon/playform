@@ -1,0 +1,435 @@
+{%- liquid
+  comment
+    Scroll-scrubbed video. The section is a tall scroll track with a sticky,
+    full-viewport video inside it; scrolling through the track drives
+    video.currentTime, so the film plays exactly as fast as the visitor
+    scrolls, forwards and backwards.
+
+    Without JavaScript the video simply autoplays muted on a loop.
+    With reduced motion preferred, it does the same rather than scrubbing.
+  endcomment
+
+  assign track_height = section.settings.scroll_length
+  assign vid = section.settings.video
+-%}
+
+<div
+  class="pf-scrollvid"
+  data-pf-scrollvid
+  style="--pf-scrollvid-track: {{ track_height }}vh;">
+  <div class="pf-scrollvid__sticky">
+    <video
+      class="pf-scrollvid__video"
+      muted
+      playsinline
+      autoplay
+      loop
+      preload="auto"
+      disablepictureinpicture
+      disableremoteplayback
+      {% if section.settings.poster != blank %}
+        poster="{{ section.settings.poster | image_url: width: 1600 }}"
+      {% endif %}
+      data-pf-scrollvid-video>
+      {%- if vid != blank -%}
+        {%- for source in vid.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+      {%- else -%}
+        <source src="{{ 'playform-scroll-video.mp4' | asset_url }}" type="video/mp4">
+      {%- endif -%}
+    </video>
+
+    {%- comment -%}
+      Once a frame has been drawn here the canvas covers the video entirely.
+      A canvas cannot grow playback chrome, so no browser — in any power mode
+      — can paint a play button over the film.
+    {%- endcomment -%}
+    <canvas class="pf-scrollvid__canvas" aria-hidden="true" data-pf-scrollvid-canvas></canvas>
+
+    <div class="pf-scrollvid__shade" aria-hidden="true"></div>
+
+    <div class="pf-scrollvid__overlay pf-scrollvid__overlay--{{ section.settings.overlay_position }}">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="pf-eyebrow pf-scrollvid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="pf-display pf-scrollvid__heading">
+          {%- if section.settings.heading_rainbow -%}
+            {% render 'pf-rainbow', text: section.settings.heading, start_color: section.settings.rainbow_start %}
+          {%- else -%}
+            {{ section.settings.heading | escape }}
+          {%- endif -%}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <p class="pf-scrollvid__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a class="pf-btn pf-btn--{{ section.settings.button_color }}" href="{{ section.settings.button_link }}">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_hint -%}
+      <div class="pf-scrollvid__hint" data-pf-scrollvid-hint aria-hidden="true">
+        <span>{{ section.settings.hint_text | escape }}</span>
+        {% render 'pf-icon', icon: 'chevron' %}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-pf-scrollvid]');
+    if (!root || root.dataset.pfBound === 'true') return;
+    root.dataset.pfBound = 'true';
+
+    var video = root.querySelector('[data-pf-scrollvid-video]');
+    var hint = root.querySelector('[data-pf-scrollvid-hint]');
+    var canvas = root.querySelector('[data-pf-scrollvid-canvas]');
+    var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+    var painted = false;
+
+    /* Mirror the current frame onto the canvas. Drawing a cross-origin video
+       is allowed (only reading pixels back would be blocked), so a
+       Shopify-hosted file works the same as a theme asset. */
+    function paint() {
+      if (!ctx || !video.videoWidth) return;
+
+      if (canvas.width !== video.videoWidth) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      }
+
+      try {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      } catch (e) {
+        /* Leave the video visible and let the CSS chrome rules carry it. */
+        return;
+      }
+
+      if (!painted) {
+        painted = true;
+        root.setAttribute('data-canvas', 'ready');
+      }
+    }
+
+    video.addEventListener('seeked', paint);
+    video.addEventListener('loadeddata', paint);
+
+    /* A film that cannot load must not sit there showing broken chrome. */
+    video.addEventListener('error', function () {
+      root.setAttribute('data-video-failed', 'true');
+    });
+
+    /* Reduced motion keeps the plain autoplay loop instead of scrubbing. */
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var duration = 0;
+    var target = 0;
+    var current = 0;
+    var inView = false;
+    var ticking = false;
+    var seekBusy = false;
+    var seekStamp = 0;
+    var lastTick = 0;
+
+    /* One seek at a time: issuing a new one every animation frame cancels the
+       seek already in flight, and the decoder never gets to present a frame —
+       currentTime reads the target while the picture stays frozen. */
+    video.addEventListener('seeked', function () {
+      seekBusy = false;
+    });
+
+    function progress() {
+      /* 0 when the track's top reaches the viewport top, 1 when its bottom
+         reaches the viewport bottom — the span the sticky frame is pinned for. */
+      var rect = root.getBoundingClientRect();
+      var span = rect.height - window.innerHeight;
+      if (span <= 0) return 0;
+      return Math.min(1, Math.max(0, -rect.top / span));
+    }
+
+    function frame(now) {
+      if (!inView || !duration) { ticking = false; lastTick = 0; return; }
+
+      var dt = lastTick ? Math.min((now - lastTick) / 1000, 0.1) : 1 / 60;
+      lastTick = now;
+
+      target = progress() * duration;
+
+      /* Time-based easing, so 120Hz screens converge no faster than 60Hz
+         ones. The rate grows with the gap: a slow scroll glides, a hard
+         flick catches up instead of dragging a long tail behind it. */
+      var gap = target - current;
+      var rate = 8 + Math.min(24, Math.abs(gap) * 10);
+      current += gap * (1 - Math.exp(-rate * dt));
+      if (Math.abs(target - current) < 0.01) current = target;
+
+      /* A seek can die quietly (source switch, decoder hiccup); do not let a
+         lost `seeked` event freeze the scrub for good. */
+      if (seekBusy && now - seekStamp > 250 && !video.seeking) seekBusy = false;
+
+      /* Never seek to the very end: currentTime == duration fires `ended`,
+         and some browsers then snap the frame back to the start. Skip seeks
+         smaller than half a source frame — they cost a decode and change
+         nothing on screen. */
+      var next = Math.min(Math.max(current, 0), duration - 0.05);
+      if (!seekBusy && Math.abs(next - video.currentTime) > 0.02) {
+        seekBusy = true;
+        seekStamp = now;
+        video.currentTime = next;
+      }
+
+      paint();
+
+      if (hint) hint.classList.toggle('is-hidden', progress() > 0.04);
+
+      window.requestAnimationFrame(frame);
+    }
+
+    function wake() {
+      if (!ticking && inView && duration) {
+        ticking = true;
+        window.requestAnimationFrame(frame);
+      }
+    }
+
+    function arm() {
+      /* iOS draws a start-playback button over any video that has never
+         played, and pausing before autoplay gets going leaves it stuck there
+         for good. Let playback actually begin, then take the film over. */
+      var started = video.play();
+
+      if (started && typeof started.then === 'function') {
+        started.then(takeOver, takeOver);
+      } else {
+        takeOver();
+      }
+    }
+
+    function takeOver() {
+      /* Scrubbing takes over from the no-JS autoplay loop. */
+      video.pause();
+      video.removeAttribute('autoplay');
+      video.removeAttribute('loop');
+
+      if (video.duration === Infinity) {
+        /* Recorded or streamed sources report Infinity until forced to index
+           themselves: seek far past the end once, then read the real length. */
+        video.addEventListener('seeked', function once() {
+          video.removeEventListener('seeked', once);
+          duration = video.duration;
+          video.currentTime = 0;
+          current = 0;
+          wake();
+        });
+        video.currentTime = 1e10;
+        return;
+      }
+
+      duration = video.duration;
+      current = video.currentTime || 0;
+      wake();
+    }
+
+    if (video.readyState >= 1 && video.duration) {
+      arm();
+    } else {
+      video.addEventListener('loadedmetadata', arm);
+    }
+
+    var watcher = new IntersectionObserver(function (entries) {
+      inView = entries[0].isIntersecting;
+      if (inView) wake();
+      else ticking = false;
+    });
+    watcher.observe(root);
+
+    window.addEventListener('scroll', wake, { passive: true });
+    window.addEventListener('resize', wake);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Scroll video",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A full-screen film that plays as the visitor scrolls \u2014 forwards on the way down, backwards on the way up. Without JavaScript it falls back to a muted autoplay loop."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Keep it short and silent \u2014 around 10 seconds scrubs beautifully. Falls back to the bundled Playform film."
+    },
+    {
+      "type": "image_picker",
+      "id": "poster",
+      "label": "Poster frame",
+      "info": "Shown while the film loads."
+    },
+    {
+      "type": "range",
+      "id": "scroll_length",
+      "label": "Scroll length",
+      "min": 150,
+      "max": 500,
+      "step": 25,
+      "unit": "vh",
+      "default": 200,
+      "info": "How much scrolling plays the whole film. 200vh reads the 10-second film in about five seconds of natural scrolling; bigger = slower."
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Built Brick by Brick"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_rainbow",
+      "label": "Rainbow heading",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "rainbow_start",
+      "label": "Rainbow start colour",
+      "options": [
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        }
+      ],
+      "default": "red"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_color",
+      "label": "Button colour",
+      "options": [
+        {
+          "value": "red",
+          "label": "Red"
+        },
+        {
+          "value": "yellow",
+          "label": "Yellow"
+        },
+        {
+          "value": "blue",
+          "label": "Blue"
+        },
+        {
+          "value": "green",
+          "label": "Green"
+        },
+        {
+          "value": "purple",
+          "label": "Purple"
+        },
+        {
+          "value": "accent",
+          "label": "Seasonal accent"
+        },
+        {
+          "value": "accent-secondary",
+          "label": "Seasonal accent (secondary)"
+        }
+      ],
+      "default": "yellow"
+    },
+    {
+      "type": "select",
+      "id": "overlay_position",
+      "label": "Overlay position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom centre"
+        }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "header",
+      "content": "Scroll hint"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hint",
+      "label": "Show scroll hint",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hint_text",
+      "label": "Hint text",
+      "default": "Scroll to play"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scroll video"
+    }
+  ]
+}
+{% endschema %}

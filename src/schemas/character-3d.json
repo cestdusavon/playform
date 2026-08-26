@@ -1,0 +1,39 @@
+{
+  "id": "character-3d",
+  "v": 1,
+  "title": "3D-Printed Character",
+  "description": "A parametric character at your scale and colorway, with an optional name plinth.",
+  "processes": ["fdm", "resin"],
+  "geometry": { "kind": "figure" },
+  "target": { "param": "heightIn", "solves": "widthIn" },
+  "safeAreaIn": 0,
+  "preview": { "framing": "tall" },
+  "params": [
+    { "key": "figure", "s": "fg", "type": "motif", "label": "Character", "tag": "figure", "default": "dino", "alwaysInSpec": true },
+    { "key": "heightIn", "s": "h", "type": "number", "label": "Height", "unit": "in", "min": 2, "max": 12, "step": 0.5, "default": 6, "alwaysInSpec": true },
+    { "key": "colorway", "s": "cw", "type": "choice", "label": "Colorway", "default": "bone", "options": [
+      { "v": "bone", "label": "Bone" },
+      { "v": "ash", "label": "Ash" },
+      { "v": "latte", "label": "Latte" },
+      { "v": "brights", "label": "Brights (multi-color)" }
+    ] },
+    { "key": "plinth", "s": "pl", "type": "toggle", "label": "Name plinth", "default": false },
+    { "key": "text", "s": "tx", "type": "text", "label": "Plinth name", "max": 16, "default": "", "showIf": { "plinth": true } },
+    { "key": "font", "s": "f", "type": "font", "label": "Plinth lettering", "categories": ["sans", "display", "slab"], "default": "fredoka", "showIf": { "plinth": true } },
+    { "key": "material", "s": "mat", "type": "choice", "label": "Process", "default": "pla", "options": [
+      { "v": "pla", "label": "FDM — matte PLA" },
+      { "v": "resin", "label": "Resin — fine detail" }
+    ] }
+  ],
+  "pricing": {
+    "setupFee": 6.0,
+    "perSquareInch": 0.55,
+    "perLetter": 0.5,
+    "perInchOfCut": 0,
+    "perSquareInchPrinted": 0,
+    "materialMultipliers": { "pla": 1.0, "resin": 1.8 },
+    "thicknessMultipliers": {},
+    "minimum": 22.0
+  },
+  "proof": { "fields": ["Size", "Lettering", "Material"] }
+}

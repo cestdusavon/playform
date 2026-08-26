@@ -1,0 +1,19 @@
+{% layout none %}
+<!doctype html>
+{%- capture pf_season -%}{% render 'pf-season' %}{%- endcapture -%}
+<html lang="{{ request.locale.iso_code }}" data-season="{{ pf_season | strip }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ shop.name }} gift card</title>
+    {{ 'playform.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body class="pf-body">
+    <div class="pf-page pf-wrap">
+      <h1 class="pf-display pf-page__title">{{ gift_card.balance | money }} gift card</h1>
+      <p class="pf-page__intro">Use this code at checkout on {{ shop.name }}.</p>
+      <p class="pf-product__price">{{ gift_card.code | format_code }}</p>
+      <a class="pf-btn" href="{{ shop.url }}">Shop {{ shop.name }}</a>
+    </div>
+  </body>
+</html>

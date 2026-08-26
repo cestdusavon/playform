@@ -1,0 +1,34 @@
+{
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "m1": { "type": "message", "settings": { "text": "Custom made", "dot_color": "#E63329" } },
+        "m2": { "type": "message", "settings": { "text": "3D printed", "dot_color": "#1156C4" } },
+        "m3": { "type": "message", "settings": { "text": "Laser cut", "dot_color": "#7B3FB5" } },
+        "m4": { "type": "message", "settings": { "text": "Hand finished", "dot_color": "#1E8A45" } },
+        "m5": { "type": "message", "settings": { "text": "Made to play", "dot_color": "#E63329" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4", "m5"],
+      "settings": {
+        "background": "#F9C218",
+        "text_color": "#12100E",
+        "animate": true,
+        "end_icon": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "background": "#F8F4EA",
+        "logo_width": 200,
+        "menu": "main-menu",
+        "show_search": true,
+        "show_account": true
+      }
+    }
+  },
+  "order": ["announcement", "header"]
+}

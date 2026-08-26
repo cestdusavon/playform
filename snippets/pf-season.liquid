@@ -1,0 +1,43 @@
+{%- comment -%}
+  Resolves the active season and outputs it as a bare string.
+
+  Usage:
+    {%- capture season -%}{% render 'pf-season' %}{%- endcapture -%}
+
+  Outputs exactly one of: spring | summer | fall | winter
+
+  When Theme settings → Seasonal → Season is "auto" the month decides;
+  anything else is used verbatim, so a season can be pinned for a campaign
+  regardless of the date.
+
+  Northern hemisphere month mapping — the store bills in USD from the United
+  States. A southern-hemisphere store would need these shifted six months.
+{%- endcomment -%}
+
+{%- liquid
+  assign chosen = settings.season | default: 'auto' | downcase | strip
+
+  if chosen == 'auto'
+    assign month = 'now' | date: '%m' | plus: 0
+    case month
+      when 3, 4, 5
+        assign chosen = 'spring'
+      when 6, 7, 8
+        assign chosen = 'summer'
+      when 9, 10, 11
+        assign chosen = 'fall'
+      else
+        assign chosen = 'winter'
+    endcase
+  endif
+
+  comment
+    Guard against an unrecognised value reaching the attribute.
+  endcomment
+  assign allowed = 'spring,summer,fall,winter' | split: ','
+  unless allowed contains chosen
+    assign chosen = 'winter'
+  endunless
+
+  echo chosen
+-%}

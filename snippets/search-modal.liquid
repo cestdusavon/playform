@@ -1,0 +1,89 @@
+{%- comment -%}
+  Search modal. Rendered once per page from layout/theme.liquid and opened by
+  the header search link, which stays a real link to /search when JS is off.
+  Suggestions come from Shopify's predictive search endpoint.
+{%- endcomment -%}
+
+<div
+  class="pf-modal"
+  data-pf-search-modal
+  data-open="false"
+  aria-label="{{ 'general.search.title' | t }}">
+  <div class="pf-modal__backdrop" data-pf-overlay-close></div>
+
+  <div class="pf-modal__panel">
+    <form class="pf-modal__form" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="pf-visually-hidden" for="PfSearchInput">{{ 'general.search.title' | t }}</label>
+      {% render 'pf-icon', icon: 'search' %}
+      <input
+        id="PfSearchInput"
+        class="pf-modal__input"
+        type="search"
+        name="q"
+        autocomplete="off"
+        placeholder="{{ 'general.search.placeholder' | t }}"
+        data-pf-search-input>
+      <button class="pf-icon-btn" type="button" data-pf-overlay-close>
+        {% render 'pf-icon', icon: 'close' %}
+        <span class="pf-visually-hidden">{{ 'accessibility.close' | t }}</span>
+      </button>
+    </form>
+
+    <div class="pf-modal__results" data-pf-search-results aria-live="polite"></div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var modal = document.querySelector('[data-pf-search-modal]');
+    if (!modal) return;
+
+    var input = modal.querySelector('[data-pf-search-input]');
+    var results = modal.querySelector('[data-pf-search-results]');
+    var timer;
+
+    function render(products) {
+      if (!products.length) {
+        results.textContent = {{ 'header.search.empty' | t | json }};
+        return;
+      }
+
+      results.innerHTML = '';
+      products.forEach(function (product) {
+        var link = document.createElement('a');
+        link.className = 'pf-modal__result';
+        link.href = product.url;
+        link.textContent = product.title;
+        results.appendChild(link);
+      });
+    }
+
+    input.addEventListener('input', function () {
+      var term = input.value.trim();
+      clearTimeout(timer);
+
+      if (!term) {
+        results.textContent = '';
+        return;
+      }
+
+      timer = setTimeout(function () {
+        var url =
+          '{{ routes.predictive_search_url }}?q=' +
+          encodeURIComponent(term) +
+          '&resources[type]=product&resources[limit]=6';
+
+        fetch(url, { headers: { Accept: 'application/json' } })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            render((data.resources && data.resources.results && data.resources.results.products) || []);
+          })
+          .catch(function () {
+            results.textContent = '';
+          });
+      }, 250);
+    });
+  })();
+</script>

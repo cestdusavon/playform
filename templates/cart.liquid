@@ -1,0 +1,152 @@
+{%- liquid
+  assign threshold = settings.free_shipping_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign show_meter = false
+  if settings.free_shipping_enabled and threshold > 0
+    assign show_meter = true
+  endif
+  assign progress = 0
+  if threshold > 0
+    assign progress = cart.total_price | times: 100 | divided_by: threshold
+    if progress > 100
+      assign progress = 100
+    endif
+  endif
+-%}
+
+<div class="pf-page pf-wrap">
+  {%- if cart.item_count == 0 -%}
+    <div class="pf-cart-empty">
+      {%- render 'pf-brick-mark' -%}
+      <h1 class="pf-display">{{ 'cart.general.empty_title' | t }}</h1>
+      <p class="pf-muted">{{ 'cart.general.empty_body' | t }}</p>
+      <a class="pf-btn" href="{{ routes.all_products_collection_url }}">
+        {{ 'cart.general.continue_shopping' | t }}
+      </a>
+    </div>
+  {%- else -%}
+    <div class="pf-cart-head">
+      <h1 class="pf-display pf-page__title">{{ 'cart.general.title' | t }}</h1>
+      <p class="pf-muted" data-pf-cart-count>
+        {%- if cart.item_count == 1 -%}
+          {{ 'cart.general.items_one' | t }}
+        {%- else -%}
+          {{ 'cart.general.items_other' | t: count: cart.item_count }}
+        {%- endif -%}
+      </p>
+    </div>
+
+    {%- if show_meter -%}
+      <div class="pf-meter" data-pf-meter data-pf-meter-threshold="{{ threshold }}">
+        <p
+          class="pf-meter__label"
+          data-pf-meter-label
+          data-pf-progress-template="{{ 'cart.general.free_shipping_progress' | t: amount: '[amount]' | escape }}"
+          data-pf-reached-label="{{ 'cart.general.free_shipping_reached' | t | escape }}">
+          {%- if remaining > 0 -%}
+            {%- assign remaining_money = remaining | money -%}
+            {{ 'cart.general.free_shipping_progress' | t: amount: remaining_money }}
+          {%- else -%}
+            {{ 'cart.general.free_shipping_reached' | t }}
+          {%- endif -%}
+        </p>
+        <div class="pf-meter__track">
+          <div class="pf-meter__fill" data-pf-meter-fill style="width: {{ progress }}%;"></div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- form 'cart', cart, class: 'pf-cart-form' -%}
+      <ul class="pf-cart-lines" role="list" data-pf-cart-lines>
+        {%- for item in cart.items -%}
+          <li class="pf-cart-line" data-pf-line="{{ forloop.index }}">
+            <a class="pf-cart-line__media" href="{{ item.url }}">
+              {%- if item.image != blank -%}
+                {{
+                  item.image
+                  | image_url: width: 240
+                  | image_tag: loading: 'lazy', widths: '96, 192, 240', sizes: '96px', alt: item.title | escape
+                }}
+              {%- endif -%}
+            </a>
+
+            <div class="pf-cart-line__body">
+              <a class="pf-cart-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <p class="pf-muted">{{ item.variant.title }}</p>
+              {%- endunless -%}
+              {% render 'pf-line-properties', item: item %}
+              <p class="pf-cart-line__unit pf-muted">{{ item.original_price | money }}</p>
+            </div>
+
+            <div class="pf-stepper" data-pf-stepper>
+              <button
+                class="pf-stepper__btn"
+                type="button"
+                data-pf-qty-step="-1"
+                aria-label="{{ 'cart.general.decrease' | t }}">&minus;</button>
+              <label class="pf-visually-hidden" for="Qty-{{ forloop.index }}">
+                {{ 'cart.general.quantity' | t }}
+              </label>
+              <input
+                id="Qty-{{ forloop.index }}"
+                class="pf-stepper__input"
+                type="number"
+                name="updates[]"
+                value="{{ item.quantity }}"
+                min="0"
+                data-pf-qty
+                data-pf-line-index="{{ forloop.index }}">
+              <button
+                class="pf-stepper__btn"
+                type="button"
+                data-pf-qty-step="1"
+                aria-label="{{ 'cart.general.increase' | t }}">+</button>
+            </div>
+
+            <div class="pf-cart-line__figures">
+              <span class="pf-cart-line__total" data-pf-line-total>{{ item.final_line_price | money }}</span>
+              <button
+                class="pf-cart-line__remove"
+                type="button"
+                data-pf-line-remove="{{ forloop.index }}">
+                {{ 'cart.general.remove' | t }}
+              </button>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="pf-cart-foot">
+        <div class="pf-cart-note">
+          <details {% if cart.note != blank %}open{% endif %}>
+            <summary>{{ 'cart.general.note_toggle' | t }}</summary>
+            <label class="pf-visually-hidden" for="CartNote">{{ 'cart.general.note' | t }}</label>
+            <textarea
+              id="CartNote"
+              name="note"
+              rows="3"
+              placeholder="{{ 'cart.general.note_placeholder' | t | escape }}">{{ cart.note }}</textarea>
+          </details>
+        </div>
+
+        <div class="pf-cart-summary">
+          <div class="pf-summary__row pf-summary__row--total">
+            <span>{{ 'cart.general.subtotal' | t }}</span>
+            <span data-pf-cart-total>{{ cart.total_price | money }}</span>
+          </div>
+          <p class="pf-muted pf-cart-summary__note">{{ 'cart.general.taxes_note' | t }}</p>
+
+          <button class="pf-btn pf-btn--green pf-btn--full" type="submit" name="checkout">
+            {{ 'cart.general.checkout' | t }}
+          </button>
+          <button class="pf-btn pf-btn--outline pf-btn--full" type="submit" name="update">
+            {{ 'cart.general.update' | t }}
+          </button>
+
+          <p class="pf-cart-secure pf-muted">{{ 'cart.general.secure' | t }}</p>
+        </div>
+      </div>
+    {%- endform -%}
+  {%- endif -%}
+</div>

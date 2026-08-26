@@ -1,0 +1,83 @@
+{%- liquid
+  assign collection = section.settings.collection
+  assign limit = section.settings.products_to_show
+  assign products = collection.products
+-%}
+
+<div class="pf-products" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap">
+    <div class="pf-section-head">
+      <h2 class="pf-display pf-section-head__title">
+        {%- if section.settings.heading != blank -%}
+          <span class="pf-line">{{ section.settings.heading | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading_rainbow != blank -%}
+          <span class="pf-line">
+            {%- render 'pf-rainbow', text: section.settings.heading_rainbow, start: section.settings.rainbow_start -%}
+          </span>
+        {%- endif -%}
+      </h2>
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          class="pf-btn pf-btn--outline"
+          href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="pf-products__grid">
+      {%- if products.size > 0 -%}
+        {%- for product in products limit: limit -%}
+          {% render 'pf-product-card', product: product, placeholder_index: forloop.index %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Onboarding: draw placeholder cards until a collection is picked. {%- endcomment -%}
+        {%- for i in (1..limit) -%}
+          {% render 'pf-product-card', placeholder_index: i %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Things We Made For Fun." },
+    {
+      "type": "text",
+      "id": "heading_rainbow",
+      "label": "Rainbow line",
+      "info": "Every word gets the next colour in the palette.",
+      "default": "You Can Have Them Too."
+    },
+    {
+      "type": "range",
+      "id": "rainbow_start",
+      "label": "Start the rainbow on colour",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0
+    },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View all products" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Featured products" }]
+}
+{% endschema %}

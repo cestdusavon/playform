@@ -1,0 +1,95 @@
+<footer class="pf-footer" style="background: {{ section.settings.background }};">
+  <div class="pf-wrap pf-footer__inner">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'mark' -%}
+          <a class="pf-footer__mark" href="{{ routes.root_url }}" {{ block.shopify_attributes }}>
+            {%- assign mark = block.settings.image | default: settings.logo -%}
+            {%- if mark != blank -%}
+              {%- assign mark_alt = mark.alt | default: shop.name | escape -%}
+              {{
+                mark
+                | image_url: width: 480
+                | image_tag: loading: 'lazy', widths: '160, 320, 480', sizes: '160px', alt: mark_alt
+              }}
+            {%- else -%}
+              {% render 'pf-brick-mark' %}
+              <span class="pf-visually-hidden">{{ shop.name }}</span>
+            {%- endif -%}
+          </a>
+
+        {%- when 'menu' -%}
+          {%- if block.settings.menu != blank -%}
+            <nav class="pf-footer__nav" aria-label="{{ block.settings.title | default: shop.name | escape }}" {{ block.shopify_attributes }}>
+              <ul class="pf-footer__list">
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li>
+                    <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </nav>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if section.settings.legal_text != blank or section.settings.show_policies -%}
+    <div class="pf-wrap pf-footer__legal">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.legal_text }}</span>
+
+      {%- if section.settings.show_policies -%}
+        <span class="pf-footer__policies">
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank -%}
+              <a href="{{ policy.url }}">{{ policy.title }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "div",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F4EA" },
+    { "type": "text", "id": "legal_text", "label": "Legal text", "default": "All rights reserved." },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Link store policies",
+      "info": "Adds whichever policies you have written under Settings → Policies.",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mark",
+      "name": "Logo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Logo",
+          "info": "Falls back to the theme logo, then to a brick mark."
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Accessible label", "info": "Not shown. Names the menu for screen readers.", "default": "Footer" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

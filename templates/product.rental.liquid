@@ -1,0 +1,64 @@
+{%- comment -%}
+  Alternate product template for hire pieces. Assign it to rental products in
+  the admin under Product → Theme template → rental.
+{%- endcomment -%}
+
+{%- assign product_alt = product.featured_media.alt | default: product.title | escape -%}
+
+<div class="pf-page pf-wrap">
+  <div class="pf-product">
+    <div class="pf-product__media">
+      {%- if product.featured_media != blank -%}
+        {{
+          product.featured_media
+          | image_url: width: 1200
+          | image_tag: widths: '400, 600, 900, 1200', sizes: '(min-width: 750px) 45vw, 90vw', alt: product_alt
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    <div class="pf-product__info">
+      <p class="pf-eyebrow">
+        <span class="pf-badge pf-badge--blue">For hire</span>
+      </p>
+
+      <h1 class="pf-display pf-page__title">{{ product.title | escape }}</h1>
+
+      {% render 'pf-rental-rates', product: product, layout: 'table', heading: 'Hire rates' %}
+
+      <div class="pf-product__actions">
+        {%- if product.available and product.selected_or_first_available_variant != blank -%}
+          {%- form 'product', product -%}
+            {%- if product.variants.size > 1 -%}
+              <div class="pf-field">
+                <label for="RentalVariant">{{ product.options_with_values.first.name }}</label>
+                <select id="RentalVariant" name="id">
+                  {%- for variant in product.variants -%}
+                    <option
+                      value="{{ variant.id }}"
+                      {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                      {% unless variant.available %}disabled{% endunless %}>
+                      {{ variant.title }} — {{ variant.price | money }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- else -%}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            {%- endif -%}
+
+            <button class="pf-btn pf-btn--blue" type="submit">Book this piece</button>
+          {%- endform -%}
+        {%- endif -%}
+
+        <a class="pf-btn pf-btn--outline" href="{{ routes.root_url }}pages/rentals#RentalQuote">
+          Request a quote
+        </a>
+      </div>
+
+      <div class="pf-rte">{{ product.description }}</div>
+    </div>
+  </div>
+</div>
